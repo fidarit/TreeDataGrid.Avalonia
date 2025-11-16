@@ -295,17 +295,17 @@ namespace Avalonia.Controls.Primitives
                 return default;
             }
 
+            var orientation = Orientation;
+
             // If we're bringing an item into view, ignore any layout passes until we receive a new
             // effective viewport.
             if (_isWaitingForViewportUpdate)
-                return DesiredSize;
+                return EstimateDesiredSize(orientation, items.Count);
 
             _isInLayout = true;
 
             try
             {
-                var orientation = Orientation;
-
                 _realizedElements ??= new();
                 _measureElements ??= new();
 
@@ -580,9 +580,21 @@ namespace Avalonia.Controls.Primitives
             var viewportStart = Orientation == Orientation.Horizontal ? viewport.X : viewport.Y;
             var viewportEnd = Orientation == Orientation.Horizontal ? viewport.Right : viewport.Bottom;
 
-            // Get or estimate the anchor element from which to start realization.
-            var itemCount = items.Count;
-            var (anchorIndex, anchorU) = GetOrEstimateAnchorElementForViewport(viewportStart, viewportEnd, itemCount);
+            // Get or estimate the anchor element from which to start realization. If we are
+            // scrolling to an element, use that as the anchor element. Otherwise, estimate the
+            // anchor element based on the current viewport.
+            int anchorIndex;
+            double anchorU;
+
+            if (_scrollToIndex >= 0 && _scrollToElement is not null)
+            {
+                anchorIndex = _scrollToIndex;
+                anchorU = _scrollToElement.Bounds.Top;
+            }
+            else
+            {
+                (anchorIndex, anchorU) = GetOrEstimateAnchorElementForViewport(viewportStart, viewportEnd, items.Count);
+            }
 
             // Check if the anchor element is not within the currently realized elements.
             var disjunct = anchorIndex < _realizedElements.FirstIndex ||
@@ -642,6 +654,25 @@ namespace Avalonia.Controls.Primitives
                 VisualChildren.Add(e);
             }
             return e;
+        }
+
+        private Size EstimateDesiredSize(Orientation orientation, int itemCount)
+        {
+            if (_scrollToIndex >= 0 && _scrollToElement is not null)
+            {
+                // We have an element to scroll to, so we can estimate the desired size based on the
+                // element's position and the remaining elements.
+                var remaining = itemCount - _scrollToIndex - 1;
+                var u = orientation == Orientation.Horizontal ?
+                    _scrollToElement.Bounds.Right :
+                    _scrollToElement.Bounds.Bottom;
+                var sizeU = u + (remaining * _lastEstimatedElementSizeU);
+                return orientation == Orientation.Horizontal ?
+                    new(sizeU, DesiredSize.Height) :
+                    new(DesiredSize.Width, sizeU);
+            }
+
+            return DesiredSize;
         }
 
         private double EstimateElementSizeU()

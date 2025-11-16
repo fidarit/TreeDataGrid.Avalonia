@@ -489,6 +489,24 @@ namespace Avalonia.Controls.TreeDataGridTests.Primitives
         }
 
         [AvaloniaFact(Timeout = 10000)]
+        public void Brings_New_Item_Outside_Viewport_Into_View()
+        {
+            // Issue #6
+            var (target, scroll, items) = CreateTarget(itemCount: 15, rootSize: new Size(100, 89));
+
+            AssertRowIndexes(target, 0, 9);
+
+            items.Add(new Model { Id = 100, Title = "New Item" });
+
+            AssertRowIndexes(target, 0, 9);
+
+            target.BringIntoView(15);
+            Layout(target);
+
+            AssertRowIndexes(target, 7, 9);
+        }
+
+        [AvaloniaFact(Timeout = 10000)]
         public void Assigns_Row_DataContexts()
         {
             var (target, scroll, items) = CreateTarget();
