@@ -175,7 +175,7 @@ namespace TreeDataGridDemo.ViewModels
 
         private HierarchicalTreeDataGridSource<FileTreeNodeModel> CreateTreeSource()
         {
-            var result = new HierarchicalTreeDataGridSource<FileTreeNodeModel>(Array.Empty<FileTreeNodeModel>())
+            var result = new HierarchicalTreeDataGridSource<FileTreeNodeModel>([])
             {
                 Columns =
                 {

@@ -41,10 +41,10 @@ namespace Avalonia.Controls.Selection
             IReadOnlyList<T?>? deselectedItems = null,
             IReadOnlyList<T?>? selectedItems = null)
         {
-            DeselectedIndexes = deselectedIndexes ?? Array.Empty<IndexPath>();
-            SelectedIndexes = selectedIndexes ?? Array.Empty<IndexPath>();
-            DeselectedItems = deselectedItems ?? Array.Empty<T>();
-            SelectedItems = selectedItems ?? Array.Empty<T>();
+            DeselectedIndexes = deselectedIndexes ?? [];
+            SelectedIndexes = selectedIndexes ?? [];
+            DeselectedItems = deselectedItems ?? [];
+            SelectedItems = selectedItems ?? [];
         }
 
         /// <summary>

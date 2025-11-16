@@ -160,7 +160,7 @@ namespace Avalonia.Controls
 
         IEnumerable<object> ITreeDataGridSource.GetModelChildren(object model)
         {
-            return Enumerable.Empty<object>();
+            return [];
         }
 
         private AnonymousSortableRows<TModel> CreateRows()
