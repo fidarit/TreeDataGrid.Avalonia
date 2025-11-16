@@ -6,6 +6,7 @@
         xmlns:vm="using:TreeDataGridDemo.ViewModels"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="TreeDataGridDemo.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
         Title="TreeDataGridDemo">
   <TabControl Name="tabs">
     <TabItem Header="Countries">
@@ -140,7 +141,7 @@
         <TextBlock Classes="realized-count" DockPanel.Dock="Bottom"/>
         <TreeDataGrid Name="wikipedia" Source="{Binding Wikipedia.Source}">
           <TreeDataGrid.Resources>
-            <DataTemplate x:Key="WikipediaImageCell">
+            <DataTemplate x:Key="WikipediaImageCell" DataType="m:OnThisDayArticle">
               <Image Source="{Binding Image}"/>
             </DataTemplate>
           </TreeDataGrid.Resources>

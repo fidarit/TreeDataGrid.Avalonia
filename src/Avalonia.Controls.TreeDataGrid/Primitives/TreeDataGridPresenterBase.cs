@@ -85,7 +85,7 @@ namespace Avalonia.Controls.Primitives
             }
         }
 
-        internal IReadOnlyList<Control?> RealizedElements => _realizedElements?.Elements ?? Array.Empty<Control>();
+        internal IReadOnlyList<Control?> RealizedElements => _realizedElements?.Elements ?? [];
 
         protected abstract Orientation Orientation { get; }
         protected Rect Viewport { get; private set; } = s_invalidViewport;
@@ -170,7 +170,7 @@ namespace Avalonia.Controls.Primitives
             if (_realizedElements is not null)
                 return _realizedElements.Elements.Where(x => x is not null)!;
             else
-                return Array.Empty<Control>();
+                return [];
         }
 
         public Control? TryGetElement(int index) => GetRealizedElement(index);

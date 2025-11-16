@@ -223,7 +223,7 @@ namespace Avalonia.Controls
         /// <summary>
         ///  Gets an empty <see cref="TreeDataGridItemsSourceView"/>
         /// </summary>
-        public new static TreeDataGridItemsSourceView<T> Empty { get; } = new TreeDataGridItemsSourceView<T>(Array.Empty<T>());
+        public new static TreeDataGridItemsSourceView<T> Empty { get; } = new TreeDataGridItemsSourceView<T>([]);
 
         /// <summary>
         /// Initializes a new instance of the ItemsSourceView class for the specified data source.

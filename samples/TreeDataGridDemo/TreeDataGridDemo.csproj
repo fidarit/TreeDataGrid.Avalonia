@@ -3,6 +3,8 @@
     <TargetFramework>net8.0</TargetFramework>
     <IsPackable>False</IsPackable>
     <OutputType>WinExe</OutputType>
+    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    <PublishAot>true</PublishAot>
   </PropertyGroup>
   <ItemGroup>
     <AvaloniaResource Include="Assets\**" />
