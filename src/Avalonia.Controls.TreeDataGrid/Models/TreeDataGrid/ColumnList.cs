@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Avalonia.Collections;
 using Avalonia.Utilities;
 
 namespace Avalonia.Controls.Models.TreeDataGrid
@@ -7,18 +8,12 @@ namespace Avalonia.Controls.Models.TreeDataGrid
     /// <summary>
     /// An implementation of <see cref="IColumns"/> that stores its columns in a list.
     /// </summary>
-    public class ColumnList<TModel> : NotifyingListBase<IColumn<TModel>>, IColumns
+    public class ColumnList<TModel> : AvaloniaList<IColumn<TModel>>, IColumns
     {
         private bool _initialized;
         private double _viewportWidth;
 
         public event EventHandler? LayoutInvalidated;
-
-        public void AddRange(IEnumerable<IColumn<TModel>> items)
-        {
-            foreach (var item in items)
-                Add(item);
-        }
 
         public Size CellMeasured(int columnIndex, int rowIndex, Size size)
         {
