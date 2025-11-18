@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using Avalonia.Controls.Utils;
 
-#nullable enable
-
 namespace Avalonia.Controls.Selection
 {
     /// <summary>

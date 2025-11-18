@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 
-#nullable enable
-
 namespace Avalonia.Controls.Selection
 {
     public abstract class TreeSelectionModelBase<T> : ITreeSelectionModel, INotifyPropertyChanged

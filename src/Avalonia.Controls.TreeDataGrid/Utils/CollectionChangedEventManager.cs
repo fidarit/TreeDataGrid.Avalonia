@@ -5,8 +5,6 @@ using System.Runtime.CompilerServices;
 using Avalonia.Threading;
 using Avalonia.Utilities;
 
-#nullable enable
-
 namespace Avalonia.Controls.Utils
 {
     internal interface ICollectionChangedListener

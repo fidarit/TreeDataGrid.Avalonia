@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using Avalonia.Controls.Models.TreeDataGrid;
 
-#nullable enable
-
 namespace Avalonia.Controls.Selection
 {
 #pragma warning disable CS0436 // Type conflicts with imported type

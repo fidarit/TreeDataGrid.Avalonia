@@ -2,8 +2,6 @@
 using Avalonia.Data;
 using Avalonia.Experimental.Data.Core;
 
-#nullable enable
-
 namespace Avalonia.Experimental.Data
 {
     /// <summary>

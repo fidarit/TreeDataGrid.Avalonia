@@ -4,8 +4,6 @@ using System.Reflection;
 using Avalonia.Data;
 using Avalonia.Data.Core.Parsers;
 
-#nullable enable
-
 namespace Avalonia.Experimental.Data
 {
     /// <summary>
