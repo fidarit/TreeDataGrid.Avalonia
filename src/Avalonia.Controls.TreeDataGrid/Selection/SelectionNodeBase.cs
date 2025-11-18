@@ -70,7 +70,7 @@ namespace Avalonia.Controls.Selection
                     throw new InvalidOperationException("Ranges not enabled.");
                 }
 
-                return _ranges ??= new List<IndexRange>();
+                return _ranges ??= [];
             }
         }
 
@@ -204,7 +204,7 @@ namespace Avalonia.Controls.Selection
         {
             if (RangesEnabled)
             {
-                _ranges ??= new List<IndexRange>();
+                _ranges ??= [];
                 return IndexRange.Add(_ranges, new IndexRange(begin, end));
             }
 
@@ -221,7 +221,7 @@ namespace Avalonia.Controls.Selection
         {
             if (RangesEnabled)
             {
-                _ranges ??= new List<IndexRange>();
+                _ranges ??= [];
                 return IndexRange.Remove(_ranges, new IndexRange(begin, end));
             }
 
@@ -264,7 +264,7 @@ namespace Avalonia.Controls.Selection
                         if (range.Contains(index - 1))
                         {
                             range.Split(index - 1, out var before, out _);
-                            (toAdd ??= new List<IndexRange>()).Add(before);
+                            (toAdd ??= []).Add(before);
                             begin = index;
                         }
 
@@ -316,7 +316,7 @@ namespace Avalonia.Controls.Selection
 
                 if (IndexRange.Remove(_ranges, removedRange, deselected) > 0)
                 {
-                    removed = new List<T?>();
+                    removed = [];
 
                     foreach (var range in deselected)
                     {

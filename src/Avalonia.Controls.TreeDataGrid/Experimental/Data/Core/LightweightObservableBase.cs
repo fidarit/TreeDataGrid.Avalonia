@@ -16,7 +16,7 @@ namespace Avalonia.Experimental.Data.Core
     public abstract class LightweightObservableBase<T> : IObservable<T>
     {
         private Exception? _error;
-        private List<IObserver<T>>? _observers = new List<IObserver<T>>();
+        private List<IObserver<T>>? _observers = [];
 
         public bool HasObservers => _observers?.Count > 0;
         

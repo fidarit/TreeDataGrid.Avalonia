@@ -180,7 +180,7 @@ namespace Avalonia.Controls.Selection
             using var update = BatchUpdate();
             var o = update.Operation;
 
-            o.DeselectedRanges ??= new();
+            o.DeselectedRanges ??= [];
             o.SelectedRanges?.Remove(index);
             o.DeselectedRanges.Add(index);
 
@@ -434,7 +434,7 @@ namespace Avalonia.Controls.Selection
 
             if (!IsSelected(index))
             {
-                o.SelectedRanges ??= new();
+                o.SelectedRanges ??= [];
                 o.SelectedRanges.Add(index);
             }
 

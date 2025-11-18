@@ -13,16 +13,16 @@ namespace Avalonia.Controls.TreeDataGridTests
             return new FuncControlTemplate<ScrollViewer>((x, ns) =>
                 new Grid
                 {
-                    ColumnDefinitions = new ColumnDefinitions
-                    {
+                    ColumnDefinitions =
+                    [
                         new ColumnDefinition(1, GridUnitType.Star),
                         new ColumnDefinition(GridLength.Auto),
-                    },
-                    RowDefinitions = new RowDefinitions
-                    {
+                    ],
+                    RowDefinitions =
+                    [
                         new RowDefinition(1, GridUnitType.Star),
                         new RowDefinition(GridLength.Auto),
-                    },
+                    ],
                     Children =
                     {
                         new ScrollContentPresenter

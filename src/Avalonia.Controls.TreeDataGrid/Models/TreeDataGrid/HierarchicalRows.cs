@@ -26,7 +26,7 @@ namespace Avalonia.Controls.Models.TreeDataGrid
             Comparison<TModel>? comparison)
         {
             _controller = controller;
-            _flattenedRows = new List<HierarchicalRow<TModel>>();
+            _flattenedRows = [];
             _roots = new RootRows(this, items, comparison);
             _roots.CollectionChanged += OnRootsCollectionChanged;
             _expanderColumn = expanderColumn;

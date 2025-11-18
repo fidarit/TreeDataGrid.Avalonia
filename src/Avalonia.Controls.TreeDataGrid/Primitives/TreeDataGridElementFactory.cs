@@ -7,7 +7,7 @@ namespace Avalonia.Controls.Primitives
 {
     public class TreeDataGridElementFactory
     {
-        private readonly Dictionary<object, List<Control>>  _recyclePool = new();
+        private readonly Dictionary<object, List<Control>>  _recyclePool = [];
 
         public Control GetOrCreateElement(object? data, Control parent)
         {
@@ -55,7 +55,7 @@ namespace Avalonia.Controls.Primitives
 
             if (!_recyclePool.TryGetValue(recycleKey, out var elements))
             {
-                elements = new();
+                elements = [];
                 _recyclePool.Add(recycleKey, elements);
             }
 

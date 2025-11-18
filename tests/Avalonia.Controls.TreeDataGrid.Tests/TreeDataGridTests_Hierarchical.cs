@@ -82,10 +82,10 @@ namespace Avalonia.Controls.TreeDataGridTests
         {
             var (target, source) = CreateTarget();
             var items = (IList<Model>)source.Items;
-            var children = items[1].Children = new AvaloniaList<Model>
-            {
+            var children = items[1].Children =
+            [
                 new Model { Id = -1, Title = "First" }
-            };
+            ];
 
             Layout(target);
             source.Expand(new IndexPath(1));
@@ -102,10 +102,10 @@ namespace Avalonia.Controls.TreeDataGridTests
         {
             var (target, source) = CreateTarget();
             var items = (IList<Model>)source.Items;
-            var children = items[0].Children![1].Children = new AvaloniaList<Model>
-            {
+            var children = items[0].Children![1].Children =
+            [
                 new Model { Id = -1, Title = "First" }
-            };
+            ];
 
             source.Expand(0);
             target.Scroll!.Offset = new Vector(0, 20);

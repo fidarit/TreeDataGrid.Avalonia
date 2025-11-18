@@ -61,7 +61,7 @@ namespace Avalonia.Controls.Selection
         {
             if (Ranges.Count > 0)
             {
-                operation.DeselectedRanges ??= new();
+                operation.DeselectedRanges ??= [];
                 foreach (var range in Ranges)
                     operation.DeselectedRanges.Add(Path, range);
             }
@@ -86,7 +86,7 @@ namespace Avalonia.Controls.Selection
 
             if (index < childCount)
             {
-                _children ??= new List<TreeSelectionNode<T>?>();
+                _children ??= [];
                 Resize(_children, childCount);
                 return _children[index] ??= new TreeSelectionNode<T>(_owner, this, index);
             }
@@ -237,7 +237,7 @@ namespace Avalonia.Controls.Selection
         {
             if (Ranges.Count > 0)
             {
-                removed ??= new();
+                removed ??= [];
 
                 foreach (var range in Ranges)
                 {

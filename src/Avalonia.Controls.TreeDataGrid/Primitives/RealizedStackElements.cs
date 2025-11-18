@@ -34,12 +34,12 @@ namespace Avalonia.Controls.Primitives
         /// <summary>
         /// Gets the elements.
         /// </summary>
-        public IReadOnlyList<Control?> Elements => _elements ??= new List<Control?>();
+        public IReadOnlyList<Control?> Elements => _elements ??= [];
 
         /// <summary>
         /// Gets the sizes of the elements on the primary axis.
         /// </summary>
-        public IReadOnlyList<double> SizeU => _sizes ??= new List<double>();
+        public IReadOnlyList<double> SizeU => _sizes ??= [];
 
         /// <summary>
         /// Gets the position of the first element on the primary axis.
@@ -58,8 +58,8 @@ namespace Avalonia.Controls.Primitives
             if (index < 0)
                 throw new ArgumentOutOfRangeException(nameof(index));
 
-            _elements ??= new List<Control?>();
-            _sizes ??= new List<double>();
+            _elements ??= [];
+            _sizes ??= [];
 
             if (Count == 0)
             {
