@@ -614,7 +614,7 @@ namespace Avalonia.Controls.Selection
             return false;
         }
 
-        public struct BatchUpdateOperation : IDisposable
+        public record struct BatchUpdateOperation : IDisposable
         {
             private readonly TreeSelectionModelBase<T> _owner;
             private bool _isDisposed;
@@ -626,7 +626,7 @@ namespace Avalonia.Controls.Selection
                 owner.BeginBatchUpdate();
             }
 
-            internal Operation Operation => _owner._operation!;
+            internal readonly Operation Operation => _owner._operation!;
 
             public void Dispose()
             {

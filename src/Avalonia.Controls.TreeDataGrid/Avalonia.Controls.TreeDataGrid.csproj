@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net8.0;net48</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net8.0;net10.0;net48</TargetFrameworks>
     <IsPackable>True</IsPackable>
     <RootNamespace>Avalonia.Controls</RootNamespace>
     <PackageReadmeFile>readme.md</PackageReadmeFile>

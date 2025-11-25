@@ -1,9 +1,10 @@
-<Project>
+﻿<Project>
   <Import Project="build\SharedVersion.props" />
   <Import Project="build\SourceLink.props" Condition="'$(DisableSourceLink)' == ''" />
   <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
-    <LangVersion>12</LangVersion>
+    <LangVersion>14</LangVersion>
     <!-- https://github.com/dotnet/msbuild/issues/2661 -->
     <AddSyntheticProjectReferencesForSolutionDependencies>false</AddSyntheticProjectReferencesForSolutionDependencies>
     <MSBuildEnableWorkloadResolver>false</MSBuildEnableWorkloadResolver>
