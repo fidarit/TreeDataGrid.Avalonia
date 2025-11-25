@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-#nullable enable
-
 namespace Avalonia.Data.Core.Parsers
 {
     public class ExpressionChainVisitor<TIn> : ExpressionVisitor
     {
         private readonly LambdaExpression _rootExpression;
-        private readonly List<Func<TIn, object>> _links = new();
+        private readonly List<Func<TIn, object>> _links = [];
         private Expression? _head;
 
         public ExpressionChainVisitor(LambdaExpression expression)

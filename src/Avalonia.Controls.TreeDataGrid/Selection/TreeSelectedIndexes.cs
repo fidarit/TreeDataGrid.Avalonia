@@ -2,8 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 
-#nullable enable
-
 namespace Avalonia.Controls.Selection
 {
     internal class TreeSelectedIndexes<T> : IReadOnlyList<IndexPath>

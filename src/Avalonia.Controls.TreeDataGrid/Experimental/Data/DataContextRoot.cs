@@ -1,7 +1,4 @@
 ﻿using Avalonia.Controls.Experimental.Data.Core;
-using Avalonia.Experimental.Data.Core;
-
-#nullable enable
 
 namespace Avalonia.Experimental.Data
 {

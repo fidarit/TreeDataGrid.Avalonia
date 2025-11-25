@@ -14,7 +14,7 @@ namespace TreeDataGridDemo.ViewModels
 {
     internal class WikipediaPageViewModel
     {
-        private readonly AvaloniaList<OnThisDayArticle> _data = new();
+        private readonly AvaloniaList<OnThisDayArticle> _data = [];
 
         public WikipediaPageViewModel()
         {

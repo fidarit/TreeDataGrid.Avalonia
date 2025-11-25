@@ -20,8 +20,7 @@ namespace Avalonia.Controls.TreeDataGridTests.Primitives
         public void Nth_Child_Handles_Deletion_And_Addition_Correctly()
         {
             var (target, scroll, items) = CreateTarget(additionalStyles:
-                new List<IStyle>
-                {
+                [
                     new Style(x => x.OfType<TreeDataGridRowsPresenter>().Descendant().OfType<TreeDataGridRow>().NthChild(2,0))
                     {
                         Setters =
@@ -29,7 +28,7 @@ namespace Avalonia.Controls.TreeDataGridTests.Primitives
                             new Setter(TreeDataGridRow.BackgroundProperty,new SolidColorBrush(Colors.Red)),
                         }
                     }
-                });
+                ]);
 
             Layout(target);
 

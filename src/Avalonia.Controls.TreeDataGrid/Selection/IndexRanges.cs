@@ -7,7 +7,7 @@ namespace Avalonia.Controls.Selection
 {
     internal class IndexRanges : IReadOnlyList<IndexPath>
     {
-        private readonly SortedList<IndexPath, List<IndexRange>> _ranges = new();
+        private readonly SortedList<IndexPath, List<IndexRange>> _ranges = [];
 
         public IndexPath this[int index]
         {
@@ -40,7 +40,7 @@ namespace Avalonia.Controls.Selection
 
             if (!_ranges.TryGetValue(parent, out var ranges))
             {
-                ranges = new List<IndexRange>();
+                ranges = [];
                 _ranges.Add(parent, ranges);
             }
 
@@ -51,7 +51,7 @@ namespace Avalonia.Controls.Selection
         {
             if (!_ranges.TryGetValue(parent, out var ranges))
             {
-                ranges = new List<IndexRange>();
+                ranges = [];
                 _ranges.Add(parent, ranges);
             }
 

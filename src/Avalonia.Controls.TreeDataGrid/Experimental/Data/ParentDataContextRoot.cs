@@ -1,9 +1,5 @@
-﻿using System;
-using Avalonia.Controls.Experimental.Data.Core;
-using Avalonia.Experimental.Data.Core;
+﻿using Avalonia.Controls.Experimental.Data.Core;
 using Avalonia.VisualTree;
-
-#nullable enable
 
 namespace Avalonia.Experimental.Data
 {
@@ -19,14 +15,14 @@ namespace Avalonia.Experimental.Data
 
         protected override void Subscribed()
         {
-            ((AvaloniaObject)_source).PropertyChanged += SourcePropertyChanged;
+            _source.PropertyChanged += SourcePropertyChanged;
             StartListeningToDataContext(_source.GetVisualParent());
             PublishValue();
         }
 
         protected override void Unsubscribed()
         {
-            ((AvaloniaObject)_source).PropertyChanged -= SourcePropertyChanged;
+            _source.PropertyChanged -= SourcePropertyChanged;
         }
 
         private void PublishValue()

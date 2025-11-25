@@ -5,8 +5,6 @@ using System.Runtime.CompilerServices;
 using Avalonia.Threading;
 using Avalonia.Utilities;
 
-#nullable enable
-
 namespace Avalonia.Controls.Utils
 {
     internal interface ICollectionChangedListener
@@ -35,7 +33,7 @@ namespace Avalonia.Controls.Utils
 
             if (!_entries.TryGetValue(collection, out var listeners))
             {
-                listeners = new List<WeakReference<ICollectionChangedListener>>();
+                listeners = [];
                 _entries.Add(collection, listeners);
 #pragma warning disable CS0618
                 WeakEventHandlerManager.Subscribe<INotifyCollectionChanged, NotifyCollectionChangedEventArgs, CollectionChangedEventManager>(

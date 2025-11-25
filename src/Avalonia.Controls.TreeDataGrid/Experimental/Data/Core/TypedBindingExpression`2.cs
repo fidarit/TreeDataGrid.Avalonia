@@ -4,8 +4,6 @@ using System.ComponentModel;
 using Avalonia.Data;
 using Avalonia.Utilities;
 
-#nullable enable
-
 namespace Avalonia.Experimental.Data.Core
 {
     /// <summary>

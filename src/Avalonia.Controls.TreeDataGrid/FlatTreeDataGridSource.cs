@@ -29,7 +29,7 @@ namespace Avalonia.Controls
         {
             _items = items;
             _itemsView = TreeDataGridItemsSourceView<TModel>.GetOrCreate(items);
-            Columns = new ColumnList<TModel>();
+            Columns = [];
         }
 
         public ColumnList<TModel> Columns { get; }
