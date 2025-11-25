@@ -35,7 +35,7 @@ public partial class Build
         public string RepositoryBranch { get; }
         public string ReleaseConfiguration { get; }
         public string ReleaseBranchPrefix { get; }
-        public string MSBuildSolution { get; }
+        public string SolutionDir { get; }
         public bool IsLocalBuild { get; }
         public bool IsRunningOnUnix { get; }
         public bool IsRunningOnWindows { get; }
@@ -75,7 +75,7 @@ public partial class Build
             MasterBranch = "refs/heads/master";
             ReleaseBranchPrefix = "refs/heads/release/";
             ReleaseConfiguration = "Release";
-            MSBuildSolution = RootDirectory / "Avalonia.Controls.TreeDataGrid.sln";
+            SolutionDir = RootDirectory / "Avalonia.Controls.TreeDataGrid.sln";
 
             // PARAMETERS
             IsLocalBuild = Host == new Terminal();
