@@ -646,8 +646,8 @@ namespace Avalonia.Controls.Primitives
         {
             var item = items[index];
             var e = GetElementFromFactory(item, index);
-            e.IsVisible = true;
             RealizeElement(e, item, index);
+            e.IsVisible = true;
             if (e.GetVisualParent() is null)
             {
                 ((ISetLogicalParent)e).SetParent(this);
@@ -723,8 +723,8 @@ namespace Avalonia.Controls.Primitives
             }
             else
             {
-                UnrealizeElement(element);
                 element.IsVisible = false;
+                UnrealizeElement(element);
                 ElementFactory!.RecycleElement(element);
                 _scrollViewer?.UnregisterAnchorCandidate(element);
             }
