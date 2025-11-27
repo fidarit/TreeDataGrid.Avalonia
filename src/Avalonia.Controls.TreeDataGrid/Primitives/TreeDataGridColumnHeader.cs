@@ -30,7 +30,6 @@ namespace Avalonia.Controls.Primitives
         private ListSortDirection? _sortDirection;
         private TreeDataGrid? _owner;
         private Thumb? _resizer;
-        private static readonly GridLength Zero = new GridLength(0, GridUnitType.Pixel);
 
         public bool CanUserResize
         {
@@ -180,13 +179,13 @@ namespace Avalonia.Controls.Primitives
             var oldVisibility = IsVisible;
             CanUserResize = _model?.CanUserResize ?? _owner?.CanUserResizeColumns ?? false;
             Header = _model?.Header;
+            Tag = _model?.Tag;
             SortDirection = _model?.SortDirection;
             IsVisible = _model?.IsVisible == true;
-            if(IsVisible!= oldVisibility)
+            if (IsVisible != oldVisibility)
             {
                 _columns?.InvalidateLayout();
-            }
-            
+            }            
         }
     }
 }
