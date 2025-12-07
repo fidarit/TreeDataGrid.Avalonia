@@ -16,7 +16,8 @@ namespace Avalonia.Controls.TreeDataGridTests.Models
         public void Value_Is_Initially_Read_From_String()
         {
             var binding = new BehaviorSubject<BindingValue<string>>("initial");
-            var target = new TextCell<string>(binding, binding, true);
+            var isReadOnly = new BehaviorSubject<BindingValue<bool>>(true);
+            var target = new TextCell<string>(binding, binding, isReadOnly);
 
             Assert.Equal("initial", target.Text);
             Assert.Equal("initial", target.Value);
@@ -26,7 +27,8 @@ namespace Avalonia.Controls.TreeDataGridTests.Models
         public void Modified_Value_Is_Written_To_Binding()
         {
             var binding = new BehaviorSubject<BindingValue<string>>("initial");
-            var target = new TextCell<string>(binding, binding, false);
+            var isReadOnly = new BehaviorSubject<BindingValue<bool>>(false);
+            var target = new TextCell<string>(binding, binding, isReadOnly);
             var result = new List<string>();
 
             binding.Subscribe(x => result.Add(x.Value));
@@ -39,7 +41,8 @@ namespace Avalonia.Controls.TreeDataGridTests.Models
         public void Modified_Text_Is_Written_To_Binding()
         {
             var binding = new BehaviorSubject<BindingValue<string>>("initial");
-            var target = new TextCell<string>(binding, binding, false);
+            var isReadOnly = new BehaviorSubject<BindingValue<bool>>(false);
+            var target = new TextCell<string>(binding, binding, isReadOnly);
             var result = new List<string>();
 
             binding.Subscribe(x => result.Add(x.Value));
@@ -52,7 +55,8 @@ namespace Avalonia.Controls.TreeDataGridTests.Models
         public void Modified_Value_Is_Written_To_Binding_On_EndEdit()
         {
             var binding = new BehaviorSubject<BindingValue<string>>("initial");
-            var target = new TextCell<string>(binding, binding, false);
+            var isReadOnly = new BehaviorSubject<BindingValue<bool>>(false);
+            var target = new TextCell<string>(binding, binding, isReadOnly);
             var result = new List<string>();
 
             binding.Subscribe(x => result.Add(x.Value));
@@ -75,7 +79,8 @@ namespace Avalonia.Controls.TreeDataGridTests.Models
         public void Modified_Value_Is_Not_Written_To_Binding_On_CancelEdit()
         {
             var binding = new BehaviorSubject<BindingValue<string>>("initial");
-            var target = new TextCell<string>(binding, binding, false);
+            var isReadOnly = new BehaviorSubject<BindingValue<bool>>(false);
+            var target = new TextCell<string>(binding, binding, isReadOnly);
             var result = new List<string>();
 
             binding.Subscribe(x => result.Add(x.Value));
@@ -98,7 +103,8 @@ namespace Avalonia.Controls.TreeDataGridTests.Models
         public void Unchanged_Value_Clears_On_CommitEdit_Without_Changes()
         {
             var binding = new BehaviorSubject<BindingValue<string>>("initial");
-            var target = new TextCell<string>(binding, binding, false);
+            var isReadOnly = new BehaviorSubject<BindingValue<bool>>(false);
+            var target = new TextCell<string>(binding, binding, isReadOnly);
 
             target.BeginEdit();
             target.EndEdit();
@@ -119,7 +125,8 @@ namespace Avalonia.Controls.TreeDataGridTests.Models
             public void Initial_Int_Value_Is_Formatted()
             {
                 var binding = new BehaviorSubject<BindingValue<int>>(42);
-                var target = new TextCell<int>(binding, binding, true, GetOptions());
+                var isReadOnly = new BehaviorSubject<BindingValue<bool>>(true);
+                var target = new TextCell<int>(binding, binding, isReadOnly, GetOptions());
 
                 Assert.Equal("42.00", target.Text);
                 Assert.Equal(42, target.Value);
@@ -129,7 +136,8 @@ namespace Avalonia.Controls.TreeDataGridTests.Models
             public void Int_Value_Is_Formatted_After_Editing()
             {
                 var binding = new BehaviorSubject<BindingValue<int>>(42);
-                var target = new TextCell<int>(binding, binding, false, GetOptions());
+                var isReadOnly = new BehaviorSubject<BindingValue<bool>>(false);
+                var target = new TextCell<int>(binding, binding, isReadOnly, GetOptions());
                 var result = new List<int>();
 
                 binding.Subscribe(x => result.Add(x.Value));

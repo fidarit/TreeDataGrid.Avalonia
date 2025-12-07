@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq.Expressions;
 
 namespace Avalonia.Controls.Models.TreeDataGrid
 {
@@ -41,7 +42,7 @@ namespace Avalonia.Controls.Models.TreeDataGrid
     /// Holds less commonly-used options for an <see cref="IColumn{TModel}"/>.
     /// </summary>
     /// <typeparam name="TModel">The model type.</typeparam>
-    public class ColumnOptions<TModel>
+    public class ColumnOptions<TModel> : ICellOptions
     {
         /// <summary>
         /// Gets or sets a value indicating whether the user can resize a column by dragging.
@@ -85,9 +86,15 @@ namespace Avalonia.Controls.Models.TreeDataGrid
         /// Gets or sets the gesture(s) that will cause a cell to enter edit mode.
         /// </summary>
         public BeginEditGestures BeginEditGestures { get; set; } = BeginEditGestures.Default;
-        
+
+        /// <summary>
         /// Determines whether or not this column is visible.
         /// </summary>
         public bool IsVisible { get; set; } = true;
+
+        /// <summary>
+        /// An expression that returns the cell's read-only state for the column.
+        /// </summary>
+        public Expression<Func<TModel, bool>>? IsReadOnlyGetter { get; set; }
     }
 }

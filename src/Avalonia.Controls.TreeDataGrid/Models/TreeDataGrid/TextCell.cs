@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Globalization;
 using Avalonia.Data;
 using Avalonia.Experimental.Data;
+using Avalonia.Experimental.Data.Core;
 using Avalonia.Media;
 
 namespace Avalonia.Controls.Models.TreeDataGrid
@@ -25,26 +26,31 @@ namespace Avalonia.Controls.Models.TreeDataGrid
         public TextCell(
             IObserver<BindingValue<T>> bindingObserver,
             IObservable<BindingValue<T>> bindingObservable,
-            bool isReadOnly,
+            IObservable<BindingValue<bool>> isReadOnlyObservable,
             ITextCellOptions? options = null)
         {
             _binding = bindingObserver;
-            IsReadOnly = isReadOnly;
             _options = options;
 
-            _subscription = bindingObservable.Subscribe(x =>
-            {
-                if (x.HasValue)
-                    Value = x.Value;
-            });
+            _subscription = new CompositeDisposable(
+                bindingObservable.Subscribe(x =>
+                {
+                    if (x.HasValue)
+                        Value = x.Value;
+                }),
+                isReadOnlyObservable.Subscribe(x =>
+                {
+                    if (x.HasValue)
+                        IsReadOnly = x.Value;
+                }));
         }
 
         public bool CanEdit => !IsReadOnly;
         public BeginEditGestures EditGestures => _options?.BeginEditGestures ?? BeginEditGestures.Default;
-        public bool IsReadOnly { get; }
         public TextTrimming TextTrimming => _options?.TextTrimming ?? TextTrimming.None;
         public TextWrapping TextWrapping => _options?.TextWrapping ?? TextWrapping.NoWrap;
         public TextAlignment TextAlignment => _options?.TextAlignment ?? TextAlignment.Left;
+        public bool IsReadOnly { get; private set; }
 
         public string? Text
         {

@@ -12,6 +12,7 @@ namespace Avalonia.Controls.Models.TreeDataGrid
     /// <typeparam name="TModel">The model type.</typeparam>
     /// <typeparam name="TValue">The column data type.</typeparam>
     public class TemplateColumn<TModel> : ColumnBase<TModel>, ITextSearchableColumn<TModel>
+        where TModel : class
     {
         private readonly Func<Control, IDataTemplate> _getCellTemplate;
         private readonly Func<Control, IDataTemplate>? _getEditingCellTemplate;
@@ -98,7 +99,8 @@ namespace Avalonia.Controls.Models.TreeDataGrid
         /// <returns>The cell.</returns>
         public override ICell CreateCell(IRow<TModel> row)
         {
-            return new TemplateCell(row.Model, _getCellTemplate, _getEditingCellTemplate, Options);
+            var isReadOnlyObservable = BuildIsReadOnlyObservable(row.Model, _getEditingCellTemplate is null);
+            return new TemplateCell(row.Model, _getCellTemplate, _getEditingCellTemplate, isReadOnlyObservable, Options);
         }
 
         public override Comparison<TModel?>? GetComparison(ListSortDirection direction)

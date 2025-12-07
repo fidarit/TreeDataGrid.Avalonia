@@ -2,18 +2,11 @@
 using System.ComponentModel;
 using Avalonia.Controls.Models.TreeDataGrid;
 using Avalonia.Controls.Selection;
-using Avalonia.Input;
 
 namespace Avalonia.Controls.Primitives
 {
-    public class TreeDataGridCheckBoxCell : TreeDataGridCell
+    public class TreeDataGridCheckBoxCell : TreeDataGridEditableCell
     {
-        public static readonly DirectProperty<TreeDataGridCheckBoxCell, bool> IsReadOnlyProperty =
-            AvaloniaProperty.RegisterDirect<TreeDataGridCheckBoxCell, bool>(
-                nameof(IsReadOnly),
-                o => o.IsReadOnly,
-                (o, v) => o.IsReadOnly = v);
-
         public static readonly DirectProperty<TreeDataGridCheckBoxCell, bool> IsThreeStateProperty =
             AvaloniaProperty.RegisterDirect<TreeDataGridCheckBoxCell, bool>(
                 nameof(IsThreeState),
@@ -26,15 +19,8 @@ namespace Avalonia.Controls.Primitives
                 o => o.Value,
                 (o, v) => o.Value = v);
 
-        private bool _isReadOnly;
         private bool _isThreeState;
         private bool? _value;
-
-        public bool IsReadOnly
-        {
-            get => _isReadOnly;
-            set => SetAndRaise(IsReadOnlyProperty, ref _isReadOnly, value);
-        }
 
         public bool IsThreeState
         {
@@ -75,26 +61,14 @@ namespace Avalonia.Controls.Primitives
             }
 
             base.Realize(factory, selection, model, columnIndex, rowIndex);
-            SubscribeToModelChanges();
         }
 
-        public override void Unrealize()
-        {
-            UnsubscribeFromModelChanges();
-            base.Unrealize();
-        }
-        
         protected override void OnModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             base.OnModelPropertyChanged(sender, e);
 
             if (e.PropertyName == nameof(CheckBoxCell.Value) && Model is CheckBoxCell checkBoxCell)
                 Value = checkBoxCell.Value;
-        }
-
-        protected override void OnPointerPressed(PointerPressedEventArgs e)
-        {
-            base.OnPointerPressed(e);
         }
     }
 }

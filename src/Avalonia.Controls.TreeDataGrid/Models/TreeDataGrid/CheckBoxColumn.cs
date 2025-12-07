@@ -69,7 +69,8 @@ namespace Avalonia.Controls.Models.TreeDataGrid
         public override ICell CreateCell(IRow<TModel> row)
         {
             var expression = CreateBindingExpression(row.Model);
-            return new CheckBoxCell(expression, expression, Binding.Write is null, IsThreeState);
+            var isReadOnlyObservable = BuildIsReadOnlyObservable(row.Model, Binding.Write is null);
+            return new CheckBoxCell(expression, expression, isReadOnlyObservable, IsThreeState);
         }
 
         private static Func<TModel, bool?> ToNullable(Expression<Func<TModel, bool>> getter)

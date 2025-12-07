@@ -1,10 +1,11 @@
 ﻿using System;
 using Avalonia.Data;
 using Avalonia.Experimental.Data;
+using Avalonia.Experimental.Data.Core;
 
 namespace Avalonia.Controls.Models.TreeDataGrid
 {
-    public class CheckBoxCell : NotifyingBase, ICell, IDisposable
+    public class CheckBoxCell : NotifyingBase, IEditableCell, IDisposable
     {
         private readonly IObserver<BindingValue<bool?>>? _binding;
         private readonly IDisposable? _subscription;
@@ -19,24 +20,29 @@ namespace Avalonia.Controls.Models.TreeDataGrid
         public CheckBoxCell(
             IObserver<BindingValue<bool?>> bindingObserver,
             IObservable<BindingValue<bool?>> bindingObservable,
-            bool isReadOnly,
+            IObservable<BindingValue<bool>> isReadOnlyObservable,
             bool isThreeState)
         {
             _binding = bindingObserver;
-            IsReadOnly = isReadOnly;
             IsThreeState = isThreeState;
 
-            _subscription = bindingObservable.Subscribe(x =>
-            {
-                if (x.HasValue)
-                    Value = x.Value;
-            });
+            _subscription = new CompositeDisposable(
+                bindingObservable.Subscribe(x =>
+                {
+                    if (x.HasValue)
+                        Value = x.Value;
+                }),
+                isReadOnlyObservable.Subscribe(x =>
+                {
+                    if (x.HasValue)
+                        IsReadOnly = x.Value;
+                }));
         }
 
         public bool CanEdit => false;
         public BeginEditGestures EditGestures => BeginEditGestures.None;
         public bool SingleTapEdit => false;
-        public bool IsReadOnly { get; }
+        public bool IsReadOnly { get; private set; }
         public bool IsThreeState { get; }
 
         public bool? Value
