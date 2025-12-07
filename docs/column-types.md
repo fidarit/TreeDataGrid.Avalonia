@@ -1,4 +1,4 @@
-# TreeDataGrid column types
+﻿# TreeDataGrid column types
 
 TreeDataGrid currently supports three different column types: 
 - [TextColumn](https://github.com/fidarit/TreeDataGrid.Avalonia/blob/master/src/Avalonia.Controls.TreeDataGrid/Models/TreeDataGrid/TextColumn.cs) 
@@ -22,10 +22,13 @@ The sample above is taken from [this article](https://github.com/fidarit/TreeDat
 
 ## CheckBoxColumn
 
-As its name suggests, `CheckBoxColumn` displays a `CheckBox` in its cells. For a readonly checkbox:
+As its name suggests, `CheckBoxColumn` displays a `CheckBox` in its cells. 
+The column supports both two-state (`bool`) and three-state (`bool?`) checkboxes, depending on the property type.
+
+For a read-only checkbox:
 
 ```csharp
-new CheckColumn<Person>("Firstborn", x => x.IsFirstborn)
+new CheckBoxColumn<Person>("Firstborn", x => x.IsFirstborn)
 ```
 
 The first parameter defines the column header. The second parameter is an expression which gets the value of the property from the model.
@@ -33,10 +36,10 @@ The first parameter defines the column header. The second parameter is an expres
 For a read/write checkbox:
 
 ```csharp
-new CheckColumn<Person>("Firstborn", x => x.IsFirstborn, (o, v) => o.IsFirstborn = v)
+new CheckBoxColumn<Person>("Firstborn", x => x.IsFirstborn, (o, v) => o.IsFirstborn = v)
 ```
 
-This overload adds a second paramter which is the expression used to set the property in the model.
+The third parameter is an expression used to set the property value in the model.
 
 ## HierarchicalExpanderColumn
 `HierarchicalExpanderColumn` can be used only with `HierarchicalTreeDataGrid` (a.k.a TreeView) thats what Hierarchical stands for in its name, also it can be used only with `HierarchicalTreeDataGridSource`. This type of columns can be useful when you want cells to show an expander to reveal nested data.

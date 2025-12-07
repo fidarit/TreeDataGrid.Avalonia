@@ -35,6 +35,7 @@ An example of `TreeDataGrid` displaying flat data:
 - [Creating a flat `TreeDataGrid`](docs/get-started-flat.md)  
 - [Creating a hierarchical `TreeDataGrid`](docs/get-started-hierarchical.md)  
 - [Supported column types](docs/column-types.md)  
+- [Column options](docs/column-options.md)  
 - [Editing and read-only state](docs/editing.md)  
 - [Selection](docs/selection.md)  
 

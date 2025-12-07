@@ -27,5 +27,6 @@ An example of TreeDataGrid displaying flat data:
 - [Creating a flat TreeDataGrid](https://github.com/fidarit/TreeDataGrid.Avalonia/blob/master/docs/get-started-flat.md)  
 - [Creating a hierarchical TreeDataGrid](https://github.com/fidarit/TreeDataGrid.Avalonia/blob/master/docs/get-started-hierarchical.md)  
 - [Supported column types](https://github.com/fidarit/TreeDataGrid.Avalonia/blob/master/docs/column-types.md)  
+- [Column options](https://github.com/fidarit/TreeDataGrid.Avalonia/blob/master/docs/column-options.md)  
 - [Editing and read-only state](https://github.com/fidarit/TreeDataGrid.Avalonia/blob/master/docs/editing.md)  
 - [Selection](https://github.com/fidarit/TreeDataGrid.Avalonia/blob/master/docs/selection.md)  

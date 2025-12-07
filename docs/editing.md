@@ -57,6 +57,8 @@ var column = new TextColumn<Person, string>(
 
 The expression provided to `IsReadOnlyGetter` is evaluated for each row, allowing you to use any property from your model to determine the read-only state.
 
+For detailed information about this and other column options, see [Column Options](column-options.md).
+
 ### Precedence Rules
 
 The read-only state is determined as follows:
