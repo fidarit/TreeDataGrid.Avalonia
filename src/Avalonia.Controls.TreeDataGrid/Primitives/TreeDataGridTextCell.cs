@@ -5,7 +5,7 @@ using Avalonia.Media;
 
 namespace Avalonia.Controls.Primitives
 {
-    public class TreeDataGridTextCell : TreeDataGridCell
+    public class TreeDataGridTextCell : TreeDataGridEditableCell
     {
         public static readonly DirectProperty<TreeDataGridTextCell, TextTrimming> TextTrimmingProperty =
             AvaloniaProperty.RegisterDirect<TreeDataGridTextCell, TextTrimming>(
@@ -80,13 +80,6 @@ namespace Avalonia.Controls.Primitives
             TextWrapping = (model as ITextCell)?.TextWrapping ?? TextWrapping.NoWrap;
             TextAlignment = (model as ITextCell)?.TextAlignment ?? TextAlignment.Left;
             base.Realize(factory, selection, model, columnIndex, rowIndex);
-            SubscribeToModelChanges();
-        }
-
-        public override void Unrealize()
-        {
-            UnsubscribeFromModelChanges();
-            base.Unrealize();
         }
 
         protected override void UpdateValue()

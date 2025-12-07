@@ -1,13 +1,11 @@
-﻿using System.Globalization;
-
-using Avalonia.Media;
+﻿using Avalonia.Media;
 
 namespace Avalonia.Controls.Models.TreeDataGrid
 {
     /// <summary>
     /// Represents a text cell in an <see cref="ITreeDataGridSource"/>.
     /// </summary>
-    public interface ITextCell : ICell
+    public interface ITextCell : IEditableCell
     {
         /// <summary>
         /// Gets or sets the cell's value as a string.

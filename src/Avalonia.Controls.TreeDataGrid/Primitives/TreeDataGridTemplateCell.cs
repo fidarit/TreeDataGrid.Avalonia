@@ -11,7 +11,7 @@ using Avalonia.VisualTree;
 
 namespace Avalonia.Controls.Primitives
 {
-    public class TreeDataGridTemplateCell : TreeDataGridCell
+    public class TreeDataGridTemplateCell : TreeDataGridEditableCell
     {
         public static readonly DirectProperty<TreeDataGridTemplateCell, object?> ContentProperty =
             AvaloniaProperty.RegisterDirect<TreeDataGridTemplateCell, object?>(

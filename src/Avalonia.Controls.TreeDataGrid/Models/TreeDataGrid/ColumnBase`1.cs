@@ -1,5 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
+using Avalonia.Data;
+using Avalonia.Experimental.Data;
 using Avalonia.Utilities;
 
 namespace Avalonia.Controls.Models.TreeDataGrid
@@ -9,6 +11,7 @@ namespace Avalonia.Controls.Models.TreeDataGrid
     /// </summary>
     /// <typeparam name="TModel">The model type.</typeparam>
     public abstract class ColumnBase<TModel> : NotifyingBase, IColumn<TModel>, IUpdateColumnLayout
+        where TModel : class
     {
         private double _actualWidth = double.NaN;
         private GridLength _width;
@@ -17,6 +20,7 @@ namespace Avalonia.Controls.Models.TreeDataGrid
         private bool _starWidthWasConstrained;
         private object? _header;
         private ListSortDirection? _sortDirection;
+        private TypedBinding<TModel, bool>? _isReadOnlyBinding;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ColumnBase{TModel, TValue}"/> class.
@@ -34,6 +38,9 @@ namespace Avalonia.Controls.Models.TreeDataGrid
             _header = header;
             Options = options;
             SetWidth(width ?? GridLength.Auto);
+
+            if (options.IsReadOnlyGetter is { } isReadOnlyGetter)
+                _isReadOnlyBinding = TypedBinding<TModel>.OneWay(isReadOnlyGetter);
         }
 
         /// <summary>
@@ -86,6 +93,22 @@ namespace Avalonia.Controls.Models.TreeDataGrid
         }
 
         /// <summary>
+        /// Gets or sets whether the column is visible.
+        /// </summary>
+        public bool IsVisible
+        {
+            get => Options.IsVisible;
+            set
+            {
+                if (Options.IsVisible != value)
+                {
+                    Options.IsVisible = value;
+                    RaisePropertyChanged(nameof(IsVisible));
+                }
+            }
+        }
+
+        /// <summary>
         /// Gets or sets a user-defined object attached to the column.
         /// </summary>
         public object? Tag { get; set; }
@@ -106,6 +129,14 @@ namespace Avalonia.Controls.Models.TreeDataGrid
         public abstract ICell CreateCell(IRow<TModel> row);
 
         public abstract Comparison<TModel?>? GetComparison(ListSortDirection direction);
+
+        protected IObservable<BindingValue<bool>> BuildIsReadOnlyObservable(TModel model, bool isCollumnReadOnly)
+        {
+            if (!isCollumnReadOnly && _isReadOnlyBinding is not null)
+                return _isReadOnlyBinding.Instance(model);
+
+            return ObservableEx.SingleValue(new BindingValue<bool>(isCollumnReadOnly));
+        }
 
         double IUpdateColumnLayout.CellMeasured(double width, int rowIndex)
         {
@@ -186,19 +217,5 @@ namespace Avalonia.Controls.Models.TreeDataGrid
         }
 
         private static double NonNaN(double v) => double.IsNaN(v) ? 0 : v;
-
-        public bool IsVisible
-        {
-            get => Options.IsVisible;
-            set
-            {
-                if (Options.IsVisible != value)
-                {
-                    Options.IsVisible = value;
-                    RaisePropertyChanged(nameof(IsVisible));
-                }
-            }
-        }
-
     }
 }

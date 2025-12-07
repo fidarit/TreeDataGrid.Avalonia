@@ -4,7 +4,7 @@ using Avalonia.Controls.Models.TreeDataGrid;
 
 namespace Avalonia.Controls.TreeDataGridTests
 {
-    internal class LayoutTestColumn<TModel> : ColumnBase<TModel>
+    internal class LayoutTestColumn<TModel> : ColumnBase<TModel> where TModel : class
     {
         public LayoutTestColumn(string header, GridLength? width = null, ColumnOptions<TModel>? options = null)
             : base(header, width, options ?? DefaultOptions())
