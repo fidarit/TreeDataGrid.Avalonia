@@ -739,8 +739,8 @@ namespace Avalonia.Controls.Primitives
                 _focusedIndex = -1;
             }
 
-            UnrealizeElementOnItemRemoved(element);
             element.IsVisible = false;
+            UnrealizeElementOnItemRemoved(element);
             ElementFactory!.RecycleElement(element);
             _scrollViewer?.UnregisterAnchorCandidate(element);
         }

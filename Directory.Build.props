@@ -10,12 +10,14 @@
     <MSBuildEnableWorkloadResolver>false</MSBuildEnableWorkloadResolver>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net8.0'">
+  <!-- 'NET6_0_OR_GREATER' equivalent -->
+  <PropertyGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETCoreApp' AND $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '6.0'))">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors>nullable</WarningsAsErrors>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(TargetFramework)' != 'net8.0'">
+  <!-- '!NET6_0_OR_GREATER' equivalent -->
+  <PropertyGroup Condition="!('$(TargetFrameworkIdentifier)' == '.NETCoreApp' AND $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '6.0')))">
     <NoWarn>$(NoWarn);8604;8602</NoWarn>
   </PropertyGroup>
 

@@ -1,6 +1,4 @@
 ﻿using System.ComponentModel;
-using System.Globalization;
-using System.Reflection;
 using Avalonia.Controls.Models.TreeDataGrid;
 using Avalonia.Controls.Selection;
 using Avalonia.Media;
