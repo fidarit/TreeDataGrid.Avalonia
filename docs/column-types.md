@@ -58,7 +58,7 @@ The first parameter in the constructor is a nested column, you would usually wan
 **Note**:               
 The sample above is taken from [this article](https://github.com/fidarit/TreeDataGrid.Avalonia/blob/master/docs/get-started-hierarchical.md). If you feel like you need more examples feel free to check it, there is a sample that shows how to use `HierarchicalExpanderColumn` and how to run a whole `TreeDataGrid` using it. 
 
-## TemplateColumn
+## TemplateColumn\<TModel\>
 
 TemplateColumn is the most customizable way to create a column. Because cell contents are described by a data template, the options for how each cell is displayed is almost unlimited.
 
@@ -106,3 +106,68 @@ new TemplateColumn<Person>("Selected", "CheckBoxCell");
 ```
 
 `TemplateColumn` has only one generic parameter, it is your model type, the same as in `TextColumn`; `Person` in this case. The code above will create a column with header *"Selected"* and a `CheckBox` in each cell.
+
+
+## TemplateColumn<TModel, TValue>
+
+`TemplateColumn<TModel, TValue>` is an advanced version of `TemplateColumn<TModel>` that allows each cell to use a specific typed value (`TValue`) instead of the whole model. The main benefit of this class is **fine-grained control over individual cells**, allowing each cell to represent a sub-object or computed value independently from the row model.
+
+With this column type, each row can have multiple cells.
+
+---
+
+### Usage
+
+Suppose you have a `DataRow` model containing multiple cells:
+
+```csharp
+public class DataRow
+{
+    public DataCell[] Cells { get; set; }
+}
+
+public class DataCell
+{
+    public string Value { get; set; }
+    public bool IsLocked { get; set; }
+}
+```
+
+You can define a typed template column for individual cells like this:
+
+```csharp
+new TemplateColumn<DataRow, DataCell>(
+    "Cell 0",
+    row => row.Cells[0],
+    "CellTemplate",
+    "CellEditTemplate",
+    options: new TemplateColumnOptions<DataCell>
+    {
+        IsReadOnlyGetter = cell => cell.IsLocked
+    });
+```
+
+Here, each cell in the column uses a `DataCell` object as its data context, allowing templates to bind to `Value` and respect the `IsLocked` flag.
+
+---
+
+### Constructor
+
+```csharp
+TemplateColumn(
+    object? header,
+    Func<TModel, TValue> getter,
+    object cellTemplateResourceKey,
+    object? cellEditingTemplateResourceKey = null,
+    GridLength? width = null,
+    TemplateColumnOptions<TValue>? options = null)
+```
+
+### Parameters
+
+- `header`: The Column header
+- `getter`:Function to extract a typed value `TValue` from the row model.
+- `cellTemplate`: A data template which describes how cells in the column will be displayed
+- `cellEditingTemplate`: A data template which describes how cells in the column will be displayed when in edit mode. If no `cellEditingTemplate` is provided, then edit mode will be disabled for the column.
+- `width` *(optional)*: The width of the column
+- `options` *(optional)*: Less frequently used options for the column
