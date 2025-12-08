@@ -158,5 +158,24 @@
                       RowDragOver="DragDrop_RowDragOver"/>
       </DockPanel>
     </TabItem>
+    <TabItem Header="Dynamic">
+      <DockPanel>
+        <TextBlock Classes="realized-count" DockPanel.Dock="Bottom"/>
+        <StackPanel DockPanel.Dock="Top" Spacing="4" Margin="4 2" Orientation="Horizontal">
+          <Label Target="dynamicSizeTextBox">Column count</Label>
+          <TextBox Name="dynamicSizeTextBox" Text="{Binding Dynamic.ColumnCount, Delay=300}" />
+        </StackPanel>
+        <TreeDataGrid Source="{Binding Dynamic.Source}">
+          <TreeDataGrid.Resources>
+            <DataTemplate x:Key="DynamicCell" DataType="m:DataCell">
+              <TextBlock Text="{Binding Value}"/>
+            </DataTemplate>
+            <DataTemplate x:Key="DynamicEditingCell" DataType="m:DataCell">
+              <TextBox Text="{Binding Value}"/>
+            </DataTemplate>
+          </TreeDataGrid.Resources>
+        </TreeDataGrid>
+      </DockPanel>
+    </TabItem>
   </TabControl>
 </Window>
