@@ -24,24 +24,14 @@ namespace Avalonia.Controls.Models.TreeDataGrid
             object? cellEditingTemplateResourceKey = null,
             GridLength? width = null, 
             TemplateColumnOptions<TValue>? options = null) 
-            : this(header, getter, cellTemplateResourceKey, cellEditingTemplateResourceKey, width, ConvertOptions(options, getter))
+            : base(header, cellTemplateResourceKey, cellEditingTemplateResourceKey, width, ConvertOptions(options, getter))
         {
+            _getter = getter;
+
             if (options?.IsReadOnlyGetter is { } isReadOnlyGetter)
                 _isReadOnlyBinding = TypedBinding<TValue>.OneWay(isReadOnlyGetter);
         }
         
-        public TemplateColumn(
-            object? header,
-            Func<TModel, TValue> getter,
-            object cellTemplateResourceKey,
-            object? cellEditingTemplateResourceKey = null,
-            GridLength? width = null, 
-            TemplateColumnOptions<TModel>? options = null) 
-            : base(header, cellTemplateResourceKey, cellEditingTemplateResourceKey, width, options)
-        {
-            _getter = getter;
-        }
-
         private static TemplateColumnOptions<TModel>? ConvertOptions(TemplateColumnOptions<TValue>? src, Func<TModel, TValue> valueSelector)
         {
             if (src == null)
