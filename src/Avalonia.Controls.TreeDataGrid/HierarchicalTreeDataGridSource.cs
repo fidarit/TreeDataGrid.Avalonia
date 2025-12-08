@@ -210,7 +210,7 @@ namespace Avalonia.Controls
                 Sort(comparison);
                 Sorted?.Invoke();
                 foreach (var c in Columns)
-                    c.SortDirection = c == column ? (ListSortDirection?)direction : null;
+                    c.SortDirection = c == column ? direction : null;
                 return true;
             }
 

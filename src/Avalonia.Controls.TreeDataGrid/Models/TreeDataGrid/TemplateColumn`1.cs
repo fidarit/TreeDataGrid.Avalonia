@@ -10,12 +10,11 @@ namespace Avalonia.Controls.Models.TreeDataGrid
     /// template.
     /// </summary>
     /// <typeparam name="TModel">The model type.</typeparam>
-    /// <typeparam name="TValue">The column data type.</typeparam>
     public class TemplateColumn<TModel> : ColumnBase<TModel>, ITextSearchableColumn<TModel>
         where TModel : class
     {
-        private readonly Func<Control, IDataTemplate> _getCellTemplate;
-        private readonly Func<Control, IDataTemplate>? _getEditingCellTemplate;
+        protected readonly Func<Control, IDataTemplate> _getCellTemplate;
+        protected readonly Func<Control, IDataTemplate>? _getEditingCellTemplate;
         private IDataTemplate? _cellTemplate;
         private IDataTemplate? _cellEditingTemplate;
         private object? _cellTemplateResourceKey;

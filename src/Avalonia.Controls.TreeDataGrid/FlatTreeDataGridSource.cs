@@ -146,7 +146,7 @@ namespace Avalonia.Controls
 
                 if (comparer is not null)
                 {
-                    _comparer = comparer is not null ? new FuncComparer<TModel>(comparer) : null;
+                    _comparer = new FuncComparer<TModel>(comparer);
                     _rows?.Sort(_comparer);
                     Sorted?.Invoke();
                     foreach (var c in Columns)
