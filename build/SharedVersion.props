@@ -1,7 +1,7 @@
 ﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Product>Avalonia.Controls.TreeDataGrid</Product>
-    <Version>11.3.0-a2</Version>
+    <Version>11.3.0</Version>
     <Copyright>© AvaloniaUI Contributors, modified by Fidarit Mullayanov, 2025</Copyright>
     <Authors>Fidarit Mullayanov, Steven Kirk</Authors>
     <Company>AvaloniaUI</Company>

@@ -25,7 +25,8 @@ namespace Avalonia.Controls.Models.TreeDataGrid
         /// Gets the text wrapping mode for the cells in the column.
         /// </summary>
         TextWrapping TextWrapping { get; }
-        
+
+        /// <summary>
         /// Gets the text alignment mode for the cell.
         /// </summary>
         TextAlignment TextAlignment { get; }
