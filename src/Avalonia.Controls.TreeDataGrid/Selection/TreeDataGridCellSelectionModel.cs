@@ -7,6 +7,30 @@ using Avalonia.Input;
 
 namespace Avalonia.Controls.Selection
 {
+    /// <summary>
+    ///   Implements cell selection functionality for a <see cref="TreeDataGrid" /> control.
+    /// </summary>
+    /// <typeparam name="TModel">The type of the data model in the TreeDataGrid.</typeparam>
+    /// <remarks>
+    ///   <para>
+    ///     TreeDataGridCellSelectionModel manages cell selection in a TreeDataGrid, supporting both
+    ///     single and multiple selection modes.
+    ///   </para>
+    ///   <para>
+    ///     Cell selection supports the following user interactions:
+    ///     <list type="bullet">
+    ///       <item>
+    ///         <description>Clicking on cells to select them</description>
+    ///       </item>
+    ///       <item>
+    ///         <description>Using arrow keys to navigate between cells</description>
+    ///       </item>
+    ///       <item>
+    ///         <description>Using Shift key to select ranges of cells</description>
+    ///       </item>
+    ///     </list>
+    ///   </para>
+    /// </remarks>
     public class TreeDataGridCellSelectionModel<TModel> : ITreeDataGridCellSelectionModel<TModel>,
         ITreeDataGridSelectionInteraction
         where TModel : class
@@ -23,6 +47,14 @@ namespace Avalonia.Controls.Selection
         private bool _columnsChanged;
         private bool _rowsChanged;
 
+        /// <summary>
+        ///   Initializes a new instance of the <see cref="TreeDataGridCellSelectionModel{TModel}" />
+        ///   class.
+        /// </summary>
+        /// <param name="source">The data source for the TreeDataGrid.</param>
+        /// <remarks>
+        ///   Creates a new cell selection model that uses the specified data source.
+        /// </remarks>
         public TreeDataGridCellSelectionModel(ITreeDataGridSource<TModel> source)
         {
             _source = source;
@@ -33,14 +65,32 @@ namespace Avalonia.Controls.Selection
             _selectedIndexes = new(_selectedColumns, _selectedRows);
         }
 
+        /// <summary>
+        ///   Gets the number of cells currently selected.
+        /// </summary>
         public int Count => _selectedColumns.Count * _selectedRows.Count;
 
+        /// <summary>
+        ///   Gets or sets a value indicating whether only a single cell can be selected at a time.
+        /// </summary>
+        /// <remarks>
+        ///   When set to true, selecting a cell will deselect any previously selected cells.
+        ///   When set to false, additional cells can be selected by holding Shift.
+        /// </remarks>
         public bool SingleSelect
         {
             get => _selectedRows.SingleSelect;
             set => _selectedColumns.SingleSelect = _selectedRows.SingleSelect = value;
         }
 
+        /// <summary>
+        ///   Gets or sets the index of the currently selected cell.
+        /// </summary>
+        /// <remarks>
+        ///   If multiple cells are selected, this property represents the anchor cell of the
+        ///   selection. Setting this property will select the cell at the specified index and
+        ///   deselect all other cells.
+        /// </remarks>
         public CellIndex SelectedIndex
         {
             get => new(_selectedColumns.SelectedIndex, _selectedRows.SelectedIndex);
@@ -51,14 +101,31 @@ namespace Avalonia.Controls.Selection
             }
         }
 
+        /// <summary>
+        ///   Gets a read-only list of the indices of all selected cells.
+        /// </summary>
+        /// <value>
+        ///   A read-only list of <see cref="CellIndex" /> objects representing the coordinates of
+        ///   all selected cells.
+        /// </value>
         public IReadOnlyList<CellIndex> SelectedIndexes => _selectedIndexes;
 
+        /// <summary>
+        ///   Gets or sets the data source for the selection model.
+        /// </summary>
         IEnumerable? ITreeDataGridSelection.Source
         {
             get => ((ITreeDataGridSelection)_selectedRows).Source;
             set => ((ITreeDataGridSelection)_selectedRows).Source = value;
         }
 
+        /// <summary>
+        ///   Occurs when the cell selection changes.
+        /// </summary>
+        /// <remarks>
+        ///   This event is raised when cells are selected or deselected, either through user
+        ///   interaction or programmatically.
+        /// </remarks>
         public event EventHandler<TreeDataGridCellSelectionChangedEventArgs<TModel>>? SelectionChanged;
 
         event EventHandler? ITreeDataGridSelectionInteraction.SelectionChanged
@@ -73,10 +140,14 @@ namespace Avalonia.Controls.Selection
             remove => _untypedSelectionChanged -= value;
         }
 
+        /// <summary>
+        ///   Checks whether the specified cell is selected.
+        /// </summary>
+        /// <param name="index">The index of the cell.</param>
         public bool IsSelected(CellIndex index) => IsSelected(index.ColumnIndex, index.RowIndex);
 
         /// <summary>
-        /// Checks whether the specified cell is selected.
+        ///   Checks whether the specified cell is selected.
         /// </summary>
         /// <param name="columnIndex">The column index of the cell.</param>
         /// <param name="rowIndex">The row index of the cell.</param>
@@ -85,6 +156,12 @@ namespace Avalonia.Controls.Selection
             return _selectedColumns.IsSelected(columnIndex) && _selectedRows.IsSelected(rowIndex);
         }
 
+        /// <summary>
+        ///   Sets the current selection to the specified range of cells.
+        /// </summary>
+        /// <param name="start">The cell from which the selection should start.</param>
+        /// <param name="columnCount">The number of columns in the selection.</param>
+        /// <param name="rowCount">The number of rows in the selection.</param>
         public void SetSelectedRange(CellIndex start, int columnCount, int rowCount)
         {
             SetSelectedRange(
@@ -196,12 +273,27 @@ namespace Avalonia.Controls.Selection
 
         void ITreeDataGridSelectionInteraction.OnPointerMoved(TreeDataGrid sender, PointerEventArgs e) { }
 
+        /// <summary>
+        ///   Begins a batch update of the selection.
+        /// </summary>
+        /// <remarks>
+        ///   During a batch update no changes to the selection will be reflected in the model's
+        ///   properties and no events will be raised until <see cref="TreeDataGridCellSelectionModel{TModel}.EndBatchUpdate()" /> is called.
+        /// 
+        ///   <see cref="TreeDataGridCellSelectionModel{TModel}.BeginBatchUpdate()" /> may be called multiple times, even when a batch update
+        ///   is already in progress; each call must have a corresponding call to
+        ///   <see cref="TreeDataGridCellSelectionModel{TModel}.EndBatchUpdate()" /> in order to finish the operation.
+        /// </remarks>
         private void BeginBatchUpdate()
         {
             _selectedColumns.BeginBatchUpdate();
             _selectedRows.BeginBatchUpdate();
         }
 
+        /// <summary>
+        ///   Ends a batch update started by <see cref="TreeDataGridCellSelectionModel{TModel}.BeginBatchUpdate()" />.
+        /// </summary>
+        /// <see cref="TreeDataGridCellSelectionModel{TModel}.BeginBatchUpdate()" />.
         private void EndBatchUpdate()
         {
             _columnsChanged = _rowsChanged = false;

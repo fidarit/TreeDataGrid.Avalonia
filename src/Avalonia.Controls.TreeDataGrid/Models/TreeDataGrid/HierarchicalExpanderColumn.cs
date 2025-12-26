@@ -8,8 +8,8 @@ using Avalonia.Experimental.Data;
 namespace Avalonia.Controls.Models.TreeDataGrid
 {
     /// <summary>
-    /// A column in an <see cref="HierarchicalTreeDataGridSource{TModel}"/> whose cells show an
-    /// expander to reveal nested data.
+    ///   A column in an <see cref="HierarchicalTreeDataGridSource{TModel}" /> whose cells show an
+    ///   expander to reveal nested data.
     /// </summary>
     /// <typeparam name="TModel">The model type.</typeparam>
     public class HierarchicalExpanderColumn<TModel> : NotifyingBase,
@@ -26,17 +26,17 @@ namespace Avalonia.Controls.Models.TreeDataGrid
         private bool _isVisible = true;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="HierarchicalExpanderColumn{TModel}"/> class.
+        ///   Initializes a new instance of the <see cref="HierarchicalExpanderColumn{TModel}" /> class.
         /// </summary>
         /// <param name="inner">The inner column which defines how the column will be displayed.</param>
         /// <param name="childSelector">The model children selector.</param>
         /// <param name="hasChildrenSelector">
-        /// A selector which is used to determine whether the model has children without invoking
-        /// <paramref name="childSelector"/>. This is only needed if the initialization of a node's
-        /// children is an expensive operation; where that is not true, pass null.
+        ///   A selector which is used to determine whether the model has children without invoking
+        ///   <paramref name="childSelector" />. This is only needed if the initialization of a node's
+        ///   children is an expensive operation; where that is not true, pass null.
         /// </param>
         /// <param name="isExpandedSelector">
-        /// Selects a read/write boolean property which stores the expanded state for the row.
+        ///   Selects a read/write boolean property which stores the expanded state for the row.
         /// </param>
         public HierarchicalExpanderColumn(
             IColumn<TModel> inner,
@@ -57,7 +57,7 @@ namespace Avalonia.Controls.Models.TreeDataGrid
         }
 
         /// <summary>
-        /// Gets or sets the actual width of the column after measurement.
+        ///   Gets or sets the actual width of the column after measurement.
         /// </summary>
         public double ActualWidth
         {
@@ -65,9 +65,12 @@ namespace Avalonia.Controls.Models.TreeDataGrid
             private set => RaiseAndSetIfChanged(ref _actualWidth, value);
         }
 
+        /// <inheritdoc />
         public bool? CanUserResize => _inner.CanUserResize;
+        /// <inheritdoc />
         public object? Header => _inner.Header;
 
+        /// <inheritdoc />
         public ListSortDirection? SortDirection
         {
             get => _inner.SortDirection;
@@ -75,7 +78,7 @@ namespace Avalonia.Controls.Models.TreeDataGrid
         }
 
         /// <summary>
-        /// Gets or sets a user-defined object attached to the column.
+        ///   Gets or sets a user-defined object attached to the column.
         /// </summary>
         public object? Tag
         {
@@ -83,12 +86,17 @@ namespace Avalonia.Controls.Models.TreeDataGrid
             set => _inner.Tag = value;
         }
 
+        /// <inheritdoc />
         public GridLength Width => _inner.Width;
+        /// <summary>
+        ///   Gets the inner column that is wrapped by this expander column.
+        /// </summary>
         public IColumn<TModel> Inner => _inner;
         double IUpdateColumnLayout.MinActualWidth => ((IUpdateColumnLayout)_inner).MinActualWidth;
         double IUpdateColumnLayout.MaxActualWidth => ((IUpdateColumnLayout)_inner).MaxActualWidth;
         bool IUpdateColumnLayout.StarWidthWasConstrained => ((IUpdateColumnLayout)_inner).StarWidthWasConstrained;
 
+        /// <inheritdoc />
         public ICell CreateCell(IRow<TModel> row)
         {
             if (row is HierarchicalRow<TModel> r)
@@ -104,16 +112,27 @@ namespace Avalonia.Controls.Models.TreeDataGrid
             throw new NotSupportedException();
         }
 
+        /// <summary>
+        ///   Determines whether the specified model has children.
+        /// </summary>
+        /// <param name="model">The model.</param>
+        /// <returns>True if the model has children; otherwise false.</returns>
         public bool HasChildren(TModel model)
         {
             return _hasChildrenSelector?.Read!(model) ?? _childSelector(model)?.Any() ?? false;
         }
 
+        /// <summary>
+        ///   Gets the child models for the specified model.
+        /// </summary>
+        /// <param name="model">The parent model.</param>
+        /// <returns>The child models, or null if there are no children.</returns>
         public IEnumerable<TModel>? GetChildModels(TModel model)
         {
             return _childSelector(model);
         }
 
+        /// <inheritdoc />
         public Comparison<TModel?>? GetComparison(ListSortDirection direction)
         {
             return _inner.GetComparison(direction);

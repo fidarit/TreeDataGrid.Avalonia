@@ -4,30 +4,33 @@ using Avalonia.Media;
 
 namespace Avalonia.Controls.Models.TreeDataGrid
 {
+    /// <summary>
+    ///   Holds less commonly-used options for a <see cref="TextCell{T}" />.
+    /// </summary>
     public interface ITextCellOptions : ICellOptions
     {
         /// <summary>
-        /// Gets the format string to be used to format the cell value.
+        ///   Gets the format string to be used to format the cell value.
         /// </summary>
         string StringFormat { get; }
 
         /// <summary>
-        /// Gets the culture to be used in conjunction with <see cref="StringFormat"/>.
+        ///   Gets the culture to be used in conjunction with <see cref="StringFormat" />.
         /// </summary>
         CultureInfo Culture { get; }
 
         /// <summary>
-        /// Gets the text trimming mode for the cell.
+        ///   Gets the text trimming mode for the cell.
         /// </summary>
         TextTrimming TextTrimming { get; }
 
         /// <summary>
-        /// Gets the text wrapping mode for the cells in the column.
+        ///   Gets the text wrapping mode for the cells in the column.
         /// </summary>
         TextWrapping TextWrapping { get; }
 
         /// <summary>
-        /// Gets the text alignment mode for the cell.
+        ///   Gets the text alignment mode for the cell.
         /// </summary>
         TextAlignment TextAlignment { get; }
     }

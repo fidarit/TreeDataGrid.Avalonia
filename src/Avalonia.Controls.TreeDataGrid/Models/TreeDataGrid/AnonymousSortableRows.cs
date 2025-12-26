@@ -8,12 +8,12 @@ using Avalonia.Utilities;
 namespace Avalonia.Controls.Models.TreeDataGrid
 {
     /// <summary>
-    /// Exposes a sortable collection of models as anonymous rows.
+    ///   Exposes a sortable collection of models as anonymous rows.
     /// </summary>
     /// <typeparam name="TModel">The model type.</typeparam>
     /// <remarks>
-    /// In a flat grid where rows cannot be resized, it is not necessary to persist any information
-    /// about rows; the same row object can be updated and reused when a new row is requested.
+    ///   In a flat grid where rows cannot be resized, it is not necessary to persist any information
+    ///   about rows; the same row object can be updated and reused when a new row is requested.
     /// </remarks>
     public class AnonymousSortableRows<TModel> : ReadOnlyListBase<IRow<TModel>>, IRows, IDisposable
     {
@@ -23,6 +23,11 @@ namespace Avalonia.Controls.Models.TreeDataGrid
         private IComparer<TModel>? _comparer;
         private List<int>? _sortedIndexes;
 
+        /// <summary>
+        ///   Initializes a new instance of the <see cref="AnonymousSortableRows{TModel}" /> class.
+        /// </summary>
+        /// <param name="items">The source items collection.</param>
+        /// <param name="comparer">The comparer to use for sorting, or null for unsorted.</param>
         public AnonymousSortableRows(
             TreeDataGridItemsSourceView<TModel> items,
             IComparer<TModel>? comparer)
@@ -34,6 +39,7 @@ namespace Avalonia.Controls.Models.TreeDataGrid
             _compareItemsByIndex = CompareItemsByIndex;
         }
 
+        /// <inheritdoc />
         public override IRow<TModel> this[int index]
         {
             get
@@ -48,16 +54,20 @@ namespace Avalonia.Controls.Models.TreeDataGrid
         }
 
         IRow IReadOnlyList<IRow>.this[int index] => this[index];
+        /// <inheritdoc />
         public override int Count => _sortedIndexes?.Count ?? _items.Count;
 
+        /// <inheritdoc />
         public event NotifyCollectionChangedEventHandler? CollectionChanged;
 
+        /// <inheritdoc />
         public void Dispose()
         {
             SetItems(TreeDataGridItemsSourceView<TModel>.Empty);
             GC.SuppressFinalize(this);
         }
 
+        /// <inheritdoc />
         public (int index, double y) GetRowAt(double y)
         {
             // Rows in an AnonymousSortableRows collection have Auto height so we only
@@ -67,12 +77,14 @@ namespace Avalonia.Controls.Models.TreeDataGrid
             return (-1, -1);
         }
 
+        /// <inheritdoc />
         public override IEnumerator<IRow<TModel>> GetEnumerator()
         {
             for (var i = 0; i < Count; ++i)
                 yield return this[i];
         }
 
+        /// <inheritdoc />
         public ICell RealizeCell(IColumn column, int columnIndex, int rowIndex)
         {
             if (column is IColumn<TModel> c)
@@ -81,6 +93,10 @@ namespace Avalonia.Controls.Models.TreeDataGrid
                 throw new InvalidOperationException("Invalid column.");
         }
 
+        /// <summary>
+        ///   Sets the items source for the rows collection.
+        /// </summary>
+        /// <param name="items">The new items source.</param>
         public void SetItems(TreeDataGridItemsSourceView<TModel> items)
         {
             _items.CollectionChanged -= OnItemsCollectionChanged;
@@ -92,6 +108,7 @@ namespace Avalonia.Controls.Models.TreeDataGrid
             OnItemsCollectionChanged(null, CollectionExtensions.ResetEvent);
         }
 
+        /// <inheritdoc />
         public int ModelIndexToRowIndex(IndexPath modelIndex)
         {
             if (modelIndex.Count != 1)
@@ -106,14 +123,20 @@ namespace Avalonia.Controls.Models.TreeDataGrid
 
         }
 
+        /// <inheritdoc />
         public IndexPath RowIndexToModelIndex(int rowIndex) => _sortedIndexes?[rowIndex] ?? rowIndex;
 
+        /// <summary>
+        ///   Sorts the rows using the specified comparer.
+        /// </summary>
+        /// <param name="comparer">The comparer to use for sorting, or null to remove sorting.</param>
         public void Sort(IComparer<TModel>? comparer)
         {
             _comparer = comparer;
             _sortedIndexes = comparer is object ? CreateSortedIndexes() : null;
         }
 
+        /// <inheritdoc />
         public void UnrealizeCell(ICell cell, int columnIndex, int rowIndex)
         {
             (cell as IDisposable)?.Dispose();

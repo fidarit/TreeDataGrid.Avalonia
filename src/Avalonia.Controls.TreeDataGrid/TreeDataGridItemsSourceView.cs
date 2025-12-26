@@ -13,13 +13,13 @@ using Avalonia.Controls.Utils;
 namespace Avalonia.Controls
 {
     /// <summary>
-    /// Represents a standardized view of the supported interactions between a given ItemsSource
-    /// object and a <see cref="TreeDataGrid"/> control.
+    ///   Represents a standardized view of the supported interactions between a given ItemsSource
+    ///   object and a <see cref="TreeDataGrid" /> control.
     /// </summary>
     public class TreeDataGridItemsSourceView : INotifyCollectionChanged, ICollectionChangedListener, IDisposable
     {
         /// <summary>
-        ///  Gets an empty <see cref="TreeDataGridItemsSourceView"/>
+        ///   Gets an empty <see cref="TreeDataGridItemsSourceView" />
         /// </summary>
         public static TreeDataGridItemsSourceView Empty { get; } = new TreeDataGridItemsSourceView(Array.Empty<object>());
 
@@ -27,7 +27,7 @@ namespace Avalonia.Controls
         private NotifyCollectionChangedEventHandler? _collectionChanged;
 
         /// <summary>
-        /// Initializes a new instance of the ItemsSourceView class for the specified data source.
+        ///   Initializes a new instance of the ItemsSourceView class for the specified data source.
         /// </summary>
         /// <param name="source">The data source.</param>
         public TreeDataGridItemsSourceView(IEnumerable source)
@@ -46,20 +46,20 @@ namespace Avalonia.Controls
         }
 
         /// <summary>
-        /// Gets the number of items in the collection.
+        ///   Gets the number of items in the collection.
         /// </summary>
         public int Count => Inner.Count;
 
         /// <summary>
-        /// Gets a value that indicates whether the items source can provide a unique key for each item.
+        ///   Gets a value that indicates whether the items source can provide a unique key for each item.
         /// </summary>
         /// <remarks>
-        /// TODO: Not yet implemented in Avalonia.
+        ///   TODO: Not yet implemented in Avalonia.
         /// </remarks>
         public bool HasKeyIndexMapping => false;
 
         /// <summary>
-        /// Gets the inner collection.
+        ///   Gets the inner collection.
         /// </summary>
         public IList Inner
         {
@@ -72,14 +72,14 @@ namespace Avalonia.Controls
         }
 
         /// <summary>
-        /// Retrieves the item at the specified index.
+        ///   Retrieves the item at the specified index.
         /// </summary>
         /// <param name="index">The index.</param>
         /// <returns>The item.</returns>
         public object? this[int index] => GetAt(index);
 
         /// <summary>
-        /// Occurs when the collection has changed to indicate the reason for the change and which items changed.
+        ///   Occurs when the collection has changed to indicate the reason for the change and which items changed.
         /// </summary>
         public event NotifyCollectionChangedEventHandler? CollectionChanged
         {
@@ -116,7 +116,7 @@ namespace Avalonia.Controls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Dispose()
         {
             if (_inner is INotifyCollectionChanged incc)
@@ -129,14 +129,26 @@ namespace Avalonia.Controls
         }
 
         /// <summary>
-        /// Retrieves the item at the specified index.
+        ///   Retrieves the item at the specified index.
         /// </summary>
         /// <param name="index">The index.</param>
         /// <returns>The item.</returns>
         public object? GetAt(int index) => Inner[index];
 
+        /// <summary>
+        ///   Gets the index of the specified item in the collection.
+        /// </summary>
+        /// <param name="item">The item to locate.</param>
+        /// <returns>The zero-based index of the item, or -1 if not found.</returns>
         public int IndexOf(object? item) => Inner.IndexOf(item);
 
+        /// <summary>
+        ///   Gets or creates a <see cref="TreeDataGridItemsSourceView" /> for the specified items.
+        /// </summary>
+        /// <param name="items">The items collection, or null.</param>
+        /// <returns>
+        ///   A view wrapping the items, or <see cref="Empty" /> if items is null.
+        /// </returns>
         public static TreeDataGridItemsSourceView GetOrCreate(IEnumerable? items)
         {
             if (items is TreeDataGridItemsSourceView isv)
@@ -154,12 +166,12 @@ namespace Avalonia.Controls
         }
 
         /// <summary>
-        /// Retrieves the index of the item that has the specified unique identifier (key).
+        ///   Retrieves the index of the item that has the specified unique identifier (key).
         /// </summary>
         /// <param name="index">The index.</param>
         /// <returns>The key</returns>
         /// <remarks>
-        /// TODO: Not yet implemented in Avalonia.
+        ///   TODO: Not yet implemented in Avalonia.
         /// </remarks>
         public string KeyFromIndex(int index)
         {
@@ -167,12 +179,12 @@ namespace Avalonia.Controls
         }
 
         /// <summary>
-        /// Retrieves the unique identifier (key) for the item at the specified index.
+        ///   Retrieves the unique identifier (key) for the item at the specified index.
         /// </summary>
         /// <param name="key">The key.</param>
         /// <returns>The index.</returns>
         /// <remarks>
-        /// TODO: Not yet implemented in Avalonia.
+        ///   TODO: Not yet implemented in Avalonia.
         /// </remarks>
         public int IndexFromKey(string key)
         {
@@ -208,6 +220,10 @@ namespace Avalonia.Controls
             }
         }
 
+        /// <summary>
+        ///   Called when the underlying items collection changes.
+        /// </summary>
+        /// <param name="args">The collection changed event arguments.</param>
         protected void OnItemsSourceChanged(NotifyCollectionChangedEventArgs args)
         {
             _collectionChanged?.Invoke(this, args);
@@ -216,15 +232,19 @@ namespace Avalonia.Controls
         private void ThrowDisposed() => throw new ObjectDisposedException(nameof(TreeDataGridItemsSourceView));
     }
 
+    /// <summary>
+    ///   A strongly-typed view over a collection for use with <see cref="TreeDataGrid" />.
+    /// </summary>
+    /// <typeparam name="T">The type of elements in the collection.</typeparam>
     public class TreeDataGridItemsSourceView<T> : TreeDataGridItemsSourceView, IReadOnlyList<T>
     {
         /// <summary>
-        ///  Gets an empty <see cref="TreeDataGridItemsSourceView"/>
+        ///   Gets an empty <see cref="TreeDataGridItemsSourceView" />
         /// </summary>
         public new static TreeDataGridItemsSourceView<T> Empty { get; } = new TreeDataGridItemsSourceView<T>([]);
 
         /// <summary>
-        /// Initializes a new instance of the ItemsSourceView class for the specified data source.
+        ///   Initializes a new instance of the ItemsSourceView class for the specified data source.
         /// </summary>
         /// <param name="source">The data source.</param>
         public TreeDataGridItemsSourceView(IEnumerable<T> source)
@@ -238,7 +258,7 @@ namespace Avalonia.Controls
         }
 
         /// <summary>
-        /// Retrieves the item at the specified index.
+        ///   Retrieves the item at the specified index.
         /// </summary>
         /// <param name="index">The index.</param>
         /// <returns>The item.</returns>
@@ -247,15 +267,23 @@ namespace Avalonia.Controls
 #pragma warning restore CS8603
 
         /// <summary>
-        /// Retrieves the item at the specified index.
+        ///   Retrieves the item at the specified index.
         /// </summary>
         /// <param name="index">The index.</param>
         /// <returns>The item.</returns>
         public new T? GetAt(int index) => (T?)Inner[index];
 
+        /// <inheritdoc />
         public IEnumerator<T> GetEnumerator() => Inner.Cast<T>().GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => Inner.GetEnumerator();
 
+        /// <summary>
+        ///   Gets or creates a strongly-typed <see cref="TreeDataGridItemsSourceView{T}" /> for the specified items.
+        /// </summary>
+        /// <param name="items">The items collection, or null.</param>
+        /// <returns>
+        ///   A view wrapping the items, or <see cref="TreeDataGridItemsSourceView{T}.Empty" /> if items is null.
+        /// </returns>
         public static new TreeDataGridItemsSourceView<T> GetOrCreate(IEnumerable? items)
         {
             if (items is TreeDataGridItemsSourceView<T> isv)

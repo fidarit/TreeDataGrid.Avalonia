@@ -10,7 +10,7 @@ using Avalonia.Input;
 namespace Avalonia.Controls
 {
     /// <summary>
-    /// A data source for a <see cref="TreeDataGrid"/> which displays a flat grid.
+    ///   A data source for a <see cref="TreeDataGrid" /> which displays a flat grid.
     /// </summary>
     /// <typeparam name="TModel">The model type.</typeparam>
     public class FlatTreeDataGridSource<TModel> : NotifyingBase,
@@ -25,6 +25,14 @@ namespace Avalonia.Controls
         private ITreeDataGridSelection? _selection;
         private bool _isSelectionSet;
 
+        /// <summary>
+        ///   Initializes a new instance of the <see cref="FlatTreeDataGridSource{TModel}" /> class
+        ///   with the specified collection of items.
+        /// </summary>
+        /// <param name="items">
+        ///   The collection of items to be displayed in the tree data grid.  This collection serves
+        ///   as the data source for the grid.
+        /// </param>
         public FlatTreeDataGridSource(IEnumerable<TModel> items)
         {
             _items = items;
@@ -32,10 +40,15 @@ namespace Avalonia.Controls
             Columns = [];
         }
 
+        /// <summary>
+        ///   Gets the columns to be displayed.
+        /// </summary>
         public ColumnList<TModel> Columns { get; }
+        /// <inheritdoc />
         public IRows Rows => _rows ??= CreateRows();
         IColumns ITreeDataGridSource.Columns => Columns;
 
+        /// <inheritdoc />
         public IEnumerable<TModel> Items
         {
             get => _items;
@@ -53,6 +66,7 @@ namespace Avalonia.Controls
             }
         }
 
+        /// <inheritdoc />
         public ITreeDataGridSelection? Selection
         {
             get
@@ -76,13 +90,31 @@ namespace Avalonia.Controls
 
         IEnumerable<object> ITreeDataGridSource.Items => Items;
 
+        /// <summary>
+        ///   Gets the cell selection model if cell selection is being used.
+        /// </summary>
+        /// <remarks>
+        ///   This property is equivalent to casting the <see cref="FlatTreeDataGridSource{TModel}.Selection" /> property to
+        ///   <see cref="ITreeDataGridCellSelectionModel{T}" />.
+        /// </remarks>
         public ITreeDataGridCellSelectionModel<TModel>? CellSelection => Selection as ITreeDataGridCellSelectionModel<TModel>;
+        /// <summary>
+        ///   Gets the row selection model if row selection is being used.
+        /// </summary>
+        /// <remarks>
+        ///   This property is equivalent to casting the <see cref="FlatTreeDataGridSource{TModel}.Selection" /> property to
+        ///   <see cref="ITreeDataGridRowSelectionModel{T}" />.
+        /// </remarks>
         public ITreeDataGridRowSelectionModel<TModel>? RowSelection => Selection as ITreeDataGridRowSelectionModel<TModel>;
+        /// <inheritdoc />
         public bool IsHierarchical => false;
+        /// <inheritdoc />
         public bool IsSorted => _comparer is not null;
 
+        /// <inheritdoc />
         public event Action? Sorted;
 
+        /// <inheritdoc />
         public void Dispose()
         {
             _rows?.Dispose();

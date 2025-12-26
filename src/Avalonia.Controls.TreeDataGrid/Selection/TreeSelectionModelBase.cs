@@ -6,6 +6,25 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Avalonia.Controls.Selection
 {
+    /// <summary>
+    ///   Base class for selection models in TreeDataGrid.
+    /// </summary>
+    /// <typeparam name="T">The type of items being selected.</typeparam>
+    /// <remarks>
+    ///   <para>
+    ///     TreeSelectionModelBase provides the core functionality for hierarchical selection,
+    ///     supporting both single and multiple selection modes. It tracks selection using
+    ///     <see cref="IndexPath" /> instances that represent positions in the hierarchical structure.
+    ///   </para>
+    ///   <para>
+    ///     This class implements the <see cref="ITreeSelectionModel" /> interface and provides events
+    ///     for tracking selection changes, property changes, and changes to the underlying data structure.
+    ///   </para>
+    ///   <para>
+    ///     Derived classes must implement <see cref="TreeSelectionModelBase{T}.GetChildren(T)" /> to define how the hierarchical
+    ///     structure is navigated.
+    ///   </para>
+    /// </remarks>
     public abstract class TreeSelectionModelBase<T> : ITreeSelectionModel, INotifyPropertyChanged
     {
         private readonly TreeSelectionNode<T> _root;
@@ -20,17 +39,26 @@ namespace Avalonia.Controls.Selection
         private int _collectionChanging;
         private EventHandler<TreeSelectionModelSelectionChangedEventArgs>? _untypedSelectionChanged;
 
+        /// <summary>
+        ///   Initializes a new instance of the <see cref="TreeSelectionModelBase{T}" /> class.
+        /// </summary>
         protected TreeSelectionModelBase()
         {
             _root = new(this);
         }
 
+        /// <summary>
+        ///   Initializes a new instance of the <see cref="TreeSelectionModelBase{T}" /> class with a
+        ///   specified data source.
+        /// </summary>
+        /// <param name="source">The hierarchical data source.</param>
         protected TreeSelectionModelBase(IEnumerable source)
             : this()
         {
             Source = source;
         }
 
+        /// <inheritdoc />
         public int Count 
         {
             get => _count;
@@ -44,6 +72,7 @@ namespace Avalonia.Controls.Selection
             }
         }
 
+        /// <inheritdoc />
         public bool SingleSelect 
         {
             get => _singleSelect;
@@ -63,6 +92,7 @@ namespace Avalonia.Controls.Selection
             }
         }
 
+        /// <inheritdoc />
         public IndexPath SelectedIndex 
         {
             get => _selectedIndex;
@@ -74,14 +104,31 @@ namespace Avalonia.Controls.Selection
             }
         }
 
+        /// <inheritdoc />
         public IReadOnlyList<IndexPath> SelectedIndexes => _selectedIndexes ??= new(this);
+        /// <summary>
+        ///   Gets the currently selected item.
+        /// </summary>
+        /// <value>
+        ///   The selected item, or default(T) if no item is selected.
+        /// </value>
+        /// <remarks>
+        ///   When multiple items are selected, this property returns the first selected item.
+        /// </remarks>
         public T? SelectedItem
         {
             get => Source is null || _selectedIndex == default ? default : GetSelectedItemAt(_selectedIndex);
         }
 
+        /// <summary>
+        ///   Gets a collection containing all selected items.
+        /// </summary>
+        /// <value>
+        ///   A read-only list of the selected items.
+        /// </value>
         public IReadOnlyList<T?> SelectedItems => _selectedItems ??= new(this);
 
+        /// <inheritdoc />
         public IndexPath AnchorIndex 
         {
             get => _anchorIndex;
@@ -94,6 +141,7 @@ namespace Avalonia.Controls.Selection
             }
         }
 
+        /// <inheritdoc />
         public IndexPath RangeAnchorIndex
         {
             get => _rangeAnchorIndex;
@@ -117,8 +165,17 @@ namespace Avalonia.Controls.Selection
 
         internal TreeSelectionNode<T> Root => _root;
 
+        /// <summary>
+        ///   Gets a value indicating whether the source collection is currently being changed.
+        /// </summary>
         protected bool IsSourceCollectionChanging => _collectionChanging > 0;
 
+        /// <summary>
+        ///   Gets or sets the data source for the selection model.
+        /// </summary>
+        /// <remarks>
+        ///   When this property is set to a new value, any existing selection is cleared.
+        /// </remarks>
         protected IEnumerable? Source
         {
             get => _root.Source;
@@ -137,9 +194,49 @@ namespace Avalonia.Controls.Selection
             }
         }
 
+        /// <summary>
+        ///   Occurs when the selection changes.
+        /// </summary>
+        /// <remarks>
+        ///   This event provides strongly-typed access to the selection changes, including the
+        ///   items and index paths that were selected and deselected.
+        /// </remarks>
         public event EventHandler<TreeSelectionModelSelectionChangedEventArgs<T>>? SelectionChanged;
+        /// <summary>
+        ///   Occurs when a property value changes.
+        /// </summary>
         public event PropertyChangedEventHandler? PropertyChanged;
+        /// <summary>
+        ///   Occurs when item indexes change due to insertions or removals in the data source.
+        /// </summary>
         public event EventHandler<TreeSelectionModelIndexesChangedEventArgs>? IndexesChanged;
+        /// <summary>
+        ///   Occurs when the data source is reset.
+        /// </summary>
+        /// <remarks>
+        ///   <para>
+        ///     This event is raised when a collection in the hierarchical data structure is reset,
+        ///     such as when a collection is cleared or replaced with a new collection.
+        ///   </para>
+        ///   <para>
+        ///     Due to design limitations of collection reset events, the TreeSelectionModel cannot
+        ///     automatically preserve selection state when a collection is reset. The reset event
+        ///     doesn't provide information about which items were removed or how they map to new
+        ///     items.
+        ///   </para>
+        ///   <para>
+        ///     Applications that need to maintain selection across collection resets must handle
+        ///     this event and manually restore the selection based on their knowledge of the data
+        ///     model. For example, you might store the IDs or unique identifiers of selected items
+        ///     before the reset, and then re-select them after the reset by finding the new indices
+        ///     of those items.
+        ///   </para>
+        ///   <para>
+        ///     The <see cref="TreeSelectionModelSourceResetEventArgs.ParentIndex" /> property indicates
+        ///     which part of the hierarchical structure was reset, allowing you to determine whether
+        ///     to restore selection for the entire collection or just a subtree.
+        ///   </para>
+        /// </remarks>
         public event EventHandler<TreeSelectionModelSourceResetEventArgs>? SourceReset;
 
         event EventHandler<TreeSelectionModelSelectionChangedEventArgs>? ITreeSelectionModel.SelectionChanged
@@ -148,14 +245,29 @@ namespace Avalonia.Controls.Selection
             remove => _untypedSelectionChanged -= value;
         }
 
+        /// <summary>
+        ///   Creates a batch update operation that will defer selection change notifications until
+        ///   disposed.
+        /// </summary>
+        /// <returns>
+        ///   A disposable object that, when disposed, will commit the selection changes and raise
+        ///   appropriate events.
+        /// </returns>
+        /// <remarks>
+        ///   Use this method with a using statement to group multiple selection operations together and
+        ///   raise only a single set of change events when the batch is complete. This is equivalent to
+        ///   calling <see cref="TreeSelectionModelBase{T}.BeginBatchUpdate()" /> and <see cref="TreeSelectionModelBase{T}.EndBatchUpdate()" />.
+        /// </remarks>
         public BatchUpdateOperation BatchUpdate() => new(this);
 
+        /// <inheritdoc />
         public void BeginBatchUpdate()
         {
             _operation ??= new Operation(this);
             ++_operation.UpdateCount;
         }
 
+        /// <inheritdoc />
         public void EndBatchUpdate()
         {
             if (_operation is null || _operation.UpdateCount == 0)
@@ -164,6 +276,7 @@ namespace Avalonia.Controls.Selection
                 CommitOperation(_operation);
         }
         
+        /// <inheritdoc />
         public void Clear()
         {
             using var update = BatchUpdate();
@@ -172,6 +285,7 @@ namespace Avalonia.Controls.Selection
             o.SelectedIndex = default;
         }
 
+        /// <inheritdoc />
         public void Deselect(IndexPath index)
         {
             if (!IsSelected(index))
@@ -188,6 +302,7 @@ namespace Avalonia.Controls.Selection
                 o.SelectedIndex = GetFirstSelectedIndex(_root, except: o.DeselectedRanges);
         }
 
+        /// <inheritdoc />
         public bool IsSelected(IndexPath index)
         {
             if (index == default)
@@ -196,10 +311,38 @@ namespace Avalonia.Controls.Selection
             return IndexRange.Contains(node?.Ranges, index[^1]);
         }
 
+        /// <inheritdoc />
         public void Select(IndexPath index) => Select(index, updateRangeAnchorIndex: false);
 
+        /// <summary>
+        ///   Gets the children of a node in the hierarchical data structure.
+        /// </summary>
+        /// <param name="node">The parent node.</param>
+        /// <returns>
+        ///   A collection containing the children of the specified node, or null if the node has no
+        ///   children.
+        /// </returns>
+        /// <remarks>
+        ///   This method must be implemented by derived classes to define how the hierarchical
+        ///   structure is navigated.
+        /// </remarks>
         protected internal abstract IEnumerable<T>? GetChildren(T node);
         
+        /// <summary>
+        ///   Attempts to get the item at the specified index path.
+        /// </summary>
+        /// <param name="index">The index path to the item.</param>
+        /// <param name="result">
+        ///   When this method returns, contains the item at the specified index path if found;
+        ///   otherwise, the default value for type <typeparamref name="T" />.
+        /// </param>
+        /// <returns>
+        ///   true if an item was found at the specified index path; otherwise, false.
+        /// </returns>
+        /// <remarks>
+        ///   This method navigates the hierarchical data structure to find the item at the
+        ///   specified index path.
+        /// </remarks>
         protected virtual bool TryGetItemAt(IndexPath index, out T? result)
         {
             var items = (IEnumerable<T>?)_root.ItemsView;
@@ -235,10 +378,21 @@ namespace Avalonia.Controls.Selection
             return false;
         }
 
+        /// <summary>
+        ///   Called when the source collection change operation is finished.
+        /// </summary>
+        /// <remarks>
+        ///   Override this method to perform operations after the source collection has
+        ///   completed changing.
+        /// </remarks>
         protected virtual void OnSourceCollectionChangeFinished()
         {
         }
 
+        /// <summary>
+        ///   Raises the <see cref="TreeSelectionModelBase{T}.PropertyChanged" /> event.
+        /// </summary>
+        /// <param name="propertyName">The name of the property that changed.</param>
         protected void RaisePropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -325,6 +479,15 @@ namespace Avalonia.Controls.Selection
                 OnSourceCollectionChangeFinished();
         }
 
+        /// <summary>
+        ///   Called when a node's collection is reset.
+        /// </summary>
+        /// <param name="parentIndex">The index path to the parent of the reset collection.</param>
+        /// <param name="removeCount">The number of items removed by the reset operation.</param>
+        /// <remarks>
+        ///   This method is called when a collection in the hierarchical structure is reset,
+        ///   such as when an entirely new collection is assigned.
+        /// </remarks>
         protected internal virtual void OnNodeCollectionReset(IndexPath parentIndex, int removeCount)
         {
             var selectedIndexChanged = false;
@@ -614,11 +777,22 @@ namespace Avalonia.Controls.Selection
             return false;
         }
 
+        /// <summary>
+        ///   Represents a batch update operation that defers selection change notifications.
+        /// </summary>
+        /// <remarks>
+        ///   This struct implements <see cref="IDisposable" /> to allow using it with a using statement
+        ///   to automatically end the batch update when the using block exits.
+        /// </remarks>
         public record struct BatchUpdateOperation : IDisposable
         {
             private readonly TreeSelectionModelBase<T> _owner;
             private bool _isDisposed;
 
+            /// <summary>
+            ///   Initializes a new instance of the <see cref="TreeSelectionModelBase{T}.BatchUpdateOperation" /> struct.
+            /// </summary>
+            /// <param name="owner">The selection model that owns this batch update.</param>
             public BatchUpdateOperation(TreeSelectionModelBase<T> owner)
             {
                 _owner = owner;
@@ -628,6 +802,9 @@ namespace Avalonia.Controls.Selection
 
             internal readonly Operation Operation => _owner._operation!;
 
+            /// <summary>
+            ///   Ends the batch update operation and commits the selection changes.
+            /// </summary>
             public void Dispose()
             {
                 if (!_isDisposed)

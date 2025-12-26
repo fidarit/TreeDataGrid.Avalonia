@@ -8,7 +8,7 @@ using Avalonia.Experimental.Data.Core;
 namespace Avalonia.Controls.Models.TreeDataGrid
 {
     /// <summary>
-    /// Base class for columns which select cell values from a model.
+    ///   Base class for columns which select cell values from a model.
     /// </summary>
     /// <typeparam name="TModel">The model type.</typeparam>
     /// <typeparam name="TValue">The value type.</typeparam>
@@ -20,18 +20,18 @@ namespace Avalonia.Controls.Models.TreeDataGrid
         private readonly Comparison<TModel?>? _sortDescending;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ColumnBase{TModel, TValue}"/> class.
+        ///   Initializes a new instance of the <see cref="ColumnBase{TModel, TValue}" /> class.
         /// </summary>
         /// <param name="header">The column header.</param>
         /// <param name="getter">
-        /// An expression which given a row model, returns a cell value for the column.
+        ///   An expression which given a row model, returns a cell value for the column.
         /// </param>
         /// <param name="setter">
-        /// A method which given a row model and a cell value, writes the cell value to the
-        /// row model. If null, the column will be read-only.
+        ///   A method which given a row model and a cell value, writes the cell value to the
+        ///   row model. If null, the column will be read-only.
         /// </param>
         /// <param name="width">
-        /// The column width. If null defaults to <see cref="GridLength.Auto"/>.
+        ///   The column width. If null defaults to <see cref="GridLength.Auto" />.
         /// </param>
         /// <param name="options">Additional column options.</param>
         public ColumnBase(
@@ -53,17 +53,17 @@ namespace Avalonia.Controls.Models.TreeDataGrid
 
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ColumnBase{TModel, TValue}"/> class.
+        ///   Initializes a new instance of the <see cref="ColumnBase{TModel, TValue}" /> class.
         /// </summary>
         /// <param name="header">The column header.</param>
         /// <param name="valueSelector">
-        /// the function which selects the column value from the model..
+        ///   the function which selects the column value from the model..
         /// </param>
         /// <param name="binding">
-        /// a binding which selects the column value from the model.
+        ///   a binding which selects the column value from the model.
         /// </param>
         /// <param name="width">
-        /// The column width. If null defaults to <see cref="GridLength.Auto"/>.
+        ///   The column width. If null defaults to <see cref="GridLength.Auto" />.
         /// </param>
         /// <param name="options">Additional column options.</param>
         public ColumnBase(
@@ -82,15 +82,16 @@ namespace Avalonia.Controls.Models.TreeDataGrid
         }
 
         /// <summary>
-        /// Gets the function which selects the column value from the model.
+        ///   Gets the function which selects the column value from the model.
         /// </summary>
         public Func<TModel, TValue?> ValueSelector { get; }
 
         /// <summary>
-        /// Gets a binding which selects the column value from the model.
+        ///   Gets a binding which selects the column value from the model.
         /// </summary>
         public TypedBinding<TModel, TValue?> Binding { get; }
 
+        /// <inheritdoc />
         public override Comparison<TModel?>? GetComparison(ListSortDirection direction)
         {
             if (!_canUserSort)
@@ -104,6 +105,11 @@ namespace Avalonia.Controls.Models.TreeDataGrid
             };
         }
 
+        /// <summary>
+        ///   Creates a binding expression that evaluates the column's binding for a specific model.
+        /// </summary>
+        /// <param name="model">The model to bind to.</param>
+        /// <returns>A binding expression.</returns>
         protected TypedBindingExpression<TModel, TValue?> CreateBindingExpression(TModel model)
         {
             return Binding.Instance(model);

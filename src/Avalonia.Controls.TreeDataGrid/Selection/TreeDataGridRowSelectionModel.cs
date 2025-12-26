@@ -10,6 +10,36 @@ using Avalonia.VisualTree;
 
 namespace Avalonia.Controls.Selection
 {
+    /// <summary>
+    ///   Implements row selection functionality for a <see cref="TreeDataGrid" /> control.
+    /// </summary>
+    /// <typeparam name="TModel">The type of the data model in the TreeDataGrid.</typeparam>
+    /// <remarks>
+    ///   <para>
+    ///     TreeDataGridRowSelectionModel manages row selection in a TreeDataGrid, supporting both
+    ///     single and multiple selection modes.
+    ///   </para>
+    ///   <para>
+    ///     Row selection supports the following user interactions:
+    ///     <list type="bullet">
+    ///       <item>
+    ///         <description>Clicking on rows to select them</description>
+    ///       </item>
+    ///       <item>
+    ///         <description>Using arrow keys to navigate between rows</description>
+    ///       </item>
+    ///       <item>
+    ///         <description>Using Shift key to select ranges of rows</description>
+    ///       </item>
+    ///       <item>
+    ///         <description>Expanding and collapsing hierarchical rows with arrow keys</description>
+    ///       </item>
+    ///       <item>
+    ///         <description>Type-to-select functionality for quickly finding rows</description>
+    ///       </item>
+    ///     </list>
+    ///   </para>
+    /// </remarks>
     public class TreeDataGridRowSelectionModel<TModel> : TreeSelectionModelBase<TModel>,
         ITreeDataGridRowSelectionModel<TModel>,
         ITreeDataGridSelectionInteraction
@@ -23,6 +53,11 @@ namespace Avalonia.Controls.Selection
         private int _lastCharPressedTime;
         private string _typedWord = "";
 
+        /// <summary>
+        ///   Initializes a new instance of the <see cref="TreeDataGridRowSelectionModel{TModel}" />
+        ///   class.
+        /// </summary>
+        /// <param name="source">The data source for the TreeDataGrid.</param>
         public TreeDataGridRowSelectionModel(ITreeDataGridSource<TModel> source)
             : base(source.Items)
         {
@@ -114,6 +149,12 @@ namespace Avalonia.Controls.Selection
             }
         }
 
+        /// <summary>
+        ///   Handles text input for type-ahead selection.
+        /// </summary>
+        /// <param name="text">The input text.</param>
+        /// <param name="treeDataGrid">The TreeDataGrid control.</param>
+        /// <param name="selectedRowIndex">The currently selected row index.</param>
         protected void HandleTextInput(string? text, TreeDataGrid treeDataGrid, int selectedRowIndex)
         {
             if (text != null && treeDataGrid.Columns != null)
@@ -369,6 +410,20 @@ namespace Avalonia.Controls.Selection
 
         void ITreeDataGridSelectionInteraction.OnPointerMoved(TreeDataGrid sender, PointerEventArgs e) { }
 
+        /// <summary>
+        ///   Gets the children of a node in the hierarchical data structure.
+        /// </summary>
+        /// <param name="node">The parent node.</param>
+        /// <returns>
+        ///   A collection containing the children of the specified node, or null if the node has no
+        ///   children or if the data source is not hierarchical.
+        /// </returns>
+        /// <remarks>
+        ///   This method is called by the base selection model to navigate the hierarchical
+        ///   structure of the data. It delegates to
+        ///   <see cref="HierarchicalTreeDataGridSource{TModel}.GetModelChildren(TModel)" />
+        ///   if the data source is hierarchical.
+        /// </remarks>
         protected internal override IEnumerable<TModel>? GetChildren(TModel node)
         {
             if (_source is HierarchicalTreeDataGridSource<TModel> treeSource)
@@ -379,6 +434,13 @@ namespace Avalonia.Controls.Selection
             return null;
         }
 
+        /// <summary>
+        ///   Called when the source collection change operation is finished.
+        /// </summary>
+        /// <remarks>
+        ///   This method raises any pending selection changed events that were delayed during
+        ///   the source collection change operation.
+        /// </remarks>
         protected override void OnSourceCollectionChangeFinished()
         {
             if (_raiseViewSelectionChanged)

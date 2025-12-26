@@ -5,70 +5,70 @@ using Avalonia.Experimental.Data.Core;
 namespace Avalonia.Experimental.Data
 {
     /// <summary>
-    /// A binding whose input and output are strongly-typed.
+    ///   A binding whose input and output are strongly-typed.
     /// </summary>
     /// <typeparam name="TIn">The binding input.</typeparam>
     /// <typeparam name="TOut">The binding output.</typeparam>
     /// <remarks>
-    /// <see cref="TypedBinding{TIn, TOut}"/> represents a strongly-typed binding as opposed to
-    /// <see cref="Binding"/> which boxes value types. It is represented as a set of delegates:
+    ///   <see cref="TypedBinding{TIn, TOut}" /> represents a strongly-typed binding as opposed to
+    ///   <see cref="Binding" /> which boxes value types. It is represented as a set of delegates:
     /// 
-    /// - <see cref="Read"/> reads the value given a binding input
-    /// - <see cref="Write"/> writes a value given a binding input
-    /// - <see cref="Links"/> holds a collection of delegates which when passed a binding input
-    ///   return each object traversed by <see cref="Read"/>. For example if Read is implemented
-    ///   as `x => x.Foo.Bar.Baz` then there would be three links: `x => x.Foo`, `x => x.Foo.Bar`
-    ///   and `x => x.Foo.Bar.Baz`. These links are used to subscribe to change notifications.
-    ///   
-    /// This class represents a binding which has not been instantiated on an object. When the
-    /// <see cref="Bind(AvaloniaObject, DirectPropertyBase{TOut})"/> or
-    /// <see cref="Bind(AvaloniaObject, StyledProperty{TOut})"/> methods are called, then
-    /// an instance of <see cref="TypedBindingExpression{TIn, TOut}"/> is created which represents
-    /// the binding instantiated on that object.
+    ///   - <see cref="TypedBinding{TIn, TOut}.Read" /> reads the value given a binding input
+    ///   - <see cref="TypedBinding{TIn, TOut}.Write" /> writes a value given a binding input
+    ///   - <see cref="TypedBinding{TIn, TOut}.Links" /> holds a collection of delegates which when passed a binding input
+    ///   return each object traversed by <see cref="TypedBinding{TIn, TOut}.Read" />. For example if Read is implemented
+    ///   as `x =&gt; x.Foo.Bar.Baz` then there would be three links: `x =&gt; x.Foo`, `x =&gt; x.Foo.Bar`
+    ///   and `x =&gt; x.Foo.Bar.Baz`. These links are used to subscribe to change notifications.
+    /// 
+    ///   This class represents a binding which has not been instantiated on an object. When the
+    ///   <see cref="TypedBinding{TIn, TOut}.Bind(AvaloniaObject, DirectPropertyBase{TOut})" /> or
+    ///   <see cref="TypedBinding{TIn, TOut}.Bind(AvaloniaObject, StyledProperty{TOut})" /> methods are called, then
+    ///   an instance of <see cref="TypedBindingExpression{TIn, TOut}" /> is created which represents
+    ///   the binding instantiated on that object.
     /// </remarks>
     public class TypedBinding<TIn, TOut>
         where TIn : class
     {
         /// <summary>
-        /// Gets or sets the read function.
+        ///   Gets or sets the read function.
         /// </summary>
         public Func<TIn, TOut>? Read { get; set; }
 
         /// <summary>
-        /// Gets or sets the write function.
+        ///   Gets or sets the write function.
         /// </summary>
         public Action<TIn, TOut>? Write { get; set; }
 
         /// <summary>
-        /// Gets or sets the links in the binding chain.
+        ///   Gets or sets the links in the binding chain.
         /// </summary>
         public Func<TIn, object>[]? Links { get; set; }
 
         /// <summary>
-        /// Gets or sets the binding mode.
+        ///   Gets or sets the binding mode.
         /// </summary>
         public BindingMode Mode { get; set; }
 
         /// <summary>
-        /// Gets or sets the binding priority.
+        ///   Gets or sets the binding priority.
         /// </summary>
         public BindingPriority Priority { get; set; }
 
         /// <summary>
-        /// Gets or sets the value to use when the binding is unable to produce a value.
+        ///   Gets or sets the value to use when the binding is unable to produce a value.
         /// </summary>
         public Optional<TOut> FallbackValue { get; set; }
 
         /// <summary>
-        /// Gets or sets the source for the binding.
+        ///   Gets or sets the source for the binding.
         /// </summary>
         /// <remarks>
-        /// If unset the source is the target control's <see cref="StyledElement.DataContext"/> property.
+        ///   If unset the source is the target control's <see cref="StyledElement.DataContext" /> property.
         /// </remarks>
         public Optional<TIn> Source { get; set; }
 
         /// <summary>
-        /// Creates a binding to the specified styled property.
+        ///   Creates a binding to the specified styled property.
         /// </summary>
         /// <param name="target">The target object.</param>
         /// <param name="property">The target property.</param>
@@ -93,7 +93,7 @@ namespace Avalonia.Experimental.Data
         }
 
         /// <summary>
-        /// Creates a binding to the specified direct property.
+        ///   Creates a binding to the specified direct property.
         /// </summary>
         /// <param name="target">The target object.</param>
         /// <param name="property">The target property.</param>
@@ -121,7 +121,7 @@ namespace Avalonia.Experimental.Data
         }
 
         /// <summary>
-        /// Instances the binding on a data source.
+        ///   Instances the binding on a data source.
         /// </summary>
         /// <param name="source">The data source.</param>
         /// <param name="mode">The binding mode.</param>

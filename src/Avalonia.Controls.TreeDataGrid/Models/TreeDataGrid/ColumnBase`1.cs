@@ -7,7 +7,7 @@ using Avalonia.Utilities;
 namespace Avalonia.Controls.Models.TreeDataGrid
 {
     /// <summary>
-    /// Base class for columns which select cell values from a model.
+    ///   Base class for columns which select cell values from a model.
     /// </summary>
     /// <typeparam name="TModel">The model type.</typeparam>
     public abstract class ColumnBase<TModel> : NotifyingBase, IColumn<TModel>, IUpdateColumnLayout
@@ -23,11 +23,11 @@ namespace Avalonia.Controls.Models.TreeDataGrid
         private TypedBinding<TModel, bool>? _isReadOnlyBinding;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ColumnBase{TModel, TValue}"/> class.
+        ///   Initializes a new instance of the <see cref="ColumnBase{TModel, TValue}" /> class.
         /// </summary>
         /// <param name="header">The column header.</param>
         /// <param name="width">
-        /// The column width. If null defaults to <see cref="GridLength.Auto"/>.
+        ///   The column width. If null defaults to <see cref="GridLength.Auto" />.
         /// </param>
         /// <param name="options">Additional column options.</param>
         public ColumnBase(
@@ -44,7 +44,7 @@ namespace Avalonia.Controls.Models.TreeDataGrid
         }
 
         /// <summary>
-        /// Gets the actual width of the column after measurement.
+        ///   Gets the actual width of the column after measurement.
         /// </summary>
         public double ActualWidth
         {
@@ -53,10 +53,10 @@ namespace Avalonia.Controls.Models.TreeDataGrid
         }
 
         /// <summary>
-        /// Gets the width of the column.
+        ///   Gets the width of the column.
         /// </summary>
         /// <remarks>
-        /// To set the column width use <see cref="IColumns.SetColumnWidth(int, GridLength)"/>.
+        ///   To set the column width use <see cref="IColumns.SetColumnWidth(int, GridLength)" />.
         /// </remarks>
         public GridLength Width
         {
@@ -65,7 +65,7 @@ namespace Avalonia.Controls.Models.TreeDataGrid
         }
 
         /// <summary>
-        /// Gets or sets the column header.
+        ///   Gets or sets the column header.
         /// </summary>
         public object? Header
         {
@@ -74,17 +74,17 @@ namespace Avalonia.Controls.Models.TreeDataGrid
         }
 
         /// <summary>
-        /// Gets the column options.
+        ///   Gets the column options.
         /// </summary>
         public ColumnOptions<TModel> Options { get; }
 
         /// <summary>
-        /// Gets or sets the sort direction indicator that will be displayed on the column.
+        ///   Gets or sets the sort direction indicator that will be displayed on the column.
         /// </summary>
         /// <remarks>
-        /// Note that changing this property does not change the sorting of the data, it is only 
-        /// used to display a sort direction indicator. To sort data according to a column use
-        /// <see cref="ITreeDataGridSource.SortBy(IColumn, ListSortDirection)"/>.
+        ///   Note that changing this property does not change the sorting of the data, it is only
+        ///   used to display a sort direction indicator. To sort data according to a column use
+        ///   <see cref="ITreeDataGridSource.SortBy(IColumn, ListSortDirection)" />.
         /// </remarks>
         public ListSortDirection? SortDirection
         {
@@ -109,7 +109,7 @@ namespace Avalonia.Controls.Models.TreeDataGrid
         }
 
         /// <summary>
-        /// Gets or sets a user-defined object attached to the column.
+        ///   Gets or sets a user-defined object attached to the column.
         /// </summary>
         public object? Tag { get; set; }
 
@@ -122,12 +122,13 @@ namespace Avalonia.Controls.Models.TreeDataGrid
         bool IUpdateColumnLayout.StarWidthWasConstrained => _starWidthWasConstrained;
 
         /// <summary>
-        /// Creates a cell for this column on the specified row.
+        ///   Creates a cell for this column on the specified row.
         /// </summary>
         /// <param name="row">The row.</param>
         /// <returns>The cell.</returns>
         public abstract ICell CreateCell(IRow<TModel> row);
 
+        /// <inheritdoc />
         public abstract Comparison<TModel?>? GetComparison(ListSortDirection direction);
 
         protected IObservable<BindingValue<bool>> BuildIsReadOnlyObservable(TModel model, bool isCollumnReadOnly)

@@ -8,42 +8,47 @@ using System.ComponentModel;
 namespace Avalonia.Controls
 {
     /// <summary>
-    /// Represents a data source for a <see cref="TreeDataGrid"/> control.
+    ///   Represents a data source for a <see cref="TreeDataGrid" /> control.
     /// </summary>
     public interface ITreeDataGridSource : INotifyPropertyChanged
     {
         /// <summary>
-        /// Gets the columns to be displayed.
+        ///   Gets the columns to be displayed.
         /// </summary>
         IColumns Columns { get; }
 
         /// <summary>
-        /// Gets the rows to be displayed.
+        ///   Gets the rows to be displayed.
         /// </summary>
         IRows Rows { get; }
 
         /// <summary>
-        /// Gets or sets the selection model.
+        ///   Gets or sets the selection model.
         /// </summary>
+        /// <remarks>
+        ///   The selection mode of the control may be changed by setting this property to either an
+        ///   instance of <see cref="TreeDataGridRowSelectionModel{TModel}" /> for row selection, or
+        ///   <see cref="TreeDataGridCellSelectionModel{TModel}" /> for cell selection.
+        /// </remarks>
         ITreeDataGridSelection? Selection { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether the data source is hierarchical.
+        ///   Gets a value indicating whether the data source is hierarchical.
         /// </summary>
         bool IsHierarchical { get; }
 
         /// <summary>
-        /// Gets a value indicating whether the data source is currently sorted.
+        ///   Gets a value indicating whether the data source is currently sorted.
         /// </summary>
         bool IsSorted { get; }
 
         /// <summary>
-        /// Event which would be triggered after SortBy method execution.
+        ///   Occurs after sorting has changed on the data source.
         /// </summary>
         event Action Sorted;
 
         /// <summary>
-        /// Executes a row drag/drop operation.
+        ///   Executes a row drag/drop operation.
         /// </summary>
         /// <param name="source">The source of the dragged rows.</param>
         /// <param name="indexes">The model indexes of the rows being dragged.</param>
@@ -58,19 +63,19 @@ namespace Avalonia.Controls
             DragDropEffects effects);
 
         /// <summary>
-        /// Gets the items in the data source.
+        ///   Gets the items in the data source.
         /// </summary>
         IEnumerable<object> Items { get; }
 
         /// <summary>
-        /// Gets the children of a model, if any.
+        ///   Gets the children of a model, if any.
         /// </summary>
         /// <param name="model">The model from which to get the children.</param>
         /// <returns>The children of the model. If there are no children, it will return an empty enumerable.</returns>
         IEnumerable<object>? GetModelChildren(object model);
 
         /// <summary>
-        /// Requests to sort the source by the specified column.
+        ///   Requests to sort the source by the specified column.
         /// </summary>
         /// <param name="column">The column.</param>
         /// <param name="direction">The sort direction.</param>
@@ -79,12 +84,12 @@ namespace Avalonia.Controls
     }
 
     /// <summary>
-    /// Represents a typed data source for a <see cref="TreeDataGrid"/> control.
+    ///   Represents a typed data source for a <see cref="TreeDataGrid" /> control.
     /// </summary>
     public interface ITreeDataGridSource<TModel> : ITreeDataGridSource
     {
         /// <summary>
-        /// Gets or sets the items in the data source.
+        ///   Gets or sets the items in the data source.
         /// </summary>
         new IEnumerable<TModel> Items { get; set; }
     }

@@ -7,7 +7,7 @@ using Avalonia.Controls.Utils;
 namespace Avalonia.Controls.Selection
 {
     /// <summary>
-    /// Base class for selection models.
+    ///   Base class for selection models.
     /// </summary>
     /// <typeparam name="T">The type of the element being selected.</typeparam>
     public abstract class SelectionNodeBase<T> : ICollectionChangedListener
@@ -17,7 +17,7 @@ namespace Avalonia.Controls.Selection
         private List<IndexRange>? _ranges;
 
         /// <summary>
-        /// Gets or sets the source collection.
+        ///   Gets or sets the source collection.
         /// </summary>
         protected IEnumerable? Source
         {
@@ -35,13 +35,13 @@ namespace Avalonia.Controls.Selection
         }
 
         /// <summary>
-        /// Gets an <see cref="ItemsSourceView{T}"/> of the <see cref="Source"/>.
+        ///   Gets an <see cref="ItemsSourceView{T}" /> of the <see cref="SelectionNodeBase{T}.Source" />.
         /// </summary>
         protected internal TreeDataGridItemsSourceView<T>? ItemsView { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether range selection is currently enabled for
-        /// the selection node.
+        ///   Gets or sets a value indicating whether range selection is currently enabled for
+        ///   the selection node.
         /// </summary>
         protected bool RangesEnabled
         {
@@ -90,26 +90,26 @@ namespace Avalonia.Controls.Selection
         }
 
         /// <summary>
-        /// Called when the source collection starts changing.
+        ///   Called when the source collection starts changing.
         /// </summary>
         protected virtual void OnSourceCollectionChangeStarted()
         {
         }
 
         /// <summary>
-        /// Called when the <see cref="Source"/> collection changes.
+        ///   Called when the <see cref="SelectionNodeBase{T}.Source" /> collection changes.
         /// </summary>
         /// <param name="e">The details of the collection change.</param>
         /// <remarks>
-        /// The implementation in <see cref="SelectionNodeBase{T}"/> calls
-        /// <see cref="OnItemsAdded(int, IList)"/> and <see cref="OnItemsRemoved(int, IList)"/>
-        /// in order to calculate how the collection change affects the currently selected items.
-        /// It then calls <see cref="OnIndexesChanged(int, int)"/> and
-        /// <see cref="OnSelectionRemoved(int, int, IReadOnlyList{T})"/> if necessary, according
-        /// to the <see cref="CollectionChangeState"/> returned by those methods.
+        ///   The implementation in <see cref="SelectionNodeBase{T}" /> calls
+        ///   <see cref="SelectionNodeBase{T}.OnItemsAdded(int, IList)" /> and <see cref="SelectionNodeBase{T}.OnItemsRemoved(int, IList)" />
+        ///   in order to calculate how the collection change affects the currently selected items.
+        ///   It then calls <see cref="SelectionNodeBase{T}.OnIndexesChanged(int, int)" /> and
+        ///   <see cref="SelectionNodeBase{T}.OnSelectionRemoved(int, int, IReadOnlyList{T})" /> if necessary, according
+        ///   to the <see cref="SelectionNodeBase{T}.CollectionChangeState" /> returned by those methods.
         /// 
-        /// Override this method and <see cref="OnSourceCollectionChangeFinished"/> to provide
-        /// custom handling of source collection changes.
+        ///   Override this method and <see cref="SelectionNodeBase{T}.OnSourceCollectionChangeFinished()" /> to provide
+        ///   custom handling of source collection changes.
         /// </remarks>
         protected virtual void OnSourceCollectionChanged(NotifyCollectionChangedEventArgs e)
         {
@@ -155,47 +155,47 @@ namespace Avalonia.Controls.Selection
         }
 
         /// <summary>
-        /// Called when the source collection has finished changing, and all CollectionChanged
-        /// handlers have run.
+        ///   Called when the source collection has finished changing, and all CollectionChanged
+        ///   handlers have run.
         /// </summary>
         /// <remarks>
-        /// Override this method to respond to the end of a collection change instead of acting at
-        /// the end of <see cref="OnSourceCollectionChanged(NotifyCollectionChangedEventArgs)"/>
-        /// in order to ensure that all UI subscribers to the source collection change event have
-        /// had chance to run.
+        ///   Override this method to respond to the end of a collection change instead of acting at
+        ///   the end of <see cref="SelectionNodeBase{T}.OnSourceCollectionChanged(NotifyCollectionChangedEventArgs)" />
+        ///   in order to ensure that all UI subscribers to the source collection change event have
+        ///   had chance to run.
         /// </remarks>
         protected virtual void OnSourceCollectionChangeFinished()
         {
         }
 
         /// <summary>
-        /// Called by <see cref="OnSourceCollectionChanged(NotifyCollectionChangedEventArgs)"/>,
-        /// detailing the indexes changed by the collection changing.
+        ///   Called by <see cref="SelectionNodeBase{T}.OnSourceCollectionChanged(NotifyCollectionChangedEventArgs)" />,
+        ///   detailing the indexes changed by the collection changing.
         /// </summary>
         /// <param name="shiftIndex">The first index that was shifted.</param>
         /// <param name="shiftDelta">
-        /// If positive, the number of items inserted, or if negative the number of items removed.
+        ///   If positive, the number of items inserted, or if negative the number of items removed.
         /// </param>
         protected virtual void OnIndexesChanged(int shiftIndex, int shiftDelta)
         {
         }
 
         /// <summary>
-        /// Called by <see cref="OnSourceCollectionChanged(NotifyCollectionChangedEventArgs)"/>,
-        /// on collection reset.
+        ///   Called by <see cref="SelectionNodeBase{T}.OnSourceCollectionChanged(NotifyCollectionChangedEventArgs)" />,
+        ///   on collection reset.
         /// </summary>
         protected abstract void OnSourceReset();
 
         /// <summary>
-        /// Called by <see cref="OnSourceCollectionChanged(NotifyCollectionChangedEventArgs)"/>,
-        /// detailing the items removed by a collection change.
+        ///   Called by <see cref="SelectionNodeBase{T}.OnSourceCollectionChanged(NotifyCollectionChangedEventArgs)" />,
+        ///   detailing the items removed by a collection change.
         /// </summary>
         protected virtual void OnSelectionRemoved(int index, int count, IReadOnlyList<T?> deselectedItems)
         {
         }
 
         /// <summary>
-        /// If <see cref="RangesEnabled"/>, adds the specified range to the selection.
+        ///   If <see cref="SelectionNodeBase{T}.RangesEnabled" />, adds the specified range to the selection.
         /// </summary>
         /// <param name="begin">The inclusive index of the start of the range to select.</param>
         /// <param name="end">The inclusive index of the end of the range to select.</param>
@@ -212,7 +212,7 @@ namespace Avalonia.Controls.Selection
         }
 
         /// <summary>
-        /// If <see cref="RangesEnabled"/>, removes the specified range from the selection.
+        ///   If <see cref="SelectionNodeBase{T}.RangesEnabled" />, removes the specified range from the selection.
         /// </summary>
         /// <param name="begin">The inclusive index of the start of the range to deselect.</param>
         /// <param name="end">The inclusive index of the end of the range to deselect.</param>

@@ -6,19 +6,43 @@ using Avalonia.VisualTree;
 
 namespace Avalonia.Controls.Primitives
 {
+    /// <summary>
+    ///   A control in a <see cref="TreeDataGrid" /> that displays a cell with an expander.
+    /// </summary>
+    /// <remarks>
+    ///   <para>
+    ///     TreeDataGridExpanderCell is used for displaying hierarchical data in a TreeDataGrid. It
+    ///     shows an  expander button that allows users to expand or collapse child rows, and
+    ///     embeds another cell (the content cell) that displays the actual data value.
+    ///   </para>
+    ///   <para>
+    ///     The expander cell is typically used in the first column of a hierarchical TreeDataGrid to
+    ///     provide the tree structure visualization. It handles the indentation of rows based on their
+    ///     hierarchy level and manages the expanded/collapsed state of tree nodes.
+    ///   </para>
+    /// </remarks>
     public class TreeDataGridExpanderCell : TreeDataGridCell
     {
+        /// <summary>
+        ///   Defines the <see cref="Indent" /> property.
+        /// </summary>
         public static readonly DirectProperty<TreeDataGridExpanderCell, int> IndentProperty =
             AvaloniaProperty.RegisterDirect<TreeDataGridExpanderCell, int>(
                 nameof(Indent),
                 o => o.Indent);
 
+        /// <summary>
+        ///   Defines the <see cref="IsExpanded" /> property.
+        /// </summary>
         public static readonly DirectProperty<TreeDataGridExpanderCell, bool> IsExpandedProperty =
             AvaloniaProperty.RegisterDirect<TreeDataGridExpanderCell, bool>(
                 nameof(IsExpanded),
                 o => o.IsExpanded,
                 (o, v) => o.IsExpanded = v);
 
+        /// <summary>
+        ///   Defines the <see cref="ShowExpander" /> property.
+        /// </summary>
         public static readonly DirectProperty<TreeDataGridExpanderCell, bool> ShowExpanderProperty =
             AvaloniaProperty.RegisterDirect<TreeDataGridExpanderCell, bool>(
                 nameof(ShowExpander),
@@ -32,24 +56,51 @@ namespace Avalonia.Controls.Primitives
         private IExpanderCell? _model;
         private bool _showExpander;
 
+        /// <summary>
+        ///   Gets the indentation level of the row that this cell belongs to.
+        /// </summary>
+        /// <value>
+        ///   The number of indentation units, where each unit represents one level in the hierarchy.
+        /// </value>
         public int Indent
         {
             get => _indent;
             private set => SetAndRaise(IndentProperty, ref _indent, value);
         }
 
+        /// <summary>
+        ///   Gets or sets a value indicating whether the row is expanded to show child rows.
+        /// </summary>
         public bool IsExpanded
         {
             get => _isExpanded;
             set { if (_model is object) _model.IsExpanded = value; }
         }
 
+        /// <summary>
+        ///   Gets a value indicating whether the expander button should be visible.
+        /// </summary>
+        /// <value>
+        ///   true if the expander button should be visible; otherwise, false.
+        /// </value>
+        /// <remarks>
+        ///   When false, the cell still shows the proper indentation but without an expander button,
+        ///   indicating a leaf node or a row that cannot be expanded.
+        /// </remarks>
         public bool ShowExpander
         {
             get => _showExpander;
             private set => SetAndRaise(ShowExpanderProperty, ref _showExpander, value);
         }
 
+        /// <summary>
+        ///   Prepares the cell for display with the specified data.
+        /// </summary>
+        /// <param name="factory">The element factory used to create child elements.</param>
+        /// <param name="selection">The selection interaction model.</param>
+        /// <param name="model">The cell's data model.</param>
+        /// <param name="columnIndex">The index of the cell's column.</param>
+        /// <param name="rowIndex">The index of the cell's row.</param>
         public override void Realize(
             TreeDataGridElementFactory factory,
             ITreeDataGridSelectionInteraction? selection,
@@ -84,6 +135,10 @@ namespace Avalonia.Controls.Primitives
             UpdateContent(_factory);
         }
 
+        /// <summary>
+        ///   Releases resources used by the cell and prepares it for reuse.
+        /// </summary>
+        /// <inheritdoc />
         public override void Unrealize()
         {
             if (_model is INotifyPropertyChanged inpc)
@@ -94,6 +149,7 @@ namespace Avalonia.Controls.Primitives
                 UpdateContent(_factory);
         }
 
+        /// <inheritdoc />
         protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
         {
             _contentContainer = e.NameScope.Find<Decorator>("PART_Content");

@@ -6,21 +6,30 @@ using System.Threading;
 namespace Avalonia.Experimental.Data.Core
 {
     /// <summary>
-    /// Lightweight base class for observable implementations.
+    ///   Lightweight base class for observable implementations.
     /// </summary>
     /// <typeparam name="T">The observable type.</typeparam>
     /// <remarks>
-    /// ObservableBase{T} is rather heavyweight in terms of allocations and memory
-    /// usage. This class provides a more lightweight base for some internal observable types
-    /// in the Avalonia framework.
+    ///   <para>
+    ///     This is an experimental API that is subject to change or removal without notice.
+    ///   </para>
+    ///   <para>
+    ///     ObservableBase{T} is rather heavyweight in terms of allocations and memory
+    ///     usage. This class provides a more lightweight base for some internal observable types
+    ///     in the Avalonia framework.
+    ///   </para>
     /// </remarks>
     public abstract class LightweightObservableBase<T> : IObservable<T>
     {
         private Exception? _error;
         private List<IObserver<T>>? _observers = [];
 
+        /// <summary>
+        ///   Gets a value indicating whether this observable has any observers.
+        /// </summary>
         public bool HasObservers => _observers?.Count > 0;
 
+        /// <inheritdoc />
         public IDisposable Subscribe(IObserver<T> observer)
         {
             _ = observer ?? throw new ArgumentNullException(nameof(observer));
@@ -110,9 +119,19 @@ namespace Avalonia.Experimental.Data.Core
             }
         }
 
+        /// <summary>
+        ///   Called when the first observer subscribes.
+        /// </summary>
         protected abstract void Initialize();
+        /// <summary>
+        ///   Called when the last observer unsubscribes.
+        /// </summary>
         protected abstract void Deinitialize();
 
+        /// <summary>
+        ///   Publishes the next value to all observers.
+        /// </summary>
+        /// <param name="value">The value to publish.</param>
         protected void PublishNext(T value)
         {
             if (Volatile.Read(ref _observers) != null)
@@ -177,6 +196,9 @@ namespace Avalonia.Experimental.Data.Core
             }
         }
 
+        /// <summary>
+        ///   Publishes completion notification to all observers.
+        /// </summary>
         protected void PublishCompleted()
         {
             if (Volatile.Read(ref _observers) != null)
@@ -202,6 +224,10 @@ namespace Avalonia.Experimental.Data.Core
             }
         }
 
+        /// <summary>
+        ///   Publishes an error notification to all observers.
+        /// </summary>
+        /// <param name="error">The exception that occurred.</param>
         protected void PublishError(Exception error)
         {
             if (Volatile.Read(ref _observers) != null)
@@ -230,6 +256,11 @@ namespace Avalonia.Experimental.Data.Core
             }
         }
 
+        /// <summary>
+        ///   Called after an observer has subscribed.
+        /// </summary>
+        /// <param name="observer">The observer that subscribed.</param>
+        /// <param name="first">True if this is the first observer; otherwise false.</param>
         protected virtual void Subscribed(IObserver<T> observer, bool first)
         {
         }

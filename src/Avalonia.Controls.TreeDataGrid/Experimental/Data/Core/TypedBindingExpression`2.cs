@@ -7,13 +7,18 @@ using Avalonia.Utilities;
 namespace Avalonia.Experimental.Data.Core
 {
     /// <summary>
-    /// A binding expression which uses delegates to read and write a bound value.
+    ///   A binding expression which uses delegates to read and write a bound value.
     /// </summary>
     /// <typeparam name="TIn">The input type of the binding expression.</typeparam>
     /// <typeparam name="TOut">The output type of the binding expression.</typeparam>
     /// <remarks>
-    /// A <see cref="TypedBindingExpression{TIn, TOut}"/> represents a typed binding which has been
-    /// instantiated on an object.
+    ///   <para>
+    ///     This is an experimental API that is subject to change or removal without notice.
+    ///   </para>
+    ///   <para>
+    ///     A <see cref="TypedBindingExpression{TIn, TOut}" /> represents a typed binding which has been
+    ///     instantiated on an object.
+    ///   </para>
     /// </remarks>
     public class TypedBindingExpression<TIn, TOut> : LightweightObservableBase<BindingValue<TOut>>,
         IObserver<BindingValue<TOut>>,
@@ -30,6 +35,14 @@ namespace Avalonia.Experimental.Data.Core
         private Flags _flags;
         private int _publishCount;
 
+        /// <summary>
+        ///   Initializes a new instance of the <see cref="TypedBindingExpression{TIn, TOut}" /> class.
+        /// </summary>
+        /// <param name="root">The root source observable.</param>
+        /// <param name="read">The function to read the bound value.</param>
+        /// <param name="write">The function to write the bound value, or null for read-only bindings.</param>
+        /// <param name="links">The intermediate delegates in the binding chain.</param>
+        /// <param name="fallbackValue">The fallback value to use when the binding fails.</param>
         public TypedBindingExpression(
             IObservable<TIn?> root,
             Func<TIn, TOut> read,
@@ -53,8 +66,15 @@ namespace Avalonia.Experimental.Data.Core
             }
         }
 
+        /// <summary>
+        ///   Gets a description of the binding expression.
+        /// </summary>
         public string Description => "TODO";
 
+        /// <summary>
+        ///   Handles incoming values from two-way bindings.
+        /// </summary>
+        /// <param name="value">The value to write to the binding target.</param>
         public void OnNext(BindingValue<TOut> value)
         {
             if (value.HasValue &&
@@ -85,6 +105,7 @@ namespace Avalonia.Experimental.Data.Core
         {
         }
 
+        /// <inheritdoc />
         protected override void Initialize()
         {
             _flags &= ~Flags.RootHasFired;
@@ -92,6 +113,7 @@ namespace Avalonia.Experimental.Data.Core
             _flags |= Flags.Initialized;
         }
 
+        /// <inheritdoc />
         protected override void Deinitialize()
         {
             StopListeningToChain(0);
@@ -100,6 +122,7 @@ namespace Avalonia.Experimental.Data.Core
             _flags &= ~Flags.Initialized;
         }
 
+        /// <inheritdoc />
         protected override void Subscribed(IObserver<BindingValue<TOut>> observer, bool first)
         {
             // If this is the first subscription, `Initialize()` will have run which will

@@ -6,18 +6,50 @@ using Avalonia.Utilities;
 
 namespace Avalonia.Controls.Primitives
 {
+    /// <summary>
+    ///   A control which displays a column header in a <see cref="TreeDataGrid" /> control.
+    /// </summary>
+    /// <remarks>
+    ///   <para>
+    ///     TreeDataGridColumnHeader is responsible for displaying column headers in a TreeDataGrid and
+    ///     provides functionality for column resizing and sorting.
+    ///   </para>
+    ///   <para>
+    ///     Column headers can be clicked to sort the data in the TreeDataGrid, and if resizing is
+    ///     enabled, they can be resized by dragging the edge of the header.
+    ///   </para>
+    ///   <para>
+    ///     This class supports the following pseudo-classes:
+    ///     <list type="bullet">
+    ///       <item>
+    ///         <description>
+    ///           :resizable - Set when the column can be resized by the user
+    ///         </description>
+    ///       </item>
+    ///     </list>
+    ///   </para>
+    /// </remarks>
     public class TreeDataGridColumnHeader : Button
     {
+        /// <summary>
+        ///   Defines the <see cref="CanUserResize" /> property.
+        /// </summary>
         public static readonly DirectProperty<TreeDataGridColumnHeader, bool> CanUserResizeProperty =
             AvaloniaProperty.RegisterDirect<TreeDataGridColumnHeader, bool>(
                 nameof(CanUserResize),
                 x => x.CanUserResize);
 
+        /// <summary>
+        ///   Defines the <see cref="Header" /> property.
+        /// </summary>
         public static readonly DirectProperty<TreeDataGridColumnHeader, object?> HeaderProperty =
             AvaloniaProperty.RegisterDirect<TreeDataGridColumnHeader, object?>(
                 nameof(Header),
                 o => o.Header);
 
+        /// <summary>
+        ///   Defines the <see cref="SortDirection" /> property.
+        /// </summary>
         public static readonly DirectProperty<TreeDataGridColumnHeader, ListSortDirection?> SortDirectionProperty =
             AvaloniaProperty.RegisterDirect<TreeDataGridColumnHeader, ListSortDirection?>(
                 nameof(SortDirection),
@@ -31,26 +63,76 @@ namespace Avalonia.Controls.Primitives
         private TreeDataGrid? _owner;
         private Thumb? _resizer;
 
+        /// <summary>
+        ///   Gets a value indicating whether the column can be resized by the user.
+        /// </summary>
+        /// <value>
+        ///   true if the column can be resized by the user; otherwise, false.
+        /// </value>
+        /// <remarks>
+        ///   This value is derived from the column model's <see cref="IColumn.CanUserResize" />
+        ///   property and the owning <see cref="TreeDataGrid.CanUserResizeColumns" /> property.
+        /// </remarks>
         public bool CanUserResize
         {
             get => _canUserResize;
             private set => SetAndRaise(CanUserResizeProperty, ref _canUserResize, value);
         }
 
+        /// <summary>
+        ///   Gets the index of the column in the <see cref="TreeDataGrid" />.
+        /// </summary>
+        /// <value>
+        ///   The zero-based index of the column, or -1 if the column header is not realized.
+        /// </value>
         public int ColumnIndex { get; private set; }
 
+        /// <summary>
+        ///   Gets the content to display in the column header.
+        /// </summary>
+        /// <value>
+        ///   The header content, which can be a string, a data template, or any other object.
+        /// </value>
+        /// <remarks>
+        ///   This value is obtained from the <see cref="IColumn.Header" /> property of the column
+        ///   model.
+        /// </remarks>
         public object? Header
         {
             get => _header;
             private set => SetAndRaise(HeaderProperty, ref _header, value);
         }
 
+        /// <summary>
+        ///   Gets the current sort direction of the column.
+        /// </summary>
+        /// <value>
+        ///   The sort direction (ascending or descending), or null if the column is not sorted.
+        /// </value>
+        /// <remarks>
+        ///   This value is obtained from the <see cref="IColumn.SortDirection" /> property of the
+        ///   column model. The sort direction is updated when the user clicks on the column header
+        ///   and sorting is enabled.
+        /// </remarks>
         public ListSortDirection? SortDirection
         {
             get => _sortDirection;
             private set => SetAndRaise(SortDirectionProperty, ref _sortDirection, value);
         }
 
+        /// <summary>
+        ///   Prepares the column header for display with the specified data.
+        /// </summary>
+        /// <param name="columns">The columns collection.</param>
+        /// <param name="columnIndex">The index of the column.</param>
+        /// <exception cref="InvalidOperationException">
+        ///   The column header is already realized.
+        /// </exception>
+        /// <remarks>
+        ///   This method is called by the <see cref="TreeDataGridColumnHeadersPresenter" /> when a
+        ///   column header  needs to be prepared for display. It initializes the header with the
+        ///   column data and subscribes to property change notifications from the column model.
+        /// </remarks>
         public void Realize(IColumns columns, int columnIndex)
         {
             if (_model is object)
@@ -65,11 +147,27 @@ namespace Avalonia.Controls.Primitives
                 newInpc.PropertyChanged += OnModelPropertyChanged;
         }
 
+        /// <summary>
+        ///   Updates the column index of this header.
+        /// </summary>
+        /// <param name="columnIndex">The new column index.</param>
+        /// <remarks>
+        ///   This method is called when the index of the column changes, such as when columns are
+        ///   inserted or removed to the left of this column.
+        /// </remarks>
         public void UpdateColumnIndex(int columnIndex)
         {
             ColumnIndex = columnIndex;
         }
 
+        /// <summary>
+        ///   Releases resources used by the column header and prepares it for reuse.
+        /// </summary>
+        /// <remarks>
+        ///   This method is called by the <see cref="TreeDataGridColumnHeadersPresenter" /> when a
+        ///   column header is no longer needed for display. It unsubscribes from property change
+        ///   notifications from the column model and clears the header's state.
+        /// </remarks>
         public void Unrealize()
         {
             if (_model is INotifyPropertyChanged oldInpc)
@@ -81,6 +179,7 @@ namespace Avalonia.Controls.Primitives
             UpdatePropertiesFromModel();
         }
 
+        /// <inheritdoc />
         protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
         {
             base.OnApplyTemplate(e);
@@ -99,6 +198,7 @@ namespace Avalonia.Controls.Primitives
             _columns?.SetColumnWidth(ColumnIndex, GridLength.Auto);
         }
 
+        /// <inheritdoc />
         protected override Size MeasureOverride(Size availableSize)
         {
             var result = base.MeasureOverride(availableSize);
@@ -111,6 +211,7 @@ namespace Avalonia.Controls.Primitives
             return result;
         }
 
+        /// <inheritdoc />
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
             if (change.Property == CanUserResizeProperty)

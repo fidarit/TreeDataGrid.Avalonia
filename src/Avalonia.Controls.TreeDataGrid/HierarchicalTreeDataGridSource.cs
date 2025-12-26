@@ -13,8 +13,8 @@ using Avalonia.Input;
 namespace Avalonia.Controls
 {
     /// <summary>
-    /// A data source for a <see cref="TreeDataGrid"/> which displays a hierarchial tree where each
-    /// row may have multiple columns.
+    ///   A data source for a <see cref="TreeDataGrid" /> which displays a hierarchial tree where each
+    ///   row may have multiple columns.
     /// </summary>
     /// <typeparam name="TModel">The model type.</typeparam>
     public class HierarchicalTreeDataGridSource<TModel> : NotifyingBase,
@@ -31,11 +31,21 @@ namespace Avalonia.Controls
         private ITreeDataGridSelection? _selection;
         private bool _isSelectionSet;
 
+        /// <summary>
+        ///   Initializes a new instance of the <see cref="HierarchicalTreeDataGridSource{TModel}" />
+        ///   class  with a single root item.
+        /// </summary>
+        /// <param name="item">The root item to display.</param>
         public HierarchicalTreeDataGridSource(TModel item)
             : this(new[] { item })
         {
         }
 
+        /// <summary>
+        ///   Initializes a new instance of the <see cref="HierarchicalTreeDataGridSource{TModel}" />
+        ///   class with the specified collection of items.
+        /// </summary>
+        /// <param name="items">The root items to display.</param>
         public HierarchicalTreeDataGridSource(IEnumerable<TModel> items)
         {
             _items = items;
@@ -44,6 +54,7 @@ namespace Avalonia.Controls
             Columns.CollectionChanged += OnColumnsCollectionChanged;
         }
 
+        /// <inheritdoc />
         public IEnumerable<TModel> Items 
         {
             get => _items;
@@ -60,9 +71,14 @@ namespace Avalonia.Controls
             }
         }
 
+        /// <inheritdoc />
         public IRows Rows => GetOrCreateRows();
+        /// <summary>
+        ///   Gets the columns to be displayed.
+        /// </summary>
         public ColumnList<TModel> Columns { get; }
 
+        /// <inheritdoc />
         public ITreeDataGridSelection? Selection
         {
             get
@@ -86,19 +102,49 @@ namespace Avalonia.Controls
 
         IEnumerable<object> ITreeDataGridSource.Items => Items;
 
+        /// <summary>
+        ///   Gets the cell selection model if cell selection is being used.
+        /// </summary>
+        /// <remarks>
+        ///   This property is equivalent to casting the <see cref="HierarchicalTreeDataGridSource{TModel}.Selection" /> property to
+        ///   <see cref="ITreeDataGridCellSelectionModel{T}" />.
+        /// </remarks>
         public ITreeDataGridCellSelectionModel<TModel>? CellSelection => Selection as ITreeDataGridCellSelectionModel<TModel>;
+        /// <summary>
+        ///   Gets the row selection model if row selection is being used.
+        /// </summary>
+        /// <remarks>
+        ///   This property is equivalent to casting the <see cref="HierarchicalTreeDataGridSource{TModel}.Selection" /> property to
+        ///   <see cref="ITreeDataGridRowSelectionModel{T}" />.
+        /// </remarks>
         public ITreeDataGridRowSelectionModel<TModel>? RowSelection => Selection as ITreeDataGridRowSelectionModel<TModel>;
+        /// <inheritdoc />
         public bool IsHierarchical => true;
+        /// <inheritdoc />
         public bool IsSorted => _comparison is not null;
 
         IColumns ITreeDataGridSource.Columns => Columns;
 
+        /// <summary>
+        ///   Occurs when a row in the hierarchical data structure is about to expand.
+        /// </summary>
         public event EventHandler<RowEventArgs<HierarchicalRow<TModel>>>? RowExpanding;
+        /// <summary>
+        ///   Occurs when a row in the hierarchical data structure is expanded.
+        /// </summary>
         public event EventHandler<RowEventArgs<HierarchicalRow<TModel>>>? RowExpanded;
+        /// <summary>
+        ///   Occurs when a hierarchical row is about to collapse.
+        /// </summary>
         public event EventHandler<RowEventArgs<HierarchicalRow<TModel>>>? RowCollapsing;
+        /// <summary>
+        ///   Occurs when a hierarchical row is collapsed.
+        /// </summary>
         public event EventHandler<RowEventArgs<HierarchicalRow<TModel>>>? RowCollapsed;
+        /// <inheritdoc />
         public event Action? Sorted;
 
+        /// <inheritdoc />
         public void Dispose()
         {
             _rows?.Dispose();
@@ -106,33 +152,33 @@ namespace Avalonia.Controls
         }
 
         /// <summary>
-        /// Collapses the row at the specified index.
+        ///   Collapses the row at the specified index.
         /// </summary>
         /// <param name="index">The index path of the row to collapse.</param>
         public void Collapse(IndexPath index) => GetOrCreateRows().Collapse(index);
 
         /// <summary>
-        /// Collapses all rows.
+        ///   Collapses all rows.
         /// </summary>
         public void CollapseAll() => GetOrCreateRows().ExpandCollapseRecursive(_ => false);
 
         /// <summary>
-        /// Expands the row at the specified index.
+        ///   Expands the row at the specified index.
         /// </summary>
         /// <param name="index">The index path of the row to expand.</param>
         public void Expand(IndexPath index) => GetOrCreateRows().Expand(index);
 
         /// <summary>
-        /// Expands all rows.
+        ///   Expands all rows.
         /// </summary>
         public void ExpandAll() => GetOrCreateRows().ExpandCollapseRecursive(_ => true);
 
         /// <summary>
-        /// Expands or collapses rows according to a condition.
+        ///   Expands or collapses rows according to a condition.
         /// </summary>
         /// <param name="predicate">
-        /// A function which is passed a model instance and returns a boolean value representing
-        /// the desired expanded state of the row.
+        ///   A function which is passed a model instance and returns a boolean value representing
+        ///   the desired expanded state of the row.
         /// </param>
         public void ExpandCollapseRecursive(Func<TModel, bool> predicate)
         {
@@ -140,20 +186,45 @@ namespace Avalonia.Controls
         }
 
         /// <summary>
-        /// Expands or collapses rows according to a condition, starting from the specified row.
+        ///   Expands or collapses rows according to a condition, starting from the specified row.
         /// </summary>
         /// <param name="row">
-        /// The row from which to start expanding or collapsing.
+        ///   The row from which to start expanding or collapsing.
         /// </param>
         /// <param name="predicate">
-        /// A function which is passed a model instance and returns a boolean value representing
-        /// the desired expanded state of the row.
+        ///   A function which is passed a model instance and returns a boolean value representing
+        ///   the desired expanded state of the row.
         /// </param>
         public void ExpandCollapseRecursive(HierarchicalRow<TModel> row, Func<TModel, bool> predicate)
         {
             GetOrCreateRows().ExpandCollapseRecursive(predicate, row);
         }
 
+        /// <summary>
+        ///   Attempts to retrieve the model at the specified hierarchical index path.
+        /// </summary>
+        /// <remarks>
+        ///   This method traverses the data source to locate the model at the specified index path.
+        ///   It uses the expander column to navigate through the hierarchy.
+        /// 
+        ///   If the index path is invalid or exceeds the bounds of the hierarchy, the method returns
+        ///   <see langword="false" /> and sets <paramref name="result" /> to <see langword="null" />.
+        /// </remarks>
+        /// <param name="index">
+        ///   The <see cref="IndexPath" /> representing the hierarchical position of the model to
+        ///   retrieve. Each level in the index corresponds to a depth in the hierarchy.
+        /// </param>
+        /// <param name="result">
+        ///   When this method returns, contains the model at the specified index path if the
+        ///   otherwise, contains <see langword="null" />.
+        /// </param>
+        /// <returns>
+        ///   <see langword="true" /> if the model at the specified index path was successfully
+        ///   retrieved; otherwise, <see langword="false" />.
+        /// </returns>
+        /// <exception cref="InvalidOperationException">
+        ///   Thrown if no expander column is defined.
+        /// </exception>
         public bool TryGetModelAt(IndexPath index, [NotNullWhen(true)] out TModel? result)
         {
             if (_expanderColumn is null)
@@ -190,6 +261,10 @@ namespace Avalonia.Controls
             return false;
         }
 
+        /// <summary>
+        ///   Sorts the data source using the specified comparison function.
+        /// </summary>
+        /// <param name="comparison">The comparison function.</param>
         public void Sort(Comparison<TModel>? comparison)
         {
             _comparison = comparison;
@@ -201,6 +276,7 @@ namespace Avalonia.Controls
             return GetModelChildren((TModel)model);
         }
 
+        /// <inheritdoc />
         public bool SortBy(IColumn? column, ListSortDirection direction)
         {
             if (column is IColumn<TModel> columnBase &&

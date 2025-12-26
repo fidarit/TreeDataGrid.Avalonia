@@ -8,10 +8,25 @@ using Avalonia.Controls.Utils;
 namespace Avalonia.Controls.Models.TreeDataGrid
 {
     /// <summary>
-    /// An <see cref="IRows"/> collection which supports sorting.
+    ///   An abstract base class for a sortable collection of rows in a <see cref="TreeDataGrid" />.
     /// </summary>
-    /// <typeparam name="TModel">The model type.</typeparam>
-    /// <typeparam name="TRow">The row type.</typeparam>
+    /// <remarks>
+    ///   <para>
+    ///     SortableRowsBase provides the core functionality for managing a collection of rows that can be sorted
+    ///     according to a provided comparison function. The class handles the complexity of maintaining both
+    ///     the original ordering of rows and the sorted view, efficiently responding to collection changes.
+    ///   </para>
+    ///   <para>
+    ///     The class is designed to efficiently handle collection modifications (adding, removing, replacing items)
+    ///     in both sorted and unsorted states, managing row creation and disposal, and maintaining proper
+    ///     model-to-row index mappings.
+    ///   </para>
+    /// </remarks>
+    /// <typeparam name="TModel">The type of the model items that rows represent.</typeparam>
+    /// <typeparam name="TRow">
+    ///   The type of rows in the collection. Must implement <see cref="IRow{TModel}" />,
+    ///   <see cref="IModelIndexableRow" />, and <see cref="IDisposable" />.
+    /// </typeparam>
     public abstract class SortableRowsBase<TModel, TRow> : ReadOnlyListBase<TRow>, IDisposable
         where TRow : IRow<TModel>, IModelIndexableRow, IDisposable
     {
@@ -21,6 +36,11 @@ namespace Avalonia.Controls.Models.TreeDataGrid
         private List<TRow>? _unsortedRows;
         private List<int>? _sortedIndexes;
 
+        /// <summary>
+        ///   Initializes a new instance of the <see cref="SortableRowsBase{TModel, TRow}" /> class.
+        /// </summary>
+        /// <param name="items">The source collection of items to represent as rows.</param>
+        /// <param name="comparison">An optional comparison function for sorting the rows, or null for no sorting.</param>
         public SortableRowsBase(TreeDataGridItemsSourceView<TModel> items, Comparison<TModel>? comparison)
         {
             _items = items;
@@ -29,8 +49,10 @@ namespace Avalonia.Controls.Models.TreeDataGrid
             _compareItemsByIndex = CompareItemsByIndex;
         }
 
+        /// <inheritdoc />
         public override int Count => _unsortedRows?.Count ?? _items.Count;
 
+        /// <inheritdoc />
         public override TRow this[int index]
         {
             get
@@ -46,14 +68,24 @@ namespace Avalonia.Controls.Models.TreeDataGrid
 
         private List<TRow> UnsortedRows => GetOrCreateRows();
 
+        /// <summary>
+        ///   Occurs when the contents of the collection changes.
+        /// </summary>
         public event NotifyCollectionChangedEventHandler? CollectionChanged;
 
+        /// <summary>
+        ///   Releases all resources used by the <see cref="SortableRowsBase{TModel, TRow}" /> instance.
+        /// </summary>
+        /// <remarks>
+        ///   Sets the items source to an empty collection, which will dispose all row objects.
+        /// </remarks>
         public virtual void Dispose()
         {
             SetItems(TreeDataGridItemsSourceView<TModel>.Empty);
             GC.SuppressFinalize(this);
         }
 
+        /// <inheritdoc />
         public override IEnumerator<TRow> GetEnumerator()
         {
             IEnumerator<TRow> GetSortedEnumerator()
@@ -68,6 +100,10 @@ namespace Avalonia.Controls.Models.TreeDataGrid
             return _sortedIndexes is not null ? GetSortedEnumerator() : UnsortedRows.GetEnumerator();
         }
 
+        /// <summary>
+        ///   Sets the source items collection for this rows collection.
+        /// </summary>
+        /// <param name="items">The new source items collection.</param>
         public void SetItems(TreeDataGridItemsSourceView<TModel> items)
         {
             _items.CollectionChanged -= OnItemsCollectionChanged;
@@ -79,6 +115,15 @@ namespace Avalonia.Controls.Models.TreeDataGrid
             OnItemsCollectionChanged(null, CollectionExtensions.ResetEvent);
         }
 
+        /// <summary>
+        ///   Sorts the rows collection according to the specified comparison function.
+        /// </summary>
+        /// <param name="comparison">The comparison function to use for sorting, or null to remove sorting.</param>
+        /// <remarks>
+        ///   When a comparison function is provided, the rows are sorted according to that function
+        ///   while maintaining the original row objects. When null is provided, the sorting is removed
+        ///   and rows are presented in their original order.
+        /// </remarks>
         public virtual void Sort(Comparison<TModel>? comparison)
         {
             _comparison = comparison;
@@ -95,8 +140,30 @@ namespace Avalonia.Controls.Models.TreeDataGrid
             }
         }
 
+        /// <summary>
+        ///   Creates a new row for the specified model item at the given index.
+        /// </summary>
+        /// <param name="modelIndex">The index of the model item in the source collection.</param>
+        /// <param name="model">The model item to create a row for.</param>
+        /// <returns>A new row instance representing the model item.</returns>
+        /// <remarks>
+        ///   This abstract method must be implemented by derived classes to create the appropriate
+        ///   row type.
+        /// </remarks>
         protected abstract TRow CreateRow(int modelIndex, TModel model);
 
+        /// <summary>
+        ///   Converts a model index to the corresponding row index in the current view.
+        /// </summary>
+        /// <param name="modelIndex">The index of the model in the source collection.</param>
+        /// <returns>
+        ///   The index of the row in the current view that represents the model,
+        ///   or -1 if the model is not represented in the view.
+        /// </returns>
+        /// <remarks>
+        ///   When the collection is sorted, this method performs a binary search to find the row
+        ///   index. Otherwise, it returns the model index directly if it's within valid bounds.
+        /// </remarks>
         protected int ModelIndexToRowIndex(int modelIndex)
         {
             if (_sortedIndexes is null)
@@ -105,6 +172,16 @@ namespace Avalonia.Controls.Models.TreeDataGrid
                 return SortHelper<int>.BinarySearch(_sortedIndexes, modelIndex, _compareItemsByIndex);
         }
 
+        /// <summary>
+        ///   Converts a row index in the current view to the corresponding model index in the source
+        ///   collection.
+        /// </summary>
+        /// <param name="rowIndex">The index of the row in the current view.</param>
+        /// <returns>The index of the model in the source collection.</returns>
+        /// <remarks>
+        ///   When the collection is sorted, this method uses the sorted indexes mapping.
+        ///   Otherwise, it returns the row index directly.
+        /// </remarks>
         protected int RowIndexToModelIndex(int rowIndex) => _sortedIndexes?[rowIndex] ?? rowIndex;
 
         private List<TRow> GetOrCreateRows()

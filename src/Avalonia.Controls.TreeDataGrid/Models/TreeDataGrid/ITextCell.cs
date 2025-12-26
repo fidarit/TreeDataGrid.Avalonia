@@ -3,27 +3,30 @@
 namespace Avalonia.Controls.Models.TreeDataGrid
 {
     /// <summary>
-    /// Represents a text cell in an <see cref="ITreeDataGridSource"/>.
+    ///   Represents a text cell in an <see cref="ITreeDataGridSource" />.
     /// </summary>
+    /// <remarks>
+    ///   The interface provides a non-generic view over a <see cref="TextCell{T}" />.
+    /// </remarks>
     public interface ITextCell : IEditableCell
     {
         /// <summary>
-        /// Gets or sets the cell's value as a string.
+        ///   Gets or sets the cell's value as a string.
         /// </summary>
         string? Text { get; set; }
 
         /// <summary>
-        /// Gets the cell's text trimming mode.
+        ///   Gets the cell's text trimming mode.
         /// </summary>
         TextTrimming TextTrimming { get; }
 
         /// <summary>
-        /// Gets the cell's text wrapping mode.
+        ///   Gets the cell's text wrapping mode.
         /// </summary>
         TextWrapping TextWrapping { get; }
 
         /// <summary>
-        /// Gets the cell's text alignment mode.
+        ///   Gets the cell's text alignment mode.
         /// </summary>
         TextAlignment TextAlignment { get; }
     }

@@ -15,9 +15,50 @@ using CollectionExtensions = Avalonia.Controls.Models.TreeDataGrid.CollectionExt
 
 namespace Avalonia.Controls.Primitives
 {
+    /// <summary>
+    ///   Base class for virtualized presenters used in <see cref="TreeDataGrid" /> to display rows
+    ///   and columns.
+    /// </summary>
+    /// <typeparam name="TItem">The type of items to present.</typeparam>
+    /// <remarks>
+    ///   <para>
+    ///     TreeDataGridPresenterBase implements virtualization, for TreeDataGrid's column and row
+    ///     presenters.
+    ///   </para>
+    ///   <para>
+    ///     This class handles:
+    ///     <list type="bullet">
+    ///       <item>
+    ///         <description>
+    ///           Element creation and recycling using a <see cref="TreeDataGridElementFactory" />
+    ///         </description>
+    ///       </item>
+    ///       <item>
+    ///         <description>Viewport tracking and efficient scrolling</description>
+    ///       </item>
+    ///       <item>
+    ///         <description>Item change notifications</description>
+    ///       </item>
+    ///       <item>
+    ///         <description>Focused element tracking</description>
+    ///       </item>
+    ///       <item>
+    ///         <description>Bringing items into view</description>
+    ///       </item>
+    ///     </list>
+    ///   </para>
+    ///   <para>
+    ///     Derived classes must implement abstract methods to handle item-specific realization,
+    ///     un-realization, and element index updates. They must also specify the orientation
+    ///     in which items are laid out.
+    ///   </para>
+    /// </remarks>
     public abstract class TreeDataGridPresenterBase<TItem> : Border
     {
 #pragma warning disable AVP1002
+        /// <summary>
+        ///   Defines the <see cref="TreeDataGridPresenterBase{TItem}.ElementFactory" /> property.
+        /// </summary>
         public static readonly DirectProperty<TreeDataGridPresenterBase<TItem>, TreeDataGridElementFactory?>
             ElementFactoryProperty =
                 AvaloniaProperty.RegisterDirect<TreeDataGridPresenterBase<TItem>, TreeDataGridElementFactory?>(
@@ -25,6 +66,9 @@ namespace Avalonia.Controls.Primitives
                     o => o.ElementFactory,
                     (o, v) => o.ElementFactory = v);
 
+        /// <summary>
+        ///   Defines the <see cref="TreeDataGridPresenterBase{TItem}.Items" /> property.
+        /// </summary>
         public static readonly DirectProperty<TreeDataGridPresenterBase<TItem>, IReadOnlyList<TItem>?> ItemsProperty =
             AvaloniaProperty.RegisterDirect<TreeDataGridPresenterBase<TItem>, IReadOnlyList<TItem>?>(
                 nameof(Items),
@@ -49,6 +93,9 @@ namespace Avalonia.Controls.Primitives
         private Control? _focusedElement;
         private int _focusedIndex = -1;
 
+        /// <summary>
+        ///   Initializes a new instance of the <see cref="TreeDataGridPresenterBase{TItem}" /> class.
+        /// </summary>
         public TreeDataGridPresenterBase()
         {
             _recycleElement = RecycleElement;
@@ -56,12 +103,33 @@ namespace Avalonia.Controls.Primitives
             _updateElementIndex = UpdateElementIndex;
         }
 
+        /// <summary>
+        ///   Gets or sets the factory used to create and recycle UI elements.
+        /// </summary>
+        /// <value>
+        ///   The element factory used by this presenter.
+        /// </value>
+        /// <remarks>
+        ///   The element factory is responsible for creating visual elements to represent data items,
+        ///   and for recycling those elements when they are no longer needed.
+        /// </remarks>
         public TreeDataGridElementFactory? ElementFactory
         {
             get => _elementFactory;
             set => SetAndRaise(ElementFactoryProperty, ref _elementFactory, value);
         }
 
+        /// <summary>
+        ///   Gets or sets the items to be presented.
+        /// </summary>
+        /// <value>
+        ///   A read-only list of items.
+        /// </value>
+        /// <remarks>
+        ///   When this property is set, the presenter will update its visual representation
+        ///   and start listening for changes in the collection if it implements
+        ///   <see cref="INotifyCollectionChanged" />.
+        /// </remarks>
         public IReadOnlyList<TItem>? Items
         {
             get => _items;
@@ -87,9 +155,35 @@ namespace Avalonia.Controls.Primitives
 
         internal IReadOnlyList<Control?> RealizedElements => _realizedElements?.Elements ?? [];
 
+        /// <summary>
+        ///   Gets the orientation in which items are arranged.
+        /// </summary>
+        /// <value>
+        ///   The orientation (horizontal or vertical) in which items are arranged.
+        /// </value>
         protected abstract Orientation Orientation { get; }
         protected Rect Viewport { get; private set; } = s_invalidViewport;
 
+        /// <summary>
+        ///   Brings an item at the specified index into the viewport.
+        /// </summary>
+        /// <param name="index">The index of the item to bring into view.</param>
+        /// <param name="rect">An optional rectangle within the item to bring into view.</param>
+        /// <returns>
+        ///   The element representing the item if it was successfully brought into view; otherwise, null.
+        /// </returns>
+        /// <remarks>
+        ///   <para>
+        ///     This method attempts to scroll the presenter so that the item at the specified index
+        ///     is visible within the viewport. If the item is already visible, it returns the existing
+        ///     element. If the item is not visible, it creates a new element, measures it, and scrolls
+        ///     it into view.
+        ///   </para>
+        ///   <para>
+        ///     If a rect is specified, the presenter will attempt to bring that specific portion of
+        ///     the item into view.
+        ///   </para>
+        /// </remarks>
         public Control? BringIntoView(int index, Rect? rect = null)
         {
             var items = Items;
@@ -165,6 +259,9 @@ namespace Avalonia.Controls.Primitives
             return null;
         }
 
+        /// <summary>
+        ///   Gets all currently realized elements.
+        /// </summary>
         public IEnumerable<Control> GetRealizedElements()
         {
             if (_realizedElements is not null)
@@ -173,6 +270,14 @@ namespace Avalonia.Controls.Primitives
                 return [];
         }
 
+        /// <summary>
+        ///   Attempts to get the element at the specified index.
+        /// </summary>
+        /// <param name="index">The index of the item.</param>
+        /// <remarks>
+        ///   This method returns the element only if it is currently realized. If the item
+        ///   at the specified index is not currently visible, this method returns null.
+        /// </remarks>
         public Control? TryGetElement(int index) => GetRealizedElement(index);
 
         internal void RecycleAllElements() => _realizedElements?.RecycleAllElements(_recycleElement);
@@ -189,12 +294,37 @@ namespace Avalonia.Controls.Primitives
             }
         }
 
+        /// <summary>
+        ///   Arranges a child element and returns the arranged bounds.
+        /// </summary>
+        /// <param name="index">The index of the item.</param>
+        /// <param name="element">The element to arrange.</param>
+        /// <param name="rect">The rectangle within which the element should be arranged.</param>
+        /// <returns>
+        ///   The final arranged bounds of the element.
+        /// </returns>
+        /// <remarks>
+        ///   This method is called during the arrange pass to position and size each child element.
+        /// </remarks>
         protected virtual Rect ArrangeElement(int index, Control element, Rect rect)
         {
             element.Arrange(rect);
             return rect;
         }
 
+        /// <summary>
+        ///   Measures a child element and returns the desired size.
+        /// </summary>
+        /// <param name="index">The index of the item.</param>
+        /// <param name="element">The element to measure.</param>
+        /// <param name="availableSize">The available size for the element.</param>
+        /// <returns>
+        ///   The desired size of the element.
+        /// </returns>
+        /// <remarks>
+        ///   This method is called during the measure pass to determine the desired size of each
+        ///   child element.
+        /// </remarks>
         protected virtual Size MeasureElement(int index, Control element, Size availableSize)
         {
             element.Measure(availableSize);
@@ -202,23 +332,28 @@ namespace Avalonia.Controls.Primitives
         }
 
         /// <summary>
-        /// Gets the initial constraint for the first pass of the two-pass measure.
+        ///   Gets the initial constraint for the first pass of the two-pass measure.
         /// </summary>
         /// <param name="element">The element being measured.</param>
         /// <param name="index">The index of the element.</param>
         /// <param name="availableSize">The available size.</param>
         /// <returns>The measure constraint for the element.</returns>
         /// <remarks>
-        /// The measure pass is split into two parts:
-        /// 
-        /// - The initial pass is used to determine the "natural" size of the elements. In this
-        ///   pass, infinity can be used as the measure constraint if the element has no other
-        ///   constraints on its size.
-        /// - The final pass is made once the "natural" sizes of the elements are known and any
-        ///   layout logic has been run. This pass is needed because controls should not be 
-        ///   arranged with a size less than that passed as the constraint during the measure
-        ///   pass. This pass is only run if <see cref="InitialMeasurePassComplete"/> returns
-        ///   true.
+        ///   <para>
+        ///     The measure pass is split into two parts:
+        ///   </para>
+        ///   <para>
+        ///     - The initial pass is used to determine the "natural" size of the elements. In this
+        ///     pass, infinity can be used as the measure constraint if the element has no other
+        ///     constraints on its size.
+        ///   </para>
+        ///   <para>
+        ///     - The final pass is made once the "natural" sizes of the elements are known and any
+        ///     layout logic has been run. This pass is needed because controls should not be
+        ///     arranged with a size less than that passed as the constraint during the measure
+        ///     pass. This pass is only run if <see cref="TreeDataGridPresenterBase{TItem}.NeedsFinalMeasurePass(int, IReadOnlyList{Control?})" /> returns
+        ///     true.
+        ///   </para>
         /// </remarks>
         protected virtual Size GetInitialConstraint(
             Control element,
@@ -229,29 +364,28 @@ namespace Avalonia.Controls.Primitives
         }
 
         /// <summary>
-        /// Called when the initial pass of the two-pass measure has been completed, in order to determine
-        /// whether a final measure pass is necessary.
+        ///   Called when the initial pass of the two-pass measure has been completed, in order to
+        ///   determine whether a final measure pass is necessary.
         /// </summary>
-        /// <param name="firstIndex">The index of the first element in <paramref name="elements"/>.</param>
+        /// <param name="firstIndex">
+        ///   The index of the first element in <paramref name="elements" />.
+        /// </param>
         /// <param name="elements">The elements being measured.</param>
-        /// <returns>
-        /// true if a final pass should be run; otherwise false.
-        /// </returns>
-        /// <see cref="GetInitialConstraint(Control, int, Size)"/>
+        /// <seealso cref="TreeDataGridPresenterBase{TItem}.GetInitialConstraint(Control, int, Size)" />
         protected virtual bool NeedsFinalMeasurePass(
             int firstIndex,
             IReadOnlyList<Control?> elements) => false;
 
         /// <summary>
-        /// Gets the final constraint for the second pass of the two-pass measure.
+        ///   Gets the final constraint for the second pass of the two-pass measure.
         /// </summary>
         /// <param name="element">The element being measured.</param>
         /// <param name="index">The index of the element.</param>
         /// <param name="availableSize">The available size.</param>
         /// <returns>
-        /// The measure constraint for the element.
+        ///   The measure constraint for the element.
         /// </returns>
-        /// <see cref="GetInitialConstraint(Control, int, Size)"/>
+        /// <seealso cref="TreeDataGridPresenterBase{TItem}.GetInitialConstraint(Control, int, Size)" />
         protected virtual Size GetFinalConstraint(
             Control element,
             int index,
@@ -260,22 +394,108 @@ namespace Avalonia.Controls.Primitives
             return element.DesiredSize;
         }
 
+        /// <summary>
+        ///   Creates a new element for the specified item.
+        /// </summary>
+        /// <param name="item">The item for which to create an element.</param>
+        /// <param name="index">The index of the item.</param>
+        /// <returns>
+        ///   A new control element for the item.
+        /// </returns>
+        /// <remarks>
+        ///   This method is called when a new element needs to be created for an item.
+        /// </remarks>
         protected virtual Control GetElementFromFactory(TItem item, int index)
         {
             return GetElementFromFactory(item!, index, this);
         }
 
+        /// <summary>
+        ///   Creates a new element for the specified data using the element factory.
+        /// </summary>
+        /// <param name="data">The data for which to create an element.</param>
+        /// <param name="index">The index of the item.</param>
+        /// <param name="parent">The parent control that will host the element.</param>
+        /// <returns>
+        ///   A new or recycled control element for the data.
+        /// </returns>
+        /// <remarks>
+        ///   This method delegates to the element factory to create or recycle an element.
+        /// </remarks>
         protected Control GetElementFromFactory(object data, int index, Control parent)
         {
             return _elementFactory!.GetOrCreateElement(data, parent);
         }
 
+        /// <summary>
+        ///   Gets the index and position of the element at the specified position.
+        /// </summary>
+        /// <param name="position">The position at which to find an element.</param>
+        /// <returns>
+        ///   A tuple containing:
+        ///   - The index of the element, or -1 if no element was found at the position
+        ///   - The position of the element
+        /// </returns>
+        /// <remarks>
+        ///   This method is used to determine which element is at a specific position,
+        ///   for example when handling pointer events.
+        /// </remarks>
         protected virtual (int index, double position) GetElementAt(double position) => (-1, -1);
+        /// <summary>
+        ///   Gets the position of the element with the specified index.
+        /// </summary>
+        /// <param name="index">The index of the element.</param>
+        /// <returns>
+        ///   The position of the element, or -1 if the element is not realized.
+        /// </returns>
+        /// <remarks>
+        ///   This method is used to determine the position of an element with a specific index.
+        /// </remarks>
         protected virtual double GetElementPosition(int index) => -1;
+        /// <summary>
+        ///   Prepares an element for display with the specified item data.
+        /// </summary>
+        /// <param name="element">The element to prepare.</param>
+        /// <param name="item">The item data.</param>
+        /// <param name="index">The index of the item.</param>
+        /// <remarks>
+        ///   This method must be implemented by derived classes to initialize the element
+        ///   with the item data. It is called when an element is created or recycled.
+        /// </remarks>
         protected abstract void RealizeElement(Control element, TItem item, int index);
+        /// <summary>
+        ///   Updates the index of an element when its position in the collection changes.
+        /// </summary>
+        /// <param name="element">The element to update.</param>
+        /// <param name="oldIndex">The old index of the element.</param>
+        /// <param name="newIndex">The new index of the element.</param>
+        /// <remarks>
+        ///   This method must be implemented by derived classes to update the element's
+        ///   index when items are inserted or removed. It is called when collection changes
+        ///   affect the indices of items.
+        /// </remarks>
         protected abstract void UpdateElementIndex(Control element, int oldIndex, int newIndex);
+        /// <summary>
+        ///   Releases resources used by an element and prepares it for recycling.
+        /// </summary>
+        /// <param name="element">The element to unrealize.</param>
+        /// <remarks>
+        ///   This method must be implemented by derived classes to clean up an element
+        ///   before it is recycled. It is called when an element is no longer needed for display.
+        /// </remarks>
         protected abstract void UnrealizeElement(Control element);
 
+        /// <summary>
+        ///   Calculates the total size of all items in the primary axis.
+        /// </summary>
+        /// <param name="availableSize">The available size for measurement.</param>
+        /// <returns>
+        ///   The estimated total size of all items.
+        /// </returns>
+        /// <remarks>
+        ///   This method calculates the estimated total size of all items based on the
+        ///   average size of realized elements.
+        /// </remarks>
         protected virtual double CalculateSizeU(Size availableSize)
         {
             if (Items is null)
@@ -285,6 +505,7 @@ namespace Avalonia.Controls.Primitives
             return EstimateElementSizeU() * Items.Count;
         }
 
+        /// <inheritdoc />
         protected override Size MeasureOverride(Size availableSize)
         {
             var items = Items;
@@ -362,6 +583,7 @@ namespace Avalonia.Controls.Primitives
             }
         }
 
+        /// <inheritdoc />
         protected override Size ArrangeOverride(Size finalSize)
         {
             if (_realizedElements is null)
@@ -398,6 +620,22 @@ namespace Avalonia.Controls.Primitives
             }
         }
 
+        /// <summary>
+        ///   Gets or estimates the anchor element for the specified viewport.
+        /// </summary>
+        /// <param name="viewportStart">The start position of the viewport.</param>
+        /// <param name="viewportEnd">The end position of the viewport.</param>
+        /// <param name="itemCount">The total number of items.</param>
+        /// <returns>
+        ///   A tuple containing:
+        ///   - The index of the anchor element
+        ///   - The position of the anchor element
+        /// </returns>
+        /// <remarks>
+        ///   This method tries to find an existing element in the specified viewport from which
+        ///   element realization can start. Failing that it estimates the first element in the
+        ///   viewport.
+        /// </remarks>
         protected virtual (int index, double position) GetOrEstimateAnchorElementForViewport(
             double viewportStart,
             double viewportEnd,
@@ -412,6 +650,7 @@ namespace Avalonia.Controls.Primitives
                 ref _lastEstimatedElementSizeU);
         }
 
+        /// <inheritdoc />
         protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
         {
             base.OnAttachedToVisualTree(e);
@@ -424,6 +663,7 @@ namespace Avalonia.Controls.Primitives
             SubscribeToItemChanges();
         }
 
+        /// <inheritdoc />
         protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
         {
             base.OnDetachedFromVisualTree(e);
@@ -434,12 +674,22 @@ namespace Avalonia.Controls.Primitives
             UnsubscribeFromItemChanges();
         }
 
+        /// <inheritdoc />
         protected override void OnDetachedFromLogicalTree(LogicalTreeAttachmentEventArgs e)
         {
             base.OnDetachedFromLogicalTree(e);
             RecycleAllElements();
         }
 
+        /// <summary>
+        ///   Handles changes in the effective viewport.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event arguments.</param>
+        /// <remarks>
+        ///   This method updates the presenter's viewport and invalidates the measure
+        ///   if the viewport has changed.
+        /// </remarks>
         protected virtual void OnEffectiveViewportChanged(object? sender, EffectiveViewportChangedEventArgs e)
         {
             var vertical = Orientation == Orientation.Vertical;
@@ -466,6 +716,15 @@ namespace Avalonia.Controls.Primitives
             }
         }
 
+        /// <summary>
+        ///   Unrealizes an element when its item is removed from the collection.
+        /// </summary>
+        /// <param name="element">The element to unrealize.</param>
+        /// <remarks>
+        ///   This method is called when an item is removed from the collection.
+        ///   By default, it delegates to <see cref="TreeDataGridPresenterBase{TItem}.UnrealizeElement(Control)" />, but derived
+        ///   classes can override it to provide custom behavior.
+        /// </remarks>
         protected virtual void UnrealizeElementOnItemRemoved(Control element)
         {
             UnrealizeElement(element);
@@ -686,6 +945,19 @@ namespace Avalonia.Controls.Primitives
             return _lastEstimatedElementSizeU;
         }
 
+        /// <summary>
+        ///   Estimates the viewport based on the available size.
+        /// </summary>
+        /// <param name="availableSize">The available size for measurement.</param>
+        /// <returns>
+        ///   The estimated viewport rectangle.
+        /// </returns>
+        /// <remarks>
+        ///   This method is called when the actual viewport is not yet known, for example
+        ///   during the first layout pass. The default implementation walks up the visual tree to
+        ///   find a parent with a valid bounds, and uses that to estimate the viewport. If no such
+        ///   ancestor is found, it uses the available size as the viewport size.
+        /// </remarks>
         private Rect EstimateViewport(Size availableSize)
         {
             var c = this.GetVisualParent();
