@@ -18,7 +18,7 @@
     <None Include="..\..\docs\images\icon.png" Pack="true" PackagePath="icon.png" Visible="false" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.3.11" />
+    <PackageReference Include="Avalonia" Version="11.3.12" />
   </ItemGroup>
 
   <!-- '!NET6_0_OR_GREATER' equivalent -->
