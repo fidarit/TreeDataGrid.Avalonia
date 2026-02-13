@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>net10.0;net11.0</TargetFrameworks>
     <IsPackable>True</IsPackable>
@@ -21,11 +21,10 @@
     <PackageReference Include="Avalonia" Version="11.3.12" />
   </ItemGroup>
 
-  <!-- '!NET6_0_OR_GREATER' equivalent -->
   <ItemGroup Condition="!('$(TargetFrameworkIdentifier)' == '.NETCoreApp' AND $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '6.0')))">
     <PackageReference Include="Microsoft.Bcl.HashCode" Version="6.0.0" />
   </ItemGroup>
-  <!-- 'NET6_0_OR_GREATER' equivalent -->
+
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETCoreApp' AND $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '6.0'))">
     <Compile Remove="StandardExtensions\**" />
     <None Remove="StandardExtensions\**" />
