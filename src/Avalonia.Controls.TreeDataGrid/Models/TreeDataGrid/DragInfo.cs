@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Avalonia.Input;
 
 namespace Avalonia.Controls.Models.TreeDataGrid
 {
@@ -9,29 +11,31 @@ namespace Avalonia.Controls.Models.TreeDataGrid
     public class DragInfo
     {
         /// <summary>
-        /// Defines the data format in an <see cref="Avalonia.Input.IDataObject"/>.
-        /// </summary>
-        public const string DataFormat = "TreeDataGridDragInfo";
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="DragInfo"/> class.
         /// </summary>
-        /// <param name="source">The source of the drag operation/</param>
         /// <param name="indexes">The indexes being dragged.</param>
-        public DragInfo(ITreeDataGridSource source, IEnumerable<IndexPath> indexes)
+        public DragInfo(IEnumerable<IndexPath> indexes)
         {
-            Source = source;
             Indexes = indexes;
         }
 
-        /// <summary>
-        /// Gets the <see cref="ITreeDataGridSource"/> that rows are being dragged from.
-        /// </summary>
-        public ITreeDataGridSource Source { get; }
+        public DragInfo(string z)
+        {
+            Import(z);
+        }
 
         /// <summary>
         /// Gets or sets the model indexes of the rows being dragged.
         /// </summary>
         public IEnumerable<IndexPath> Indexes { get; }
+
+        internal string? Export()
+        {
+            return null;
+        }
+
+        internal void Import(string z)
+        {
+        }
     }
 }

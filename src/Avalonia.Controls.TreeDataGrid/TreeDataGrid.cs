@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -470,9 +471,11 @@ namespace Avalonia.Controls
             if (allowedEffects != DragDropEffects.None)
             {
                 var data = new DataTransfer();
-                var info = new DragInfo(_source, RowSelection.SelectedIndexes.ToList());
-                data.Set(DragInfo.DataFormat, info);
-                DragDrop.DoDragDrop(trigger, data, allowedEffects);
+                var info = new DragInfo(RowSelection.SelectedIndexes.ToList());
+                var item = new DataTransferItem();
+                item.Set(TreeDataGridDragFormat.Instance, info.Export());
+                data.Add(item);
+                DragDrop.DoDragDropAsync(trigger, data, allowedEffects);
             }
         }
 
@@ -611,17 +614,17 @@ namespace Avalonia.Controls
         private bool CalculateAutoDragDrop(
             TreeDataGridRow? targetRow,
             DragEventArgs e,
-            [NotNullWhen(true)] out DragInfo? data,
+            [NotNullWhen(true)] out IEnumerable<IndexPath>? indexes,
             out TreeDataGridRowDropPosition position)
         {
+            var z = e.DataTransfer.TryGetValue<string>(TreeDataGridDragFormat.Instance);
             if (!AutoDragDropRows ||
-                e.Data.Get(DragInfo.DataFormat) is not DragInfo di ||
+                z is null ||
                 _source is null ||
                 _source.IsSorted ||
-                targetRow is null ||
-                di.Source != _source)
+                targetRow is null)
             {
-                data = null;
+                indexes = null;
                 position = TreeDataGridRowDropPosition.None;
                 return false;
             }
@@ -629,19 +632,21 @@ namespace Avalonia.Controls
             var targetIndex = _source.Rows.RowIndexToModelIndex(targetRow.RowIndex);
             position = GetDropPosition(_source, e, targetRow);
 
+            var di = new DragInfo(z);
+
             // We can't drop rows into themselves or their descendents.
             foreach (var sourceIndex in di.Indexes)
             {
                 if (sourceIndex.IsAncestorOf(targetIndex) ||
                     (sourceIndex == targetIndex && position == TreeDataGridRowDropPosition.Inside))
                 {
-                    data = null;
+                    indexes = null;
                     position = TreeDataGridRowDropPosition.None;
                     return false;
                 }
             }
 
-            data = di;
+            indexes = di.Indexes;
             return true;
         }
 
@@ -694,7 +699,7 @@ namespace Avalonia.Controls
 
             TryGetRow(e.Source as Control, out var row);
 
-            var autoDrop = CalculateAutoDragDrop(row, e, out var data, out var position);
+            var autoDrop = CalculateAutoDragDrop(row, e, out var indexes, out var position);
             var route = BuildEventRoute(RowDropEvent);
 
             if (route.HasHandlers)
@@ -715,7 +720,7 @@ namespace Avalonia.Controls
                 position != TreeDataGridRowDropPosition.None)
             {
                 var targetIndex = _source.Rows.RowIndexToModelIndex(row.RowIndex);
-                _source.DragDropRows(_source, data!.Indexes, targetIndex, position, e.DragEffects);
+                _source.DragDropRows(_source, indexes, targetIndex, position, e.DragEffects);
             }
         }
 
