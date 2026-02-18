@@ -469,12 +469,10 @@ namespace Avalonia.Controls
 
             if (allowedEffects != DragDropEffects.None)
             {
-#pragma warning disable CS0618
                 var data = new DataObject();
                 var info = new DragInfo(_source, RowSelection.SelectedIndexes.ToList());
                 data.Set(DragInfo.DataFormat, info);
                 DragDrop.DoDragDrop(trigger, data, allowedEffects);
-#pragma warning restore CS0618
             }
         }
 
@@ -616,7 +614,6 @@ namespace Avalonia.Controls
             [NotNullWhen(true)] out DragInfo? data,
             out TreeDataGridRowDropPosition position)
         {
-#pragma warning disable CS0618
             if (!AutoDragDropRows ||
                 e.Data.Get(DragInfo.DataFormat) is not DragInfo di ||
                 _source is null ||
@@ -646,7 +643,6 @@ namespace Avalonia.Controls
 
             data = di;
             return true;
-#pragma warning restore CS0618
         }
 
         private void OnDragOver(DragEventArgs e)

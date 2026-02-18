@@ -163,8 +163,10 @@ namespace Avalonia.Controls.Primitives
             return result;
         }
 
-        protected virtual void OnDoubleTapped(TappedEventArgs e)
+        protected override void OnDoubleTapped(TappedEventArgs e)
         {
+            base.OnDoubleTapped(e);
+
             if (Model is not null &&
                 !e.Handled &&
                 !IsEditing &&
