@@ -469,7 +469,7 @@ namespace Avalonia.Controls
 
             if (allowedEffects != DragDropEffects.None)
             {
-                var data = new DataObject();
+                var data = new DataTransfer();
                 var info = new DragInfo(_source, RowSelection.SelectedIndexes.ToList());
                 data.Set(DragInfo.DataFormat, info);
                 DragDrop.DoDragDrop(trigger, data, allowedEffects);
