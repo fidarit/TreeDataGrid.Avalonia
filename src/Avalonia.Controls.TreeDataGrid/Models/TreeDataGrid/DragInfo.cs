@@ -19,7 +19,7 @@ namespace Avalonia.Controls.Models.TreeDataGrid
             Indexes = indexes;
         }
 
-        public DragInfo(string z)
+        public DragInfo(string? z)
         {
             Import(z);
         }
@@ -27,14 +27,14 @@ namespace Avalonia.Controls.Models.TreeDataGrid
         /// <summary>
         /// Gets or sets the model indexes of the rows being dragged.
         /// </summary>
-        public IEnumerable<IndexPath> Indexes { get; }
+        public IEnumerable<IndexPath>? Indexes { get; }
 
         internal string? Export()
         {
             return null;
         }
 
-        internal void Import(string z)
+        internal void Import(string? z)
         {
         }
     }
