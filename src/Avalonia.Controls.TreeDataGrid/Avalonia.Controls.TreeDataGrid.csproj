@@ -19,7 +19,7 @@
     <None Include="..\..\docs\images\icon.png" Pack="true" PackagePath="icon.png" Visible="false" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="12.0.0-preview2" />
+    <PackageReference Include="Avalonia" Version="11.3.12" />
   </ItemGroup>
 
   <ItemGroup Condition="!('$(TargetFrameworkIdentifier)' == '.NETCoreApp' AND $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '6.0')))">
