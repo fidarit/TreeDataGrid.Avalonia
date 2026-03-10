@@ -1,8 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Runtime.CompilerServices;
 using System.Text;
+using Avalonia.Media;
+using Avalonia.Platform;
 
-namespace Avalonia.Controls
+namespace Avalonia.Utilities
 {
     public static class MathWrapper
     {
