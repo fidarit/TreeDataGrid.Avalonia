@@ -459,8 +459,8 @@ namespace Avalonia.Controls.Primitives
             var newViewportStart = vertical ? Viewport.Top : Viewport.Left;
             var newViewportEnd = vertical ? Viewport.Bottom : Viewport.Right;
 
-            if (!MathUtilities.AreClose(oldViewportStart, newViewportStart) ||
-                !MathUtilities.AreClose(oldViewportEnd, newViewportEnd))
+            if (!MathWrapper.AreClose(oldViewportStart, newViewportStart) ||
+                !MathWrapper.AreClose(oldViewportEnd, newViewportEnd))
             {
                 InvalidateMeasure();
             }

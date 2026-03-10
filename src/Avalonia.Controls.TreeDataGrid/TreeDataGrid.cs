@@ -726,13 +726,13 @@ namespace Avalonia.Controls
 
         private void OnScrollChanged(object? sender, ScrollChangedEventArgs e)
         {
-            if (Scroll is not null && _headerScroll is not null && !MathUtilities.IsZero(e.OffsetDelta.X))
+            if (Scroll is not null && _headerScroll is not null && !MathWrapper.IsZero(e.OffsetDelta.X))
                 _headerScroll.Offset = _headerScroll.Offset.WithX(Scroll.Offset.X);
         }
 
         private void OnHeaderScrollChanged(object? sender, ScrollChangedEventArgs e)
         {
-            if (Scroll is not null && _headerScroll is not null && !MathUtilities.IsZero(e.OffsetDelta.X))
+            if (Scroll is not null && _headerScroll is not null && !MathWrapper.IsZero(e.OffsetDelta.X))
                 Scroll.Offset = Scroll.Offset.WithX(_headerScroll.Offset.X);
         }
 

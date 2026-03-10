@@ -130,7 +130,7 @@ namespace Avalonia.Controls.Models.TreeDataGrid
 
         public (int index, double y) GetRowAt(double y)
         {
-            if (MathUtilities.IsZero(y))
+            if (MathWrapper.IsZero(y))
                 return (0, 0);
             return (-1, -1);
         }

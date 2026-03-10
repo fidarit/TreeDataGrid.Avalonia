@@ -162,7 +162,7 @@ namespace Avalonia.Controls.Primitives
 
         private void ResizerDragDelta(object? sender, VectorEventArgs e)
         {
-            if (_columns is null || _model is null || MathUtilities.IsZero(e.Vector.X))
+            if (_columns is null || _model is null || MathWrapper.IsZero(e.Vector.X))
                 return;
 
             var pixelWidth = _model.Width.IsAbsolute ? _model.Width.Value : Bounds.Width;
