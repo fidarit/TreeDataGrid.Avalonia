@@ -194,6 +194,15 @@ namespace Avalonia.Controls
         {
             _comparison = comparison;
             _rows?.Sort(_comparison);
+            Sorted?.Invoke();
+        }
+
+        public void Unsort()
+        {
+            Sort(null);
+
+            foreach (var c in Columns)
+                c.SortDirection = null;
         }
 
         IEnumerable<object>? ITreeDataGridSource.GetModelChildren(object model)
@@ -208,7 +217,6 @@ namespace Avalonia.Controls
                 columnBase.GetComparison(direction) is Comparison<TModel> comparison)
             {
                 Sort(comparison);
-                Sorted?.Invoke();
                 foreach (var c in Columns)
                     c.SortDirection = c == column ? direction : null;
                 return true;
