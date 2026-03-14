@@ -145,6 +145,9 @@ namespace Avalonia.Controls.Selection
             sender.RowsPresenter?.BringIntoView(
                 rowIndex,
                 sender.ColumnHeadersPresenter?.TryGetElement(columnIndex)?.Bounds);
+
+            if (sender.TryGetCell(columnIndex, rowIndex) is { Focusable: true} targetCell)
+                targetCell.Focus();
         }
 
         void ITreeDataGridSelectionInteraction.OnPointerPressed(TreeDataGrid sender, PointerPressedEventArgs e)
