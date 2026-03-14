@@ -484,6 +484,67 @@ namespace Avalonia.Controls.TreeDataGridTests
             Assert.Equal(-1, cell.RowIndex);
         }
 
+        [AvaloniaFact]
+        public void SortBy_Sorts_Roots_And_Sets_Indicator()
+        {
+            var (target, source) = CreateTarget();
+
+            Assert.False(source.IsSorted);
+
+            var ok = source.SortBy(source.Columns[0], ListSortDirection.Descending);
+            Assert.True(ok);
+            Assert.True(source.IsSorted);
+            Assert.Equal(ListSortDirection.Descending, source.Columns[0].SortDirection);
+
+            // Verify top-level rows are sorted by Id descending
+            var sorted = source.Items.OrderByDescending(x => x.Id).ToList();
+            for (var i = 0; i < sorted.Count && i < source.Rows.Count; ++i)
+            {
+                var row = source.Rows[i];
+                Assert.Equal(sorted[i].Id, (row.Model as Model)?.Id);
+            }
+        }
+
+        [AvaloniaFact]
+        public void Sort_Using_Comparison_Sorts_Display()
+        {
+            var (target, source) = CreateTarget();
+
+            Assert.False(source.IsSorted);
+
+            source.Sort((x, y) => y.Id - x.Id);
+
+            Assert.True(source.IsSorted);
+            var sorted = source.Items.OrderByDescending(x => x.Id).ToList();
+
+            for (var i = 0; i < sorted.Count && i < source.Rows.Count; ++i)
+            {
+                var row = source.Rows[i];
+                Assert.Equal(sorted[i].Id, (row.Model as Model)?.Id);
+            }
+        }
+
+        [AvaloniaFact]
+        public void Unsort_Restores_Original_Order()
+        {
+            var (target, source) = CreateTarget();
+            var original = source.Items.ToList();
+
+            var ok = source.SortBy(source.Columns[0], ListSortDirection.Descending);
+            Assert.True(ok);
+            Assert.True(source.IsSorted);
+
+            source.Unsort();
+            Assert.False(source.IsSorted);
+
+            // Verify top-level rows have original sort order
+            for (var i = 0; i < original.Count && i < source.Rows.Count; ++i)
+            {
+                var row = source.Rows[i];
+                Assert.Equal(original[i].Id, (row.Model as Model)?.Id);
+            }
+        }
+
         private static (TreeDataGrid, HierarchicalTreeDataGridSource<Model>) CreateTarget(
             IEnumerable<IColumn<Model>>? columns = null,
             bool runLayout = true)
@@ -503,14 +564,14 @@ namespace Avalonia.Controls.TreeDataGridTests
                 },
             };
 
-            columns ??= new IColumn<Model>[]
-            {
+            columns ??=
+            [
                 new HierarchicalExpanderColumn<Model>(
                     new TextColumn<Model, int>("ID", x => x.Id),
                     x => x.Children,
                     x => true),
                 new TextColumn<Model, string?>("Title", x => x.Title),
-            };
+            ];
 
             var source = new HierarchicalTreeDataGridSource<Model>(items);
             source.Columns.AddRange(columns);
