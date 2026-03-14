@@ -19,6 +19,14 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
+    <PackageReference Include="PolySharp" Version="1.15.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="Avalonia.Controls.TreeDataGrid.Benchmark" />
+    <InternalsVisibleTo Include="Avalonia.Controls.TreeDataGrid.Tests" />
   </ItemGroup>
 
   <!-- '!NET6_0_OR_GREATER' equivalent -->

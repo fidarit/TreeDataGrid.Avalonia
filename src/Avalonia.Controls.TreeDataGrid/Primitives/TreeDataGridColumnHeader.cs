@@ -167,7 +167,7 @@ namespace Avalonia.Controls.Primitives
 
             var pixelWidth = _model.Width.IsAbsolute ? _model.Width.Value : Bounds.Width;
 
-            if (double.IsNaN(pixelWidth) || double.IsInfinity(pixelWidth) || pixelWidth + e.Vector.X < 0)
+            if (!Double.IsFinite(pixelWidth) || pixelWidth + e.Vector.X < 0)
                 return;
 
             var width = new GridLength(pixelWidth + e.Vector.X, GridUnitType.Pixel);

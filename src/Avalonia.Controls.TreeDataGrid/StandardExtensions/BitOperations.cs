@@ -45,41 +45,6 @@ namespace System.Numerics
 
         /// <summary>
         /// Returns the integer (floor) log of the specified value, base 2.
-        /// Note that by convention, input value 0 returns 0 since log(0) is undefined.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static int Log2(ulong value)
-        {
-            value |= 1;
-
-            uint hi = (uint)(value >> 32);
-
-            if (hi == 0)
-            {
-                return Log2((uint)value);
-            }
-
-            return 32 + Log2(hi);
-        }
-
-        /// <summary>
-        /// Returns the integer (floor) log of the specified value, base 2.
-        /// Note that by convention, input value 0 returns 0 since log(0) is undefined.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static int Log2(nuint value)
-        {
-#if TARGET_64BIT
-            return Log2((ulong)value);
-#else
-            return Log2((uint)value);
-#endif
-        }
-
-        /// <summary>
-        /// Returns the integer (floor) log of the specified value, base 2.
         /// Note that by convention, input value 0 returns 0 since Log(0) is undefined.
         /// Does not directly use any hardware intrinsics, nor does it incur branching.
         /// </summary>
@@ -96,12 +61,8 @@ namespace System.Numerics
             value |= value >> 08;
             value |= value >> 16;
 
-            // uint.MaxValue >> 27 is always in range [0 - 31] so we use Unsafe.AddByteOffset to avoid bounds check
-            return Unsafe.AddByteOffset(
-                // Using deBruijn sequence, k=2, n=5 (2^5=32) : 0b_0000_0111_1100_0100_1010_1100_1101_1101u
-                ref MemoryMarshal.GetReference(Log2DeBruijn),
-                // uint|long -> IntPtr cast on 32-bit platforms does expensive overflow checks not needed here
-                (IntPtr)(int)((value * 0x07C4ACDDu) >> 27));
+            // Using deBruijn sequence, k=2, n=5 (2^5=32) : 0b_0000_0111_1100_0100_1010_1100_1101_1101u
+            return Log2DeBruijn[(int)((value * 0x07C4ACDDu) >> 27)];
         }
     }
 }
