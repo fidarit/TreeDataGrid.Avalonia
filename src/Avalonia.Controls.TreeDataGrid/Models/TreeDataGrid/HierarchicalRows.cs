@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using Avalonia.Controls.Utils;
 using Avalonia.Utilities;
 
 namespace Avalonia.Controls.Models.TreeDataGrid
@@ -38,6 +37,7 @@ namespace Avalonia.Controls.Models.TreeDataGrid
         IRow IReadOnlyList<IRow>.this[int index] => _flattenedRows[index];
         public override int Count => _flattenedRows.Count;
 
+        /// <inheritdoc/>
         public void Dispose()
         {
             _ignoreCollectionChanges = true;
@@ -128,6 +128,7 @@ namespace Avalonia.Controls.Models.TreeDataGrid
             }
         }
 
+        /// <inheritdoc/>
         public (int index, double y) GetRowAt(double y)
         {
             if (MathUtilities.IsZero(y))
@@ -135,6 +136,7 @@ namespace Avalonia.Controls.Models.TreeDataGrid
             return (-1, -1);
         }
 
+        /// <inheritdoc/>
         public ICell RealizeCell(IColumn column, int columnIndex, int rowIndex)
         {
             if (column is IColumn<TModel> c)
@@ -169,6 +171,7 @@ namespace Avalonia.Controls.Models.TreeDataGrid
             }
         }
 
+        /// <inheritdoc/>
         public void UnrealizeCell(ICell cell, int rowIndex, int columnIndex)
         {
             (cell as IDisposable)?.Dispose();
@@ -179,6 +182,7 @@ namespace Avalonia.Controls.Models.TreeDataGrid
             return ModelIndexToRowIndex(modelIndex[..^1]);
         }
 
+        /// <inheritdoc/>
         public int ModelIndexToRowIndex(IndexPath modelIndex)
         {
             if (modelIndex == default)
@@ -193,6 +197,7 @@ namespace Avalonia.Controls.Models.TreeDataGrid
             return -1;
         }
 
+        /// <inheritdoc/>
         public IndexPath RowIndexToModelIndex(int rowIndex)
         {
             if (rowIndex >= 0 && rowIndex < _flattenedRows.Count)

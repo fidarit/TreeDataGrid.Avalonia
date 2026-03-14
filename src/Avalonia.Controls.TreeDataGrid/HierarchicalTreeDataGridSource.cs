@@ -31,11 +31,21 @@ namespace Avalonia.Controls
         private ITreeDataGridSelection? _selection;
         private bool _isSelectionSet;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HierarchicalTreeDataGridSource{TModel}"/>
+        /// class with a single root item.
+        /// </summary>
+        /// <param name="item">The root item.</param>
         public HierarchicalTreeDataGridSource(TModel item)
             : this(new[] { item })
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HierarchicalTreeDataGridSource{TModel}"/>
+        /// class with the specified items.
+        /// </summary>
+        /// <param name="items">The root items for the tree.</param>
         public HierarchicalTreeDataGridSource(IEnumerable<TModel> items)
         {
             _items = items;
@@ -44,6 +54,7 @@ namespace Avalonia.Controls
             Columns.CollectionChanged += OnColumnsCollectionChanged;
         }
 
+        /// <inheritdoc/>
         public IEnumerable<TModel> Items 
         {
             get => _items;
@@ -60,9 +71,13 @@ namespace Avalonia.Controls
             }
         }
 
+        /// <inheritdoc/>
         public IRows Rows => GetOrCreateRows();
+
+        /// <inheritdoc cref="ITreeDataGridSource.Columns"/>
         public ColumnList<TModel> Columns { get; }
 
+        /// <inheritdoc/>
         public ITreeDataGridSelection? Selection
         {
             get
@@ -86,19 +101,50 @@ namespace Avalonia.Controls
 
         IEnumerable<object> ITreeDataGridSource.Items => Items;
 
+        /// <summary>
+        /// Gets the typed cell selection model, if available.
+        /// </summary>
         public ITreeDataGridCellSelectionModel<TModel>? CellSelection => Selection as ITreeDataGridCellSelectionModel<TModel>;
+
+        /// <summary>
+        /// Gets the typed row selection model, if available.
+        /// </summary>
         public ITreeDataGridRowSelectionModel<TModel>? RowSelection => Selection as ITreeDataGridRowSelectionModel<TModel>;
+
+        /// <summary>
+        /// Gets a value indicating whether the source is hierarchical (always true for this source).
+        /// </summary>
         public bool IsHierarchical => true;
+
+        /// <inheritdoc/>
         public bool IsSorted => _comparison is not null;
 
         IColumns ITreeDataGridSource.Columns => Columns;
 
+        /// <summary>
+        /// Occurs when a row is about to expand.
+        /// </summary>
         public event EventHandler<RowEventArgs<HierarchicalRow<TModel>>>? RowExpanding;
+
+        /// <summary>
+        /// Occurs when a row has expanded.
+        /// </summary>
         public event EventHandler<RowEventArgs<HierarchicalRow<TModel>>>? RowExpanded;
+
+        /// <summary>
+        /// Occurs when a row is about to collapse.
+        /// </summary>
         public event EventHandler<RowEventArgs<HierarchicalRow<TModel>>>? RowCollapsing;
+
+        /// <summary>
+        /// Occurs when a row has collapsed.
+        /// </summary>
         public event EventHandler<RowEventArgs<HierarchicalRow<TModel>>>? RowCollapsed;
+
+        /// <inheritdoc/>
         public event Action? Sorted;
 
+        /// <inheritdoc/>
         public void Dispose()
         {
             _rows?.Dispose();
@@ -154,6 +200,13 @@ namespace Avalonia.Controls
             GetOrCreateRows().ExpandCollapseRecursive(predicate, row);
         }
 
+        /// <summary>
+        /// Tries to get the model at the given tree path.
+        /// </summary>
+        /// <param name="index">Hierarchical index path</param>
+        /// <param name="result">The found model, or null</param>
+        /// <returns>true if model was found</returns>
+        /// <exception cref="InvalidOperationException">No expander column set</exception>
         public bool TryGetModelAt(IndexPath index, [NotNullWhen(true)] out TModel? result)
         {
             if (_expanderColumn is null)
@@ -190,6 +243,7 @@ namespace Avalonia.Controls
             return false;
         }
 
+        /// <inheritdoc/>
         public void Sort(Comparison<TModel>? comparison)
         {
             _comparison = comparison;
@@ -197,6 +251,7 @@ namespace Avalonia.Controls
             Sorted?.Invoke();
         }
 
+        /// <inheritdoc/>
         public void Unsort()
         {
             Sort(null);
@@ -210,6 +265,7 @@ namespace Avalonia.Controls
             return GetModelChildren((TModel)model);
         }
 
+        /// <inheritdoc/>
         public bool SortBy(IColumn? column, ListSortDirection direction)
         {
             if (column is IColumn<TModel> columnBase &&

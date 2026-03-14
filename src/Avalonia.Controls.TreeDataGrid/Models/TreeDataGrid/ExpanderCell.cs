@@ -40,13 +40,19 @@ namespace Avalonia.Controls.Models.TreeDataGrid
             }
         }
 
+        /// <inheritdoc/>
         public bool CanEdit => _inner.CanEdit;
         public ICell Content => _inner;
+
+        /// <inheritdoc/>
         public BeginEditGestures EditGestures => _inner.EditGestures;
         public IExpanderRow<TModel> Row { get; }
         public bool ShowExpander => Row.ShowExpander;
+
+        /// <inheritdoc/>
         public object? Value => _inner.Value;
 
+        /// <inheritdoc/>
         public bool IsExpanded
         {
             get => Row.IsExpanded;
@@ -56,6 +62,7 @@ namespace Avalonia.Controls.Models.TreeDataGrid
         object IExpanderCell.Content => Content;
         IRow IExpanderCell.Row => Row;
 
+        /// <inheritdoc/>
         public void Dispose()
         {
             Row.PropertyChanged -= RowPropertyChanged;

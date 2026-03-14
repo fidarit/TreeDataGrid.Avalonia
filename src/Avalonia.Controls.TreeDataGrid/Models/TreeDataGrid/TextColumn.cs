@@ -60,6 +60,7 @@ namespace Avalonia.Controls.Models.TreeDataGrid
 
         bool ITextSearchableColumn<TModel>.IsTextSearchEnabled => Options?.IsTextSearchEnabled ?? false;
 
+        /// <inheritdoc/>
         public override ICell CreateCell(IRow<TModel> row)
         {
             var expression = CreateBindingExpression(row.Model);

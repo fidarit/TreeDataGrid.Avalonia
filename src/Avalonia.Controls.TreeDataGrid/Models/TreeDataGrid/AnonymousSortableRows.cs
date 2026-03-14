@@ -23,6 +23,11 @@ namespace Avalonia.Controls.Models.TreeDataGrid
         private IComparer<TModel>? _comparer;
         private List<int>? _sortedIndexes;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AnonymousSortableRows{TModel}"/> class.
+        /// </summary>
+        /// <param name="items">The underlying items source view.</param>
+        /// <param name="comparer">An optional comparer used to sort the rows.</param>
         public AnonymousSortableRows(
             TreeDataGridItemsSourceView<TModel> items,
             IComparer<TModel>? comparer)
@@ -34,6 +39,10 @@ namespace Avalonia.Controls.Models.TreeDataGrid
             _compareItemsByIndex = CompareItemsByIndex;
         }
 
+        /// <summary>
+        /// Gets the row at the specified index.
+        /// </summary>
+        /// <param name="index">The zero-based row index.</param>
         public override IRow<TModel> this[int index]
         {
             get
@@ -48,16 +57,28 @@ namespace Avalonia.Controls.Models.TreeDataGrid
         }
 
         IRow IReadOnlyList<IRow>.this[int index] => this[index];
+
+        /// <summary>
+        /// Gets the number of rows exposed by this collection.
+        /// </summary>
         public override int Count => _sortedIndexes?.Count ?? _items.Count;
 
+        /// <summary>
+        /// Occurs when the rows collection changes.
+        /// </summary>
         public event NotifyCollectionChangedEventHandler? CollectionChanged;
 
+        /// <inheritdoc />
         public void Dispose()
         {
             SetItems(TreeDataGridItemsSourceView<TModel>.Empty);
             GC.SuppressFinalize(this);
         }
 
+        /// <summary>
+        /// Returns the row index and Y-offset for a given vertical position within the rows.
+        /// </summary>
+        /// <param name="y">The vertical offset to query.</param>
         public (int index, double y) GetRowAt(double y)
         {
             // Rows in an AnonymousSortableRows collection have Auto height so we only
@@ -67,12 +88,23 @@ namespace Avalonia.Controls.Models.TreeDataGrid
             return (-1, -1);
         }
 
+        /// <summary>
+        /// Returns an enumerator that iterates through the collection of rows.
+        /// </summary>
         public override IEnumerator<IRow<TModel>> GetEnumerator()
         {
             for (var i = 0; i < Count; ++i)
                 yield return this[i];
         }
 
+        /// <summary>
+        /// Creates and returns a cell for the specified column and row index.
+        /// </summary>
+        /// <param name="column">The column for which to create the cell. Must implement <see cref="IColumn{TModel}"/> to support cell creation.</param>
+        /// <param name="columnIndex">The zero-based index of the column within the table.</param>
+        /// <param name="rowIndex">The zero-based index of the row for which the cell is created.</param>
+        /// <returns>An instance of <see cref="ICell"/> representing the cell at the specified column and row.</returns>
+        /// <exception cref="InvalidOperationException">Thrown if the specified <paramref name="column"/> does not implement <see cref="IColumn{TModel}"/>.</exception>
         public ICell RealizeCell(IColumn column, int columnIndex, int rowIndex)
         {
             if (column is IColumn<TModel> c)
@@ -81,6 +113,9 @@ namespace Avalonia.Controls.Models.TreeDataGrid
                 throw new InvalidOperationException("Invalid column.");
         }
 
+        /// <summary>
+        /// Replaces the underlying items source view used by the collection.
+        /// </summary>
         public void SetItems(TreeDataGridItemsSourceView<TModel> items)
         {
             _items.CollectionChanged -= OnItemsCollectionChanged;
@@ -92,6 +127,9 @@ namespace Avalonia.Controls.Models.TreeDataGrid
             OnItemsCollectionChanged(null, CollectionExtensions.ResetEvent);
         }
 
+        /// <summary>
+        /// Converts a model index into the corresponding row index within this collection.
+        /// </summary>
         public int ModelIndexToRowIndex(IndexPath modelIndex)
         {
             if (modelIndex.Count != 1)
@@ -106,14 +144,23 @@ namespace Avalonia.Controls.Models.TreeDataGrid
 
         }
 
+        /// <summary>
+        /// Converts a row index to the corresponding model index.
+        /// </summary>
         public IndexPath RowIndexToModelIndex(int rowIndex) => _sortedIndexes?[rowIndex] ?? rowIndex;
 
+        /// <summary>
+        /// Applies a comparer to sort the rows exposed by the collection.
+        /// </summary>
         public void Sort(IComparer<TModel>? comparer)
         {
             _comparer = comparer;
             _sortedIndexes = comparer is object ? CreateSortedIndexes() : null;
         }
 
+        /// <summary>
+        /// Сleans up a cell that was previously created.
+        /// </summary>
         public void UnrealizeCell(ICell cell, int columnIndex, int rowIndex)
         {
             (cell as IDisposable)?.Dispose();

@@ -30,11 +30,19 @@ namespace Avalonia.Controls.Models.TreeDataGrid
             });
         }
 
+        /// <inheritdoc/>
         public bool CanEdit => !IsReadOnly;
+
+        /// <inheritdoc/>
         public BeginEditGestures EditGestures => _options?.BeginEditGestures ?? BeginEditGestures.Default;
+
         public Func<Control, IDataTemplate> GetCellTemplate { get; }
         public Func<Control, IDataTemplate>? GetCellEditingTemplate { get; }
+
+        /// <inheritdoc/>
         public bool IsReadOnly { get; private set; }
+
+        /// <inheritdoc/>
         public object? Value { get; }
 
         void IEditableObject.BeginEdit() => (Value as IEditableObject)?.BeginEdit();

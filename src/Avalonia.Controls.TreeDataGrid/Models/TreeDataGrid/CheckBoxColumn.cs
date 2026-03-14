@@ -66,6 +66,7 @@ namespace Avalonia.Controls.Models.TreeDataGrid
 
         public bool IsThreeState { get; }
 
+        /// <inheritdoc/>
         public override ICell CreateCell(IRow<TModel> row)
         {
             var expression = CreateBindingExpression(row.Model);

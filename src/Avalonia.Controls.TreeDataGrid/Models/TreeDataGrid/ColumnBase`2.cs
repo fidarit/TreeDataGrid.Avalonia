@@ -91,6 +91,7 @@ namespace Avalonia.Controls.Models.TreeDataGrid
         /// </summary>
         public TypedBinding<TModel, TValue?> Binding { get; }
 
+        /// <inheritdoc/>
         public override Comparison<TModel?>? GetComparison(ListSortDirection direction)
         {
             if (!_canUserSort)
@@ -104,6 +105,7 @@ namespace Avalonia.Controls.Models.TreeDataGrid
             };
         }
 
+        /// <inheritdoc/>
         protected TypedBindingExpression<TModel, TValue?> CreateBindingExpression(TModel model)
         {
             return Binding.Instance(model);

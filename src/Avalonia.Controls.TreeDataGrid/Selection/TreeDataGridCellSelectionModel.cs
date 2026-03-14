@@ -35,12 +35,14 @@ namespace Avalonia.Controls.Selection
 
         public int Count => _selectedColumns.Count * _selectedRows.Count;
 
+        /// <inheritdoc/>
         public bool SingleSelect
         {
             get => _selectedRows.SingleSelect;
             set => _selectedColumns.SingleSelect = _selectedRows.SingleSelect = value;
         }
 
+        /// <inheritdoc/>
         public CellIndex SelectedIndex
         {
             get => new(_selectedColumns.SelectedIndex, _selectedRows.SelectedIndex);
@@ -51,6 +53,7 @@ namespace Avalonia.Controls.Selection
             }
         }
 
+        /// <inheritdoc/>
         public IReadOnlyList<CellIndex> SelectedIndexes => _selectedIndexes;
 
         IEnumerable? ITreeDataGridSelection.Source
@@ -59,6 +62,7 @@ namespace Avalonia.Controls.Selection
             set => ((ITreeDataGridSelection)_selectedRows).Source = value;
         }
 
+        /// <inheritdoc/>
         public event EventHandler<TreeDataGridCellSelectionChangedEventArgs<TModel>>? SelectionChanged;
 
         event EventHandler? ITreeDataGridSelectionInteraction.SelectionChanged
@@ -73,6 +77,7 @@ namespace Avalonia.Controls.Selection
             remove => _untypedSelectionChanged -= value;
         }
 
+        /// <inheritdoc/>
         public bool IsSelected(CellIndex index) => IsSelected(index.ColumnIndex, index.RowIndex);
 
         /// <summary>
@@ -85,6 +90,7 @@ namespace Avalonia.Controls.Selection
             return _selectedColumns.IsSelected(columnIndex) && _selectedRows.IsSelected(rowIndex);
         }
 
+        /// <inheritdoc/>
         public void SetSelectedRange(CellIndex start, int columnCount, int rowCount)
         {
             SetSelectedRange(
