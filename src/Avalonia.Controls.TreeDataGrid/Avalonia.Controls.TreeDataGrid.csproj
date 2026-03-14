@@ -1,6 +1,5 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net10.0;net11.0</TargetFrameworks>
     <TargetFramework>net11.0</TargetFramework>
     <IsPackable>True</IsPackable>
     <RootNamespace>Avalonia.Controls</RootNamespace>
@@ -22,14 +21,11 @@
     <PackageReference Include="Avalonia" Version="11.3.12" />
   </ItemGroup>
 
-  <ItemGroup Condition="!('$(TargetFrameworkIdentifier)' == '.NETCoreApp' AND $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '6.0')))">
-    <PackageReference Include="Microsoft.Bcl.HashCode" Version="6.0.0" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETCoreApp' AND $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '6.0'))">
+  <ItemGroup>
     <Compile Remove="StandardExtensions\**" />
     <None Remove="StandardExtensions\**" />
   </ItemGroup>
+
   <ItemGroup>
     <PackageReference Update="Microsoft.SourceLink.GitHub" Version="11.0.100-preview.2.26159.112" />
   </ItemGroup>
