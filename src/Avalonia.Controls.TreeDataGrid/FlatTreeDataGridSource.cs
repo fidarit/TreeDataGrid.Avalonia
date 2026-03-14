@@ -135,27 +135,38 @@ namespace Avalonia.Controls
             }
         }
 
-        bool ITreeDataGridSource.SortBy(IColumn? column, ListSortDirection direction)
+        public bool SortBy(IColumn? column, ListSortDirection direction)
         {
-            if (column is IColumn<TModel> typedColumn)
+            if (column is IColumn<TModel> typedColumn &&
+                Columns.Contains(typedColumn))
             {
-                if (!Columns.Contains(typedColumn))
-                    return true;
-
                 var comparer = typedColumn.GetComparison(direction);
+                if (comparer is null)
+                    return false;
 
-                if (comparer is not null)
-                {
-                    _comparer = new FuncComparer<TModel>(comparer);
-                    _rows?.Sort(_comparer);
-                    Sorted?.Invoke();
-                    foreach (var c in Columns)
-                        c.SortDirection = c == column ? direction : null;
-                }
+                Sort(comparer);
+                foreach (var c in Columns)
+                    c.SortDirection = c == column ? direction : null;
+
                 return true;
             }
 
             return false;
+        }
+
+        public void Sort(Comparison<TModel>? comparison)
+        {
+            _comparer = comparison is not null ? new FuncComparer<TModel>(comparison!) : null;
+            _rows?.Sort(_comparer);
+            Sorted?.Invoke();
+        }
+
+        public void Unsort()
+        {
+            Sort(null);
+
+            foreach (var c in Columns)
+                c.SortDirection = null;
         }
 
         IEnumerable<object> ITreeDataGridSource.GetModelChildren(object model)
