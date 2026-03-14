@@ -245,6 +245,29 @@ namespace Avalonia.Controls.TreeDataGridTests
         }
 
         [AvaloniaFact]
+        public void Adding_Row_With_Hidden_Column_Does_Not_Throw_On_Layout()
+        {
+            var (target, items) = CreateTarget(
+                columns: new IColumn<Model>[]
+                {
+                    new TextColumn<Model, int>("ID", x => x.Id),
+                    new TextColumn<Model, string?>("Hidden", x => x.Title, options: new TextColumnOptions<Model>
+                    {
+                        IsVisible = false,
+                    }),
+                },
+                itemCount: 0);
+
+            items.Add(new Model
+            {
+                Id = 0,
+                Title = "test",
+            });
+
+            Layout(target);
+        }
+
+        [AvaloniaFact]
         public void Raises_CellPrepared_Events_On_Initial_Layout()
         {
             var (target, items) = CreateTarget(runLayout: false);
