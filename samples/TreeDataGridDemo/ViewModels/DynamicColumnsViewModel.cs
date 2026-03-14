@@ -2,6 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Models;
 using Avalonia.Controls.Models.TreeDataGrid;
+using Avalonia.Controls.Selection;
 using TreeDataGridDemo.Models;
 
 namespace TreeDataGridDemo.ViewModels
@@ -13,7 +14,7 @@ namespace TreeDataGridDemo.ViewModels
             var _data = DataRow.CreateRandomItems();
 
             Source = new HierarchicalTreeDataGridSource<DataRow>(_data);
-            Source.RowSelection!.SingleSelect = true;
+            Source.Selection = new TreeDataGridCellSelectionModel<DataRow>(Source);
 
             ColumnCount = 20;
         }
