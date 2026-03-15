@@ -14,6 +14,9 @@ namespace Avalonia.Controls.Models.TreeDataGrid
     /// </remarks>
     public interface IColumns : IReadOnlyList<IColumn>, INotifyCollectionChanged
     {
+        /// <summary>
+        /// Raised when column layout (sizing, visibility, order, etc.) needs to be refreshed.
+        /// </summary>
         event EventHandler LayoutInvalidated;
 
         /// <summary>

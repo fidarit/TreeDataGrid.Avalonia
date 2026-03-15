@@ -8,6 +8,7 @@ namespace Avalonia.Controls.Primitives
 {
     public class TreeDataGridColumnHeadersPresenter : TreeDataGridColumnarPresenterBase<IColumn>, IChildIndexProvider
     {
+        /// <inheritdoc/>
         public event EventHandler<ChildIndexChangedEventArgs>? ChildIndexChanged;
 
         protected override Orientation Orientation => Orientation.Horizontal;
@@ -67,6 +68,7 @@ namespace Avalonia.Controls.Primitives
             InvalidateMeasure();
         }
 
+        /// <inheritdoc/>
         public int GetChildIndex(ILogical child)
         {
             if (child is TreeDataGridColumnHeader header)
@@ -76,6 +78,7 @@ namespace Avalonia.Controls.Primitives
             return -1;
         }
 
+        /// <inheritdoc/>
         public bool TryGetTotalCount(out int count)
         {
             if (Items is null)

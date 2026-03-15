@@ -35,6 +35,7 @@ namespace Avalonia.Data.Core.Parsers
             return visitor._links.ToArray();
         }
 
+        /// <inheritdoc/>
         protected override Expression VisitBinary(BinaryExpression node)
         {
             var result = base.VisitBinary(node);
@@ -43,6 +44,7 @@ namespace Avalonia.Data.Core.Parsers
             return result;
         }
 
+        /// <inheritdoc/>
         protected override Expression VisitMember(MemberExpression node)
         {
             var result = base.VisitMember(node);
@@ -59,6 +61,7 @@ namespace Avalonia.Data.Core.Parsers
             return result;
         }
 
+        /// <inheritdoc/>
         protected override Expression VisitMethodCall(MethodCallExpression node)
         {
             var result = base.VisitMethodCall(node);
@@ -75,6 +78,7 @@ namespace Avalonia.Data.Core.Parsers
             return result;
         }
 
+        /// <inheritdoc/>
         protected override Expression VisitParameter(ParameterExpression node)
         {
             if (node == _rootExpression.Parameters[0])
@@ -82,6 +86,7 @@ namespace Avalonia.Data.Core.Parsers
             return base.VisitParameter(node);
         }
 
+        /// <inheritdoc/>
         protected override Expression VisitUnary(UnaryExpression node)
         {
             var result = base.VisitUnary(node);

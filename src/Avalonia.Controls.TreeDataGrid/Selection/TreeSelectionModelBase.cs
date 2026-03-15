@@ -31,6 +31,7 @@ namespace Avalonia.Controls.Selection
             Source = source;
         }
 
+        /// <inheritdoc/>
         public int Count 
         {
             get => _count;
@@ -44,6 +45,7 @@ namespace Avalonia.Controls.Selection
             }
         }
 
+        /// <inheritdoc/>
         public bool SingleSelect 
         {
             get => _singleSelect;
@@ -63,6 +65,7 @@ namespace Avalonia.Controls.Selection
             }
         }
 
+        /// <inheritdoc/>
         public IndexPath SelectedIndex 
         {
             get => _selectedIndex;
@@ -74,14 +77,19 @@ namespace Avalonia.Controls.Selection
             }
         }
 
+        /// <inheritdoc/>
         public IReadOnlyList<IndexPath> SelectedIndexes => _selectedIndexes ??= new(this);
+
+        /// <inheritdoc/>
         public T? SelectedItem
         {
             get => Source is null || _selectedIndex == default ? default : GetSelectedItemAt(_selectedIndex);
         }
 
+        /// <inheritdoc/>
         public IReadOnlyList<T?> SelectedItems => _selectedItems ??= new(this);
 
+        /// <inheritdoc/>
         public IndexPath AnchorIndex 
         {
             get => _anchorIndex;
@@ -94,6 +102,7 @@ namespace Avalonia.Controls.Selection
             }
         }
 
+        /// <inheritdoc/>
         public IndexPath RangeAnchorIndex
         {
             get => _rangeAnchorIndex;
@@ -138,8 +147,14 @@ namespace Avalonia.Controls.Selection
         }
 
         public event EventHandler<TreeSelectionModelSelectionChangedEventArgs<T>>? SelectionChanged;
+
+        /// <inheritdoc/>
         public event PropertyChangedEventHandler? PropertyChanged;
+
+        /// <inheritdoc/>
         public event EventHandler<TreeSelectionModelIndexesChangedEventArgs>? IndexesChanged;
+
+        /// <inheritdoc/>
         public event EventHandler<TreeSelectionModelSourceResetEventArgs>? SourceReset;
 
         event EventHandler<TreeSelectionModelSelectionChangedEventArgs>? ITreeSelectionModel.SelectionChanged
@@ -150,12 +165,14 @@ namespace Avalonia.Controls.Selection
 
         public BatchUpdateOperation BatchUpdate() => new(this);
 
+        /// <inheritdoc/>
         public void BeginBatchUpdate()
         {
             _operation ??= new Operation(this);
             ++_operation.UpdateCount;
         }
 
+        /// <inheritdoc/>
         public void EndBatchUpdate()
         {
             if (_operation is null || _operation.UpdateCount == 0)
@@ -163,7 +180,8 @@ namespace Avalonia.Controls.Selection
             if (--_operation.UpdateCount == 0)
                 CommitOperation(_operation);
         }
-        
+
+        /// <inheritdoc/>
         public void Clear()
         {
             using var update = BatchUpdate();
@@ -172,6 +190,7 @@ namespace Avalonia.Controls.Selection
             o.SelectedIndex = default;
         }
 
+        /// <inheritdoc/>
         public void Deselect(IndexPath index)
         {
             if (!IsSelected(index))
@@ -188,6 +207,7 @@ namespace Avalonia.Controls.Selection
                 o.SelectedIndex = GetFirstSelectedIndex(_root, except: o.DeselectedRanges);
         }
 
+        /// <inheritdoc/>
         public bool IsSelected(IndexPath index)
         {
             if (index == default)
@@ -196,6 +216,7 @@ namespace Avalonia.Controls.Selection
             return IndexRange.Contains(node?.Ranges, index[^1]);
         }
 
+        /// <inheritdoc/>
         public void Select(IndexPath index) => Select(index, updateRangeAnchorIndex: false);
 
         protected internal abstract IEnumerable<T>? GetChildren(T node);

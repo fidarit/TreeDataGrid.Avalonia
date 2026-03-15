@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.14.36603.0 d17.14
+# Visual Studio Version 18
+VisualStudioVersion = 18.1.11312.151 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{00673DCE-6218-4BAC-9026-F9BA18D241AE}"
 EndProject
@@ -38,6 +38,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{754FC069-D
 		docs\selection.md = docs\selection.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avalonia.Controls.TreeDataGrid.Benchmark", "tests\Avalonia.Controls.TreeDataGrid.Benchmark\Avalonia.Controls.TreeDataGrid.Benchmark.csproj", "{72C8B10B-A8A6-9B7E-C798-B5C392FDB7F1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,6 +60,10 @@ Global
 		{9A36E37E-2C03-4B5A-B7EE-A91DC95C3E4A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D45C7B46-A12C-4412-8397-B51B75A09999}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D45C7B46-A12C-4412-8397-B51B75A09999}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72C8B10B-A8A6-9B7E-C798-B5C392FDB7F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72C8B10B-A8A6-9B7E-C798-B5C392FDB7F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72C8B10B-A8A6-9B7E-C798-B5C392FDB7F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72C8B10B-A8A6-9B7E-C798-B5C392FDB7F1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -66,6 +72,7 @@ Global
 		{90F93B90-3622-4332-9E7A-E6D7062422C1} = {00673DCE-6218-4BAC-9026-F9BA18D241AE}
 		{9A36E37E-2C03-4B5A-B7EE-A91DC95C3E4A} = {A8CF7AE6-C46F-4930-85AF-13126EAC5E6E}
 		{D45C7B46-A12C-4412-8397-B51B75A09999} = {AE911386-1B6E-4148-AE8F-9D27325349AF}
+		{72C8B10B-A8A6-9B7E-C798-B5C392FDB7F1} = {00673DCE-6218-4BAC-9026-F9BA18D241AE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6C219532-B67B-4A0F-BFC0-A22CBE46DFF4}

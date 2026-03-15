@@ -110,24 +110,36 @@ namespace Avalonia.Controls
             set => SetValue(AutoDragDropRowsProperty, value);
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the user can resize columns.
+        /// </summary>
         public bool CanUserResizeColumns
         {
             get => GetValue(CanUserResizeColumnsProperty);
             set => SetValue(CanUserResizeColumnsProperty, value);
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the user can sort columns via the UI.
+        /// </summary>
         public bool CanUserSortColumns
         {
             get => GetValue(CanUserSortColumnsProperty);
             set => SetValue(CanUserSortColumnsProperty, value);
         }
 
+        /// <summary>
+        /// Gets the collection of columns displayed by the grid.
+        /// </summary>
         public IColumns? Columns
         {
             get => _columns;
             private set => SetAndRaise(ColumnsProperty, ref _columns, value);
         }
 
+        /// <summary>
+        /// Gets or sets the element factory used to create UI elements for cells, rows and headers.
+        /// </summary>
         public TreeDataGridElementFactory ElementFactory
         {
             get => _elementFactory ??= CreateDefaultElementFactory();
@@ -138,6 +150,9 @@ namespace Avalonia.Controls
             }
         }
 
+        /// <summary>
+        /// Gets the rows collection provided by the current source.
+        /// </summary>
         public IRows? Rows
         {
             get => _rows;
@@ -147,21 +162,37 @@ namespace Avalonia.Controls
         public TreeDataGridColumnHeadersPresenter? ColumnHeadersPresenter { get; private set; }
         public TreeDataGridRowsPresenter? RowsPresenter { get; private set; }
 
+        /// <summary>
+        /// Gets the scrollable that contains the rows presenter.
+        /// </summary>
         public IScrollable? Scroll
         {
             get => _scroll;
             private set => SetAndRaise(ScrollProperty, ref _scroll, value);
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether column headers are visible.
+        /// </summary>
         public bool ShowColumnHeaders
         {
             get => GetValue(ShowColumnHeadersProperty);
             set => SetValue(ShowColumnHeadersProperty, value);
         }
 
+        /// <summary>
+        /// Gets the current cell selection model, if the source exposes one.
+        /// </summary>
         public ITreeDataGridCellSelectionModel? ColumnSelection => Source?.Selection as ITreeDataGridCellSelectionModel;
+
+        /// <summary>
+        /// Gets the current row selection model, if the source exposes one.
+        /// </summary>
         public ITreeDataGridRowSelectionModel? RowSelection => Source?.Selection as ITreeDataGridRowSelectionModel;
 
+        /// <summary>
+        /// Gets or sets the data source that provides rows and columns for the grid.
+        /// </summary>
         public ITreeDataGridSource? Source
         {
             get => _source;
@@ -217,26 +248,44 @@ namespace Avalonia.Controls
         public event EventHandler<TreeDataGridRowEventArgs>? RowClearing;
         public event EventHandler<TreeDataGridRowEventArgs>? RowPrepared;
 
+        /// <summary>
+        /// Occurs when a row drag operation starts.
+        /// </summary>
         public event EventHandler<TreeDataGridRowDragStartedEventArgs>? RowDragStarted
         {
             add => AddHandler(RowDragStartedEvent, value!);
             remove => RemoveHandler(RowDragStartedEvent, value!);
         }
 
+        /// <summary>
+        /// Occurs while a dragged row is being dragged over the control.
+        /// </summary>
         public event EventHandler<TreeDataGridRowDragEventArgs>? RowDragOver
         {
             add => AddHandler(RowDragOverEvent, value!);
             remove => RemoveHandler(RowDragOverEvent, value!);
         }
 
+        /// <summary>
+        /// Occurs when a dragged row is dropped onto the control.
+        /// </summary>
         public event EventHandler<TreeDataGridRowDragEventArgs>? RowDrop
         {
             add => AddHandler(RowDropEvent, value!);
             remove => RemoveHandler(RowDropEvent, value!);
         }
 
+        /// <summary>
+        /// Occurs before the selection changes; handlers can cancel the change.
+        /// </summary>
         public event CancelEventHandler? SelectionChanging;
 
+        /// <summary>
+        /// Attempts to get the cell control at the specified column and row indexes.
+        /// </summary>
+        /// <param name="columnIndex">The zero-based column index.</param>
+        /// <param name="rowIndex">The zero-based row index.</param>
+        /// <returns>The cell control if found; otherwise <c>null</c>.</returns>
         public Control? TryGetCell(int columnIndex, int rowIndex)
         {
             if (TryGetRow(rowIndex) is TreeDataGridRow row &&
@@ -248,11 +297,21 @@ namespace Avalonia.Controls
             return null;
         }
 
+        /// <summary>
+        /// Attempts to get the realized row element for the specified row index.
+        /// </summary>
+        /// <param name="rowIndex">The zero-based row index.</param>
         public TreeDataGridRow? TryGetRow(int rowIndex)
         {
             return RowsPresenter?.TryGetElement(rowIndex) as TreeDataGridRow;
         }
 
+        /// <summary>
+        /// Attempts to find a cell element by walking up the visual tree from an element.
+        /// </summary>
+        /// <param name="element">The starting element.</param>
+        /// <param name="result">The found <see cref="TreeDataGridCell"/>, if any.</param>
+        /// <returns><c>true</c> if a cell was found; otherwise <c>false</c>.</returns>
         public bool TryGetCell(Control? element, [NotNullWhen(true)] out TreeDataGridCell? result)
         {
             if (element.FindAncestorOfType<TreeDataGridCell>(true) is { } cell &&
@@ -267,6 +326,12 @@ namespace Avalonia.Controls
             return false;
         }
 
+        /// <summary>
+        /// Attempts to find a row element by walking up the visual tree from an element.
+        /// </summary>
+        /// <param name="element">The starting element.</param>
+        /// <param name="result">The found <see cref="TreeDataGridRow"/>, if any.</param>
+        /// <returns><c>true</c> if a row was found; otherwise <c>false</c>.</returns>
         public bool TryGetRow(Control? element, [NotNullWhen(true)] out TreeDataGridRow? result)
         {
             if (element is TreeDataGridRow row && row.RowIndex >= 0)
@@ -286,6 +351,13 @@ namespace Avalonia.Controls
             return result is not null;
         }
 
+        /// <summary>
+        /// Attempts to obtain the model instance for the row that contains the given element.
+        /// </summary>
+        /// <typeparam name="TModel">The expected model type.</typeparam>
+        /// <param name="element">The element contained within the row.</param>
+        /// <param name="result">The model instance if found and of the requested type.</param>
+        /// <returns><c>true</c> if the model was found and cast to <typeparamref name="TModel"/>; otherwise <c>false</c>.</returns>
         public bool TryGetRowModel<TModel>(Control element, [NotNullWhen(true)] out TModel? result)
             where TModel : notnull
         {

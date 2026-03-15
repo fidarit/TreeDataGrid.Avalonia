@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net48;net10.0</TargetFrameworks>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Avalonia.Controls.TreeDataGridBenchmark</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="$(AvaloniaSamplesVersion)" />
+    <PackageReference Include="Avalonia.Headless" Version="$(AvaloniaSamplesVersion)" />
+    <PackageReference Include="BenchmarkDotNet" Version="0.15.8" />
+
+    <Compile Include="..\Avalonia.Controls.TreeDataGrid.Tests\TestApplication.cs" />
+    <Compile Include="..\Avalonia.Controls.TreeDataGrid.Tests\TestWindow.cs" />
+    <Compile Include="..\Avalonia.Controls.TreeDataGrid.Tests\TestTemplates.cs" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+    <ProjectReference Include="..\..\src\Avalonia.Controls.TreeDataGrid\Avalonia.Controls.TreeDataGrid.csproj">
+      <SetTargetFramework>TargetFramework=net48</SetTargetFramework>
+    </ProjectReference>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' != 'net48'">
+    <ProjectReference Include="..\..\src\Avalonia.Controls.TreeDataGrid\Avalonia.Controls.TreeDataGrid.csproj" />
+  </ItemGroup>
+
+</Project>

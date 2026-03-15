@@ -40,6 +40,16 @@
     <!--<PackageReference Include="IDisposableAnalyzers" Version="4.0.8" PrivateAssets="all" />-->
     <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="11.0.100-preview.2.26159.112" PrivateAssets="all" />
     <PackageReference Include="Roslynator.Analyzers" Version="4.15.0" PrivateAssets="all" />
+    <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
+    <PackageReference Include="PolySharp" Version="1.15.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Avalonia.Controls.TreeDataGrid.Benchmark" />
+    <InternalsVisibleTo Include="Avalonia.Controls.TreeDataGrid.Tests" />
   </ItemGroup>
 
   <ItemGroup>

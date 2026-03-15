@@ -45,13 +45,25 @@ namespace Avalonia.Controls.Models.TreeDataGrid
                 }));
         }
 
+        /// <inheritdoc/>
         public bool CanEdit => !IsReadOnly;
+
+        /// <inheritdoc/>
         public BeginEditGestures EditGestures => _options?.BeginEditGestures ?? BeginEditGestures.Default;
+
+        /// <inheritdoc/>
         public TextTrimming TextTrimming => _options?.TextTrimming ?? TextTrimming.None;
+
+        /// <inheritdoc/>
         public TextWrapping TextWrapping => _options?.TextWrapping ?? TextWrapping.NoWrap;
+
+        /// <inheritdoc/>
         public TextAlignment TextAlignment => _options?.TextAlignment ?? TextAlignment.Left;
+
+        /// <inheritdoc/>
         public bool IsReadOnly { get; private set; }
 
+        /// <inheritdoc/>
         public string? Text
         {
             get
@@ -83,6 +95,7 @@ namespace Avalonia.Controls.Models.TreeDataGrid
             }
         }
 
+        /// <inheritdoc cref="ICell.Value"/>
         public T? Value
         {
             get => _value;
@@ -95,6 +108,7 @@ namespace Avalonia.Controls.Models.TreeDataGrid
 
         object? ICell.Value => Value;
 
+        /// <inheritdoc/>
         public void BeginEdit()
         {
             if (!_isEditing && !IsReadOnly)
@@ -104,6 +118,7 @@ namespace Avalonia.Controls.Models.TreeDataGrid
             }
         }
 
+        /// <inheritdoc/>
         public void CancelEdit()
         {
             if (_isEditing)
@@ -113,6 +128,7 @@ namespace Avalonia.Controls.Models.TreeDataGrid
             }
         }
 
+        /// <inheritdoc/>
         public void EndEdit()
         {
             if (_isEditing)
@@ -124,6 +140,7 @@ namespace Avalonia.Controls.Models.TreeDataGrid
             }
         }
 
+        /// <inheritdoc/>
         public void Dispose()
         {
             _subscription?.Dispose();

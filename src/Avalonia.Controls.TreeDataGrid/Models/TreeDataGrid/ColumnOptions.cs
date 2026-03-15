@@ -3,6 +3,9 @@ using System.Linq.Expressions;
 
 namespace Avalonia.Controls.Models.TreeDataGrid
 {
+    /// <summary>
+    /// Represents the gestures that can cause a cell to enter edit mode.
+    /// </summary>
     [Flags]
     public enum BeginEditGestures
     {

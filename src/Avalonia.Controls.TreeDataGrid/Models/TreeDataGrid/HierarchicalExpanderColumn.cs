@@ -65,9 +65,13 @@ namespace Avalonia.Controls.Models.TreeDataGrid
             private set => RaiseAndSetIfChanged(ref _actualWidth, value);
         }
 
+        /// <inheritdoc/>
         public bool? CanUserResize => _inner.CanUserResize;
+
+        /// <inheritdoc/>
         public object? Header => _inner.Header;
 
+        /// <inheritdoc/>
         public ListSortDirection? SortDirection
         {
             get => _inner.SortDirection;
@@ -83,12 +87,14 @@ namespace Avalonia.Controls.Models.TreeDataGrid
             set => _inner.Tag = value;
         }
 
+        /// <inheritdoc/>
         public GridLength Width => _inner.Width;
         public IColumn<TModel> Inner => _inner;
         double IUpdateColumnLayout.MinActualWidth => ((IUpdateColumnLayout)_inner).MinActualWidth;
         double IUpdateColumnLayout.MaxActualWidth => ((IUpdateColumnLayout)_inner).MaxActualWidth;
         bool IUpdateColumnLayout.StarWidthWasConstrained => ((IUpdateColumnLayout)_inner).StarWidthWasConstrained;
 
+        /// <inheritdoc/>
         public ICell CreateCell(IRow<TModel> row)
         {
             if (row is HierarchicalRow<TModel> r)
@@ -104,16 +110,19 @@ namespace Avalonia.Controls.Models.TreeDataGrid
             throw new NotSupportedException();
         }
 
+        /// <inheritdoc/>
         public bool HasChildren(TModel model)
         {
             return _hasChildrenSelector?.Read!(model) ?? _childSelector(model)?.Any() ?? false;
         }
 
+        /// <inheritdoc/>
         public IEnumerable<TModel>? GetChildModels(TModel model)
         {
             return _childSelector(model);
         }
 
+        /// <inheritdoc/>
         public Comparison<TModel?>? GetComparison(ListSortDirection direction)
         {
             return _inner.GetComparison(direction);
@@ -161,6 +170,7 @@ namespace Avalonia.Controls.Models.TreeDataGrid
                 ActualWidth = width.Value;
         }
 
+        /// <inheritdoc/>
         public bool IsVisible
         {
             get => _isVisible;

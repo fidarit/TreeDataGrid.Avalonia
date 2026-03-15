@@ -6,8 +6,12 @@ namespace Avalonia.Controls.Converters
 {
     public class IndentConverter : IValueConverter
     {
+        /// <summary>
+        /// Singleton instance
+        /// </summary>
         public static IndentConverter Instance { get; } = new IndentConverter();
 
+        /// <inheritdoc cref="IndentConverter"/>
         public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             if (value is int indent)
@@ -18,6 +22,9 @@ namespace Avalonia.Controls.Converters
             return new Thickness();
         }
 
+        /// <summary>
+        /// Convert-back is not supported (one-way binding only).
+        /// </summary>
         public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             throw new NotImplementedException();

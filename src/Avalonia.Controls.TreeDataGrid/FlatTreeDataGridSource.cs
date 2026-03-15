@@ -25,6 +25,11 @@ namespace Avalonia.Controls
         private ITreeDataGridSelection? _selection;
         private bool _isSelectionSet;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FlatTreeDataGridSource{TModel}"/> class
+        /// with the specified items.
+        /// </summary>
+        /// <param name="items">The items to display.</param>
         public FlatTreeDataGridSource(IEnumerable<TModel> items)
         {
             _items = items;
@@ -32,10 +37,14 @@ namespace Avalonia.Controls
             Columns = [];
         }
 
+        /// <inheritdoc cref="ITreeDataGridSource.Columns"/>
         public ColumnList<TModel> Columns { get; }
+
+        /// <inheritdoc/>
         public IRows Rows => _rows ??= CreateRows();
         IColumns ITreeDataGridSource.Columns => Columns;
 
+        /// <inheritdoc/>
         public IEnumerable<TModel> Items
         {
             get => _items;
@@ -53,6 +62,7 @@ namespace Avalonia.Controls
             }
         }
 
+        /// <inheritdoc/>
         public ITreeDataGridSelection? Selection
         {
             get
@@ -76,13 +86,28 @@ namespace Avalonia.Controls
 
         IEnumerable<object> ITreeDataGridSource.Items => Items;
 
+        /// <summary>
+        /// Gets the cell selection model for the typed source, if available.
+        /// </summary>
         public ITreeDataGridCellSelectionModel<TModel>? CellSelection => Selection as ITreeDataGridCellSelectionModel<TModel>;
+
+        /// <summary>
+        /// Gets the row selection model for the typed source, if available.
+        /// </summary>
         public ITreeDataGridRowSelectionModel<TModel>? RowSelection => Selection as ITreeDataGridRowSelectionModel<TModel>;
+
+        /// <summary>
+        /// Gets a value indicating whether the source is hierarchical (always false for flat source).
+        /// </summary>
         public bool IsHierarchical => false;
+
+        /// <inheritdoc/>
         public bool IsSorted => _comparer is not null;
 
+        /// <inheritdoc/>
         public event Action? Sorted;
 
+        /// <inheritdoc/>
         public void Dispose()
         {
             _rows?.Dispose();
@@ -135,27 +160,41 @@ namespace Avalonia.Controls
             }
         }
 
-        bool ITreeDataGridSource.SortBy(IColumn? column, ListSortDirection direction)
+        /// <inheritdoc/>
+        public bool SortBy(IColumn? column, ListSortDirection direction)
         {
-            if (column is IColumn<TModel> typedColumn)
+            if (column is IColumn<TModel> typedColumn &&
+                Columns.Contains(typedColumn))
             {
-                if (!Columns.Contains(typedColumn))
-                    return true;
-
                 var comparer = typedColumn.GetComparison(direction);
+                if (comparer is null)
+                    return false;
 
-                if (comparer is not null)
-                {
-                    _comparer = new FuncComparer<TModel>(comparer);
-                    _rows?.Sort(_comparer);
-                    Sorted?.Invoke();
-                    foreach (var c in Columns)
-                        c.SortDirection = c == column ? direction : null;
-                }
+                Sort(comparer);
+                foreach (var c in Columns)
+                    c.SortDirection = c == column ? direction : null;
+
                 return true;
             }
 
             return false;
+        }
+
+        /// <inheritdoc/>
+        public void Sort(Comparison<TModel>? comparison)
+        {
+            _comparer = comparison is not null ? new FuncComparer<TModel>(comparison!) : null;
+            _rows?.Sort(_comparer);
+            Sorted?.Invoke();
+        }
+
+        /// <inheritdoc/>
+        public void Unsort()
+        {
+            Sort(null);
+
+            foreach (var c in Columns)
+                c.SortDirection = null;
         }
 
         IEnumerable<object> ITreeDataGridSource.GetModelChildren(object model)

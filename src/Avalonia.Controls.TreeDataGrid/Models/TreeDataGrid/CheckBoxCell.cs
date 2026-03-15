@@ -42,9 +42,12 @@ namespace Avalonia.Controls.Models.TreeDataGrid
         public bool CanEdit => false;
         public BeginEditGestures EditGestures => BeginEditGestures.None;
         public bool SingleTapEdit => false;
+
+        /// <inheritdoc/>
         public bool IsReadOnly { get; private set; }
         public bool IsThreeState { get; }
 
+        /// <inheritdoc cref="ICell.Value"/>
         public bool? Value
         {
             get => _value;
@@ -57,6 +60,7 @@ namespace Avalonia.Controls.Models.TreeDataGrid
 
         object? ICell.Value => Value;
 
+        /// <inheritdoc/>
         public void Dispose()
         {
             _subscription?.Dispose();

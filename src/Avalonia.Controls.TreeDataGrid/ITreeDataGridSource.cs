@@ -76,6 +76,11 @@ namespace Avalonia.Controls
         /// <param name="direction">The sort direction.</param>
         /// <returns>True if the sort could be performed; otherwise false.</returns>
         bool SortBy(IColumn column, ListSortDirection direction);
+
+        /// <summary>
+        /// Removes any active sort and restores the source to its unsorted state.
+        /// </summary>
+        void Unsort();
     }
 
     /// <summary>
@@ -87,5 +92,13 @@ namespace Avalonia.Controls
         /// Gets or sets the items in the data source.
         /// </summary>
         new IEnumerable<TModel> Items { get; set; }
+
+        /// <summary>
+        /// Sorts the data source using the specified comparison.
+        /// </summary>
+        /// <param name="comparison">
+        /// A <see cref="Comparison{TModel}"/> delegate that defines the item order.
+        /// </param>
+        void Sort(Comparison<TModel>? comparison);
     }
 }

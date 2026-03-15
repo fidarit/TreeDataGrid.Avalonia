@@ -245,6 +245,29 @@ namespace Avalonia.Controls.TreeDataGridTests
         }
 
         [AvaloniaFact]
+        public void Adding_Row_With_Hidden_Column_Does_Not_Throw_On_Layout()
+        {
+            var (target, items) = CreateTarget(
+                columns: new IColumn<Model>[]
+                {
+                    new TextColumn<Model, int>("ID", x => x.Id),
+                    new TextColumn<Model, string?>("Hidden", x => x.Title, options: new TextColumnOptions<Model>
+                    {
+                        IsVisible = false,
+                    }),
+                },
+                itemCount: 0);
+
+            items.Add(new Model
+            {
+                Id = 0,
+                Title = "test",
+            });
+
+            Layout(target);
+        }
+
+        [AvaloniaFact]
         public void Raises_CellPrepared_Events_On_Initial_Layout()
         {
             var (target, items) = CreateTarget(runLayout: false);
@@ -741,6 +764,73 @@ namespace Avalonia.Controls.TreeDataGridTests
             Assert.Equal(new(200, 100), scroll.Extent);
             Assert.Equal(new(100, 0), headerScroll.Viewport);
             Assert.Equal(new(200, 0), headerScroll.Extent);
+        }
+
+        [AvaloniaFact]
+        public void SortBy_Sorts_Display_And_Sets_ColumnIndicator()
+        {
+            var (target, items) = CreateTarget();
+
+            // Apply sort by ID descending
+            Assert.False(target.Source!.IsSorted);
+            var ok = target.Source!.SortBy(target.Columns![0], ListSortDirection.Descending);
+            Assert.True(ok);
+            Assert.True(target.Source.IsSorted);
+            Assert.Equal(ListSortDirection.Descending, target.Columns![0].SortDirection);
+
+            // Verify rows are presented in descending order
+            var rows = target.Source!.Rows;
+            var sorted = items.OrderByDescending(x => x.Id).ToList();
+
+            for (var i = 0; i < sorted.Count && i < rows.Count; ++i)
+            {
+                var row = rows[i];
+                Assert.Equal(sorted[i].Id, (row.Model as Model)?.Id);
+            }
+        }
+
+        [AvaloniaFact]
+        public void Sort_Using_Comparison_Sorts_Display()
+        {
+            var (target, items) = CreateTarget();
+
+            var source = (FlatTreeDataGridSource<Model>)target.Source!;
+            Assert.False(source.IsSorted);
+
+            source.Sort((x, y) => y.Id - x.Id);
+
+            Assert.True(source.IsSorted);
+
+            var sorted = items.OrderByDescending(x => x.Id).ToList();
+
+            for (var i = 0; i < sorted.Count && i < source.Rows.Count; ++i)
+            {
+                var row = source.Rows[i];
+                Assert.Equal(sorted[i].Id, (row.Model as Model)?.Id);
+            }
+        }
+
+        [AvaloniaFact]
+        public void Unsort_Restores_Original_Order()
+        {
+            var (target, items) = CreateTarget();
+
+            var source = (FlatTreeDataGridSource<Model>)target.Source!;
+
+            // Apply and then clear sort
+            var ok = source.SortBy(source.Columns[0], ListSortDirection.Descending);
+            Assert.True(ok);
+            Assert.True(source.IsSorted);
+
+            source.Unsort();
+            Assert.False(source.IsSorted);
+
+            // Verify original insertion order restored
+            for (var i = 0; i < items.Count && i < source.Rows.Count; ++i)
+            {
+                var row = (IRow<Model>)source.Rows[i];
+                Assert.Equal(items[i].Id, ((Model)row.Model).Id);
+            }
         }
 
         private static void AssertRowIndexes(TreeDataGrid target, int firstRowIndex, int rowCount)

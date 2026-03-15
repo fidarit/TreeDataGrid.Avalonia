@@ -2,6 +2,9 @@
 
 namespace Avalonia.Controls.Models.TreeDataGrid
 {
+    /// <summary>
+    /// Holds less commonly-used options for an <see cref="IColumn"/>.
+    /// </summary>
     public interface ICellOptions
     {
         /// <summary>

@@ -13,8 +13,10 @@ namespace Avalonia.Controls.Models.TreeDataGrid
         private bool _initialized;
         private double _viewportWidth;
 
+        /// <inheritdoc/>
         public event EventHandler? LayoutInvalidated;
 
+        /// <inheritdoc/>
         public Size CellMeasured(int columnIndex, int rowIndex, Size size)
         {
             var column = (IUpdateColumnLayout)this[columnIndex];
@@ -22,6 +24,7 @@ namespace Avalonia.Controls.Models.TreeDataGrid
             return new Size(column.CellMeasured(size.Width, rowIndex), size.Height);
         }
 
+        /// <inheritdoc/>
         public (int index, double x) GetColumnAt(double x)
         {
             var start = 0.0;
@@ -40,6 +43,7 @@ namespace Avalonia.Controls.Models.TreeDataGrid
             return (-1, -1);
         }
 
+        /// <inheritdoc/>
         public double GetEstimatedWidth(double constraint)
         {
             var hasStar = false;
@@ -81,8 +85,10 @@ namespace Avalonia.Controls.Models.TreeDataGrid
             return totalMeasured;
         }
 
+        /// <inheritdoc/>
         public void CommitActualWidths() => UpdateColumnSizes();
 
+        /// <inheritdoc/>
         public void SetColumnWidth(int columnIndex, GridLength width)
         {
             var column = this[columnIndex];
@@ -95,6 +101,7 @@ namespace Avalonia.Controls.Models.TreeDataGrid
             }
         }
 
+        /// <inheritdoc/>
         public void ViewportChanged(Rect viewport)
         {
             if (_viewportWidth != viewport.Width)

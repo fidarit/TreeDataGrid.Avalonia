@@ -119,6 +119,7 @@ namespace Avalonia.Controls
                 return new IndexPath(childIndex);
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             if (_path != null)
@@ -129,8 +130,10 @@ namespace Avalonia.Controls
                 return "()";
         }
 
+        /// <inheritdoc/>
         public override bool Equals(object? obj) => obj is IndexPath other && Equals(other);
 
+        /// <inheritdoc/>
         public bool Equals(IndexPath other) => CompareTo(other) == 0;
 
         public IEnumerator<int> GetEnumerator()
@@ -144,6 +147,7 @@ namespace Avalonia.Controls
             return ((IEnumerable<int>?)_path)?.GetEnumerator() ?? EnumerateSingleOrEmpty(_index);
         }
 
+        /// <inheritdoc/>
         public override int GetHashCode()
         {
             var hashCode = -504981047;

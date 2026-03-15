@@ -1,14 +1,17 @@
 ﻿using System;
-using System.Xml.Linq;
 using Avalonia.Controls.Models.TreeDataGrid;
 using Avalonia.Controls.Selection;
 using Avalonia.Layout;
 using Avalonia.LogicalTree;
-using Avalonia.Media;
 using Avalonia.VisualTree;
 
 namespace Avalonia.Controls.Primitives
 {
+    /// <summary>
+    /// Presents and manages the cells for a single row. Responsible for realizing,
+    /// measuring and recycling cell elements and forwarding selection/child index
+    /// information to consumers.
+    /// </summary>
     public class TreeDataGridCellsPresenter : TreeDataGridColumnarPresenterBase<IColumn>, IChildIndexProvider
     {
         public static readonly DirectProperty<TreeDataGridCellsPresenter, IRows?> RowsProperty =
@@ -19,18 +22,30 @@ namespace Avalonia.Controls.Primitives
 
         private IRows? _rows;
 
+        /// <inheritdoc/>
         public event EventHandler<ChildIndexChangedEventArgs>? ChildIndexChanged;
 
+        /// <summary>
+        /// Rows view used by the presenter.
+        /// </summary>
         public IRows? Rows
         {
             get => _rows;
             set => SetAndRaise(RowsProperty, ref _rows, value);
         }
 
+        /// <summary>
+        /// Gets the row index for which the presenter is realized, or -1 if not realized.
+        /// </summary>
         public int RowIndex { get; private set; } = -1;
 
+        /// <inheritdoc/>
         protected override Orientation Orientation => Orientation.Horizontal;
 
+        /// <summary>
+        /// Realizes the presenter for the specified row index.
+        /// </summary>
+        /// <param name="index">The row index to realize.</param>
         public void Realize(int index)
         {
             if (RowIndex != -1)
@@ -39,6 +54,9 @@ namespace Avalonia.Controls.Primitives
             InvalidateMeasure();
         }
 
+        /// <summary>
+        /// Unrealizes the presenter and recycles all realized elements.
+        /// </summary>
         public void Unrealize()
         {
             if (RowIndex == -1)
@@ -47,6 +65,10 @@ namespace Avalonia.Controls.Primitives
             RecycleAllElements();
         }
 
+        /// <summary>
+        /// Updates the realized row index and adjusts child cells accordingly.
+        /// </summary>
+        /// <param name="index">The new row index.</param>
         public void UpdateRowIndex(int index)
         {
             if (index < 0 || Rows is null || index >= Rows.Count)
@@ -63,17 +85,20 @@ namespace Avalonia.Controls.Primitives
             }
         }
 
+        /// <inheritdoc/>
         protected override Size MeasureOverride(Size availableSize)
         {
             return RowIndex == -1 ? default : base.MeasureOverride(availableSize);
         }
 
+        /// <inheritdoc/>
         protected override Size MeasureElement(int index, Control element, Size availableSize)
         {
             element.Measure(availableSize);
             return ((IColumns)Items!).CellMeasured(index, RowIndex, element.DesiredSize);
         }
 
+        /// <inheritdoc/>
         protected override Control GetElementFromFactory(IColumn column, int index)
         {
             var model = _rows!.RealizeCell(column, index, RowIndex);
@@ -82,6 +107,7 @@ namespace Avalonia.Controls.Primitives
             return cell;
         }
 
+        /// <inheritdoc/>
         protected override void RealizeElement(Control element, IColumn column, int index)
         {
             var cell = (TreeDataGridCell)element;
@@ -102,6 +128,7 @@ namespace Avalonia.Controls.Primitives
             }
         }
 
+        /// <inheritdoc/>
         protected override void UnrealizeElement(Control element)
         {
             var cell = (TreeDataGridCell)element;
@@ -110,11 +137,13 @@ namespace Avalonia.Controls.Primitives
             ChildIndexChanged?.Invoke(this, new ChildIndexChangedEventArgs(element, cell.RowIndex));
         }
 
+        /// <inheritdoc/>
         protected override void UpdateElementIndex(Control element, int oldIndex, int newIndex)
         {
             ChildIndexChanged?.Invoke(this, new ChildIndexChangedEventArgs(element, newIndex));
         }
 
+        /// <inheritdoc/>
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
             base.OnPropertyChanged(change);
@@ -145,6 +174,7 @@ namespace Avalonia.Controls.Primitives
             return this.FindAncestorOfType<TreeDataGrid>()?.SelectionInteraction;
         }
 
+        /// <inheritdoc/>
         public int GetChildIndex(ILogical child)
         {
             if (child is TreeDataGridCell cell)
@@ -155,6 +185,7 @@ namespace Avalonia.Controls.Primitives
             return -1;
         }
 
+        /// <inheritdoc/>
         public bool TryGetTotalCount(out int count)
         {
             if (Items is null)

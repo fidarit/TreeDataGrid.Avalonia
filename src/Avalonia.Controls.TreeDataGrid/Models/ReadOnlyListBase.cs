@@ -4,8 +4,13 @@ using System.Collections.Generic;
 
 namespace Avalonia.Controls.Models
 {
+    /// <summary>
+    /// Provides a base class for read-only lists that implement both generic and non-generic list interfaces.
+    /// </summary>
+    /// <typeparam name="T">The type of elements contained in the list.</typeparam>
     public abstract class ReadOnlyListBase<T> : IReadOnlyList<T>, IList
     {
+        /// <inheritdoc />
         public abstract T this[int index] { get; }
         
         object? IList.this[int index] 
@@ -14,6 +19,7 @@ namespace Avalonia.Controls.Models
             set => throw new NotSupportedException();
         }
 
+        /// <inheritdoc />
         public abstract int Count { get; }
 
         bool IList.IsFixedSize => false;
@@ -21,6 +27,7 @@ namespace Avalonia.Controls.Models
         bool ICollection.IsSynchronized => false;
         object ICollection.SyncRoot => this;
 
+        /// <inheritdoc />
         public abstract IEnumerator<T> GetEnumerator();
 
         int IList.Add(object? value) => throw new NotSupportedException();

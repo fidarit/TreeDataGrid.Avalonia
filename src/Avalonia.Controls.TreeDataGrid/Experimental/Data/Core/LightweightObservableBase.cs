@@ -22,6 +22,7 @@ namespace Avalonia.Experimental.Data.Core
 
         public bool HasObservers => _observers?.Count > 0;
 
+        /// <inheritdoc/>
         public IDisposable Subscribe(IObserver<T> observer)
         {
             _ = observer ?? throw new ArgumentNullException(nameof(observer));
@@ -69,7 +70,7 @@ namespace Avalonia.Experimental.Data.Core
             return new RemoveObserver(this, observer);
         }
 
-        protected void Remove(IObserver<T> observer)
+        private void Remove(IObserver<T> observer)
         {
             if (Volatile.Read(ref _observers) != null)
             {
@@ -91,10 +92,9 @@ namespace Avalonia.Experimental.Data.Core
             }
         }
 
-        sealed internal class RemoveObserver : IDisposable
+        private sealed class RemoveObserver : IDisposable
         {
             private LightweightObservableBase<T>? _parent;
-
             private IObserver<T>? _observer;
 
             public RemoveObserver(LightweightObservableBase<T> parent, IObserver<T> observer)

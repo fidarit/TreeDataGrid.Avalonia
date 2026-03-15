@@ -58,16 +58,23 @@ namespace Avalonia.Controls.Models.TreeDataGrid
         /// </summary>
         public IndexPath ModelIndexPath { get; private set; }
 
+        /// <inheritdoc/>
         public object? Header => ModelIndexPath;
+
+        /// <inheritdoc/>
         public int Indent => ModelIndexPath.Count - 1;
+
+        /// <inheritdoc/>
         public TModel Model { get; }
 
+        /// <inheritdoc/>
         public GridLength Height 
         {
             get => GridLength.Auto;
             set { }
         }
 
+        /// <inheritdoc/>
         public bool IsExpanded
         {
             get => _isExpanded;
@@ -83,14 +90,17 @@ namespace Avalonia.Controls.Models.TreeDataGrid
             }
         }
 
+        /// <inheritdoc/>
         public bool ShowExpander
         {
             get => _showExpander ??= _expanderColumn.HasChildren(Model);
             private set => RaiseAndSetIfChanged(ref _showExpander, value);
         }
 
+        /// <inheritdoc/>
         public void Dispose() => _childRows?.Dispose();
 
+        /// <inheritdoc/>
         public void UpdateModelIndex(int delta)
         {
             ModelIndexPath = ModelIndexPath[..^1].Append(ModelIndexPath[^1] + delta);

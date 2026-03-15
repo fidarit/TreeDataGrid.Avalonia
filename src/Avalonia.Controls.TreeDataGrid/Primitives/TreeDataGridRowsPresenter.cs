@@ -17,6 +17,7 @@ namespace Avalonia.Controls.Primitives
 
         private IColumns? _columns;
 
+        /// <inheritdoc/>
         public event EventHandler<ChildIndexChangedEventArgs>? ChildIndexChanged;
 
         public IColumns? Columns
@@ -128,6 +129,7 @@ namespace Avalonia.Controls.Primitives
             return this.FindAncestorOfType<TreeDataGrid>()?.SelectionInteraction;
         }
 
+        /// <inheritdoc/>
         public int GetChildIndex(ILogical child)
         {
             if (child is TreeDataGridRow row)
@@ -138,6 +140,7 @@ namespace Avalonia.Controls.Primitives
 
         }
 
+        /// <inheritdoc/>
         public bool TryGetTotalCount(out int count)
         {
             if (Items != null)
