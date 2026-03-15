@@ -475,7 +475,7 @@ namespace Avalonia.Controls
                 var item = new DataTransferItem();
                 item.Set(TreeDataGridDragFormat.Instance, info.Export());
                 data.Add(item);
-                DragDrop.DoDragDropAsync(trigger, data, allowedEffects);
+                _ = DragDrop.DoDragDropAsync(trigger, data, allowedEffects);
             }
         }
 

@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 
 namespace Avalonia.Controls.Utils
 {
-    internal class StableSort
+    internal static class StableSort
     {
         public static List<int> SortedMap<T>(IReadOnlyList<T> elements, Comparison<int> compare)
         {
@@ -19,12 +19,8 @@ namespace Avalonia.Controls.Utils
                 map.Add(i);
             }
 
-#if !NET5_0_OR_GREATER
-            map.Sort(compare);
-#else
             var span = CollectionsMarshal.AsSpan(map);
             SortHelper<int>.Sort(span, compare);
-#endif
 
             return map;
         }

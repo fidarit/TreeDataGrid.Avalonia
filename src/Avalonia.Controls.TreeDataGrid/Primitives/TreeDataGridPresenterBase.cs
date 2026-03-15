@@ -554,7 +554,7 @@ namespace Avalonia.Controls.Primitives
             _realizedElements.RecycleElementsBefore(index + 1, _recycleElement);
         }
 
-        private Size CalculateDesiredSize(Orientation orientation, int itemCount, in MeasureViewport viewport)
+        private Size CalculateDesiredSize(Orientation orientation, int itemCount, MeasureViewport viewport)
         {
             var sizeU = 0.0;
             var sizeV = viewport.measuredV;

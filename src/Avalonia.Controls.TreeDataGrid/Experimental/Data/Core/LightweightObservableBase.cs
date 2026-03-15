@@ -16,6 +16,7 @@ namespace Avalonia.Experimental.Data.Core
     /// </remarks>
     public abstract class LightweightObservableBase<T> : IObservable<T>
     {
+        private Lock locking = new();
         private Exception? _error;
         private List<IObserver<T>>? _observers = [];
 
@@ -45,7 +46,7 @@ namespace Avalonia.Experimental.Data.Core
                     return Disposable.Empty;
                 }
 
-                lock (this)
+                lock (locking)
                 {
                     if (_observers == null)
                     {
@@ -68,11 +69,11 @@ namespace Avalonia.Experimental.Data.Core
             return new RemoveObserver(this, observer);
         }
 
-        void Remove(IObserver<T> observer)
+        protected void Remove(IObserver<T> observer)
         {
             if (Volatile.Read(ref _observers) != null)
             {
-                lock (this)
+                lock (locking)
                 {
                     var observers = _observers;
 
@@ -90,11 +91,11 @@ namespace Avalonia.Experimental.Data.Core
             }
         }
 
-        sealed class RemoveObserver : IDisposable
+        sealed internal class RemoveObserver : IDisposable
         {
-            LightweightObservableBase<T>? _parent;
+            private LightweightObservableBase<T>? _parent;
 
-            IObserver<T>? _observer;
+            private IObserver<T>? _observer;
 
             public RemoveObserver(LightweightObservableBase<T> parent, IObserver<T> observer)
             {
@@ -124,7 +125,7 @@ namespace Avalonia.Experimental.Data.Core
                 IObserver<T>? observer0 = null;
                 IObserver<T>? observer1 = null;
                 IObserver<T>? observer2 = null;
-                lock (this)
+                lock (locking)
                 {
                     if (_observers == null)
                     {
@@ -183,7 +184,7 @@ namespace Avalonia.Experimental.Data.Core
             {
                 IObserver<T>[] observers;
 
-                lock (this)
+                lock (locking)
                 {
                     if (_observers == null)
                     {
@@ -209,7 +210,7 @@ namespace Avalonia.Experimental.Data.Core
 
                 IObserver<T>[] observers;
 
-                lock (this)
+                lock (locking)
                 {
                     if (_observers == null)
                     {
