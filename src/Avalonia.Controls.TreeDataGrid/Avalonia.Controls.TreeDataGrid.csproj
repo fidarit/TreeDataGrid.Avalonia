@@ -1,4 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <TargetFramework>net11.0</TargetFramework>
     <IsPackable>True</IsPackable>
@@ -9,14 +10,21 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);CS1591</NoWarn>
     <IsAotCompatible>true</IsAotCompatible>
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+    <LangVersion>preview</LangVersion>
+    <EnablePreviewFeatures>true</EnablePreviewFeatures>
+    <Features>$(Features);runtime-async=off</Features>
   </PropertyGroup>
+
   <PropertyGroup>
     <PackageId>TreeDataGrid.Avalonia</PackageId>
   </PropertyGroup>
+  
   <ItemGroup>
     <None Include="..\..\readme.nuget.md" Pack="true" PackagePath="readme.md" Visible="false" />
     <None Include="..\..\docs\images\icon.png" Pack="true" PackagePath="icon.png" Visible="false" />
   </ItemGroup>
+  
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="11.3.12" />
   </ItemGroup>
@@ -29,4 +37,5 @@
   <ItemGroup>
     <PackageReference Update="Microsoft.SourceLink.GitHub" Version="11.0.100-preview.2.26159.112" />
   </ItemGroup>
+
 </Project>
