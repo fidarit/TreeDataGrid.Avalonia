@@ -142,7 +142,7 @@ namespace Avalonia.Controls.Primitives
             }
         }
 
-        protected override void OnLostFocus(FocusChangedEventArgs e)
+        protected override void OnLostFocus(RoutedEventArgs e)
         {
             if (EndEditIfFocusLost())
             {
