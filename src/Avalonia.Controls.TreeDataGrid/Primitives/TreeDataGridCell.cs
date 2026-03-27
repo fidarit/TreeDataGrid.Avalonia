@@ -143,7 +143,7 @@ namespace Avalonia.Controls.Primitives
                 _treeDataGrid.RaiseCellPrepared(this, ColumnIndex, RowIndex);
         }
 
-        protected override void OnLostFocus(RoutedEventArgs e)
+        protected override void OnLostFocus(FocusChangedEventArgs e)
         {
             base.OnLostFocus(e);
 
