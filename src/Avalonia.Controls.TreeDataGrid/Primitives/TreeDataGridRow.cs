@@ -172,7 +172,7 @@ namespace Avalonia.Controls.Primitives
 
             var presenter = Parent as TreeDataGridRowsPresenter;
             var owner = presenter?.TemplatedParent as TreeDataGrid;
-            owner?.RaiseRowDragStarted(e);
+            owner?.RaiseRowDragStarted(new PointerPressedEventArgs(e.Source, e.Pointer, presenter, e.GetPosition(null), 0, e.Properties, e.KeyModifiers));
         }
 
         protected override void OnPointerReleased(PointerReleasedEventArgs e)
