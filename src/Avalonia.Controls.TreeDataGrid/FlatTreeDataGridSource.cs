@@ -16,7 +16,7 @@ namespace Avalonia.Controls
     public class FlatTreeDataGridSource<TModel> : NotifyingBase,
         ITreeDataGridSource<TModel>,
         IDisposable
-            where TModel: class
+            where TModel : class
     {
         private IEnumerable<TModel> _items;
         private TreeDataGridItemsSourceView<TModel> _itemsView;

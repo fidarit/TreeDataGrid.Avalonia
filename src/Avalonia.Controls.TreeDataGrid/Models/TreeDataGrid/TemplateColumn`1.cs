@@ -62,7 +62,7 @@ namespace Avalonia.Controls.Models.TreeDataGrid
         {
             if (_cellTemplate is not null)
                 return _cellTemplate;
-            
+
             _cellTemplate = anchor.FindResource(_cellTemplateResourceKey!) as IDataTemplate;
 
             if (_cellTemplate is null)

@@ -426,13 +426,13 @@ namespace Avalonia.Controls.TreeDataGridTests
             private int _id;
             private string? _caption;
 
-            public int Id 
+            public int Id
             {
                 get => _id;
                 set => RaiseAndSetIfChanged(ref _id, value);
             }
 
-            public string? Caption 
+            public string? Caption
             {
                 get => _caption;
                 set => RaiseAndSetIfChanged(ref _caption, value);

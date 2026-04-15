@@ -72,7 +72,7 @@ namespace Avalonia.Controls.Models.TreeDataGrid
         public TModel Model { get; }
 
         /// <inheritdoc/>
-        public GridLength Height 
+        public GridLength Height
         {
             get => GridLength.Auto;
             set { }

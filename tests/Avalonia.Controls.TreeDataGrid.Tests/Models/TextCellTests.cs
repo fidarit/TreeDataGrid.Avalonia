@@ -66,7 +66,7 @@ namespace Avalonia.Controls.TreeDataGridTests.Models
 
             Assert.Equal("new", target.Text);
             Assert.Equal("initial", target.Value);
-            Assert.Equal(new[] { "initial"}, result);
+            Assert.Equal(new[] { "initial" }, result);
 
             target.EndEdit();
 

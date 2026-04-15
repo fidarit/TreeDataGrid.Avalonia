@@ -104,7 +104,7 @@ namespace Avalonia.Controls.Selection
                 if (_children[i] is TreeSelectionNode<T> node)
                 {
                     node.PruneEmptyChildren();
-                    
+
                     if (node.Ranges.Count == 0 && !node.HasChildren)
                     {
                         node.Source = null;

@@ -78,7 +78,7 @@ namespace Avalonia.Controls.TreeDataGridTests
                 Assert.Equal("Node 0-2", target.SelectedItem!.Caption);
                 Assert.Equal("Node 0-2", target.SelectedItems.Single()!.Caption);
             }
-            
+
             [AvaloniaFact]
             public void Can_Set_Grandchild_SelectedIndex()
             {
@@ -329,7 +329,7 @@ namespace Avalonia.Controls.TreeDataGridTests
                 Assert.Equal(1, raised);
             }
         }
-        
+
         public class Select
         {
             [AvaloniaFact]

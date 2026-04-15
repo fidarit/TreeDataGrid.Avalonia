@@ -151,7 +151,7 @@ namespace Avalonia.Controls.Primitives
             if (change.Property == BackgroundProperty)
                 InvalidateVisual();
         }
-        
+
         internal void UpdateSelection(ITreeDataGridSelectionInteraction? selection)
         {
             foreach (var element in RealizedElements)

@@ -7,7 +7,7 @@ namespace Avalonia.Controls.TreeDataGridTests
     internal class AvaloniaListDebug<T> : AvaloniaList<T>, INotifyCollectionChanged
     {
         private NotifyCollectionChangedEventHandler? _collectionChanged;
-        
+
         event NotifyCollectionChangedEventHandler? INotifyCollectionChanged.CollectionChanged
         {
             add
@@ -18,7 +18,7 @@ namespace Avalonia.Controls.TreeDataGridTests
             remove
             {
                 base.CollectionChanged += value;
-                _collectionChanged -= value;   
+                _collectionChanged -= value;
             }
         }
 

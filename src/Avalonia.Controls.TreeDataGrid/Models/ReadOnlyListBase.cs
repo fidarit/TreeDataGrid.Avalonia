@@ -12,8 +12,8 @@ namespace Avalonia.Controls.Models
     {
         /// <inheritdoc />
         public abstract T this[int index] { get; }
-        
-        object? IList.this[int index] 
+
+        object? IList.this[int index]
         {
             get => this[index];
             set => throw new NotSupportedException();

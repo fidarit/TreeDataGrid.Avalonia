@@ -78,7 +78,7 @@ namespace Avalonia.Controls.Models.TreeDataGrid
         {
             _ignoreCollectionChanges = true;
 
-            try 
+            try
             {
                 if (row is not null)
                     row.IsExpanded = predicate(row.Model);
@@ -86,11 +86,11 @@ namespace Avalonia.Controls.Models.TreeDataGrid
                 var children = row is null ? _roots : row.Children;
 
                 if (children is not null)
-                    ExpandCollapseRecursiveCore(children, predicate); 
+                    ExpandCollapseRecursiveCore(children, predicate);
             }
-            finally 
-            { 
-                _ignoreCollectionChanges = false; 
+            finally
+            {
+                _ignoreCollectionChanges = false;
             }
 
             _flattenedRows.Clear();
@@ -148,10 +148,11 @@ namespace Avalonia.Controls.Models.TreeDataGrid
         public void SetItems(TreeDataGridItemsSourceView<TModel> items)
         {
             _ignoreCollectionChanges = true;
-            
-            try {_roots.SetItems(items); }
+
+            try
+            { _roots.SetItems(items); }
             finally { _ignoreCollectionChanges = false; }
-            
+
             _flattenedRows.Clear();
             InitializeRows();
             CollectionChanged?.Invoke(this, CollectionExtensions.ResetEvent);
@@ -187,7 +188,7 @@ namespace Avalonia.Controls.Models.TreeDataGrid
         {
             if (modelIndex == default)
                 return -1;
-            
+
             for (var i = 0; i < _flattenedRows.Count; ++i)
             {
                 if (_flattenedRows[i].ModelIndexPath == modelIndex)
@@ -346,7 +347,7 @@ namespace Avalonia.Controls.Models.TreeDataGrid
                 }
 
                 _flattenedRows.RemoveRange(index, count);
-                
+
                 if (oldItems is not null)
                 {
                     CollectionChanged!(
@@ -368,7 +369,7 @@ namespace Avalonia.Controls.Models.TreeDataGrid
                     if (row.Children?.Count > 0)
                         i = Advance(i + 1, row.Children.Count);
                     else
-                        i += + 1;
+                        i += +1;
                     --count;
                 }
 

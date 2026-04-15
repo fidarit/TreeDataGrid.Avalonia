@@ -17,8 +17,8 @@ namespace Avalonia.Controls.Selection
             _selectedRows = selectedRows;
         }
 
-        public CellIndex this[int index] 
-        { 
+        public CellIndex this[int index]
+        {
             get
             {
                 if (index < 0 || index >= Count)

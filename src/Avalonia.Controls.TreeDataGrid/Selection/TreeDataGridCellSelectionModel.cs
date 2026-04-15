@@ -146,7 +146,7 @@ namespace Avalonia.Controls.Selection
                 rowIndex,
                 sender.ColumnHeadersPresenter?.TryGetElement(columnIndex)?.Bounds);
 
-            if (sender.TryGetCell(columnIndex, rowIndex) is { Focusable: true} targetCell)
+            if (sender.TryGetCell(columnIndex, rowIndex) is { Focusable: true } targetCell)
                 targetCell.Focus();
         }
 
@@ -333,7 +333,7 @@ namespace Avalonia.Controls.Selection
                 if (!treeDataGrid.QueryCancelSelection())
                     SelectFromAnchorTo(columnIndex, rowIndex);
             }
-            else if (_selectedColumns.SelectedIndex != columnIndex || 
+            else if (_selectedColumns.SelectedIndex != columnIndex ||
                 _selectedRows.SelectedIndex != modelIndex ||
                 Count > 1)
             {

@@ -32,7 +32,7 @@ namespace Avalonia.Controls.Selection
         }
 
         /// <inheritdoc/>
-        public int Count 
+        public int Count
         {
             get => _count;
             private set
@@ -46,7 +46,7 @@ namespace Avalonia.Controls.Selection
         }
 
         /// <inheritdoc/>
-        public bool SingleSelect 
+        public bool SingleSelect
         {
             get => _singleSelect;
             set
@@ -66,7 +66,7 @@ namespace Avalonia.Controls.Selection
         }
 
         /// <inheritdoc/>
-        public IndexPath SelectedIndex 
+        public IndexPath SelectedIndex
         {
             get => _selectedIndex;
             set
@@ -90,7 +90,7 @@ namespace Avalonia.Controls.Selection
         public IReadOnlyList<T?> SelectedItems => _selectedItems ??= new(this);
 
         /// <inheritdoc/>
-        public IndexPath AnchorIndex 
+        public IndexPath AnchorIndex
         {
             get => _anchorIndex;
             set
@@ -220,7 +220,7 @@ namespace Avalonia.Controls.Selection
         public void Select(IndexPath index) => Select(index, updateRangeAnchorIndex: false);
 
         protected internal abstract IEnumerable<T>? GetChildren(T node);
-        
+
         protected virtual bool TryGetItemAt(IndexPath index, out T? result)
         {
             var items = (IEnumerable<T>?)_root.ItemsView;
@@ -392,7 +392,7 @@ namespace Avalonia.Controls.Selection
                         return result;
                 }
             }
-            
+
             if (node.Children is object)
             {
                 foreach (var child in node.Children)
@@ -400,7 +400,7 @@ namespace Avalonia.Controls.Selection
                     if (child is not null)
                     {
                         var i = GetFirstSelectedIndex(child, except);
-                        
+
                         if (i != default)
                             return i;
                     }
@@ -602,7 +602,7 @@ namespace Avalonia.Controls.Selection
         }
 
         private static bool TryGetElementAt(IEnumerable<T> items, int index, [MaybeNullWhen(false)] out T result)
-        { 
+        {
             if (items is IList<T> list)
             {
                 if (index < list.Count)

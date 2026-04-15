@@ -27,7 +27,7 @@ namespace Avalonia.Data.Core.Parsers
         /// There is no delegate for the final property of the expression <c>x => x.Foo.Bar.Baz</c>.
         /// </example>
         /// </summary>
-    
+
         public static Func<TIn, object>[] Build<TOut>(Expression<Func<TIn, TOut>> expression)
         {
             var visitor = new ExpressionChainVisitor<TIn>(expression);

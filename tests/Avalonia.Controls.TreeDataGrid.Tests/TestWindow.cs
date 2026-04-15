@@ -13,7 +13,7 @@ namespace Avalonia.Controls.TreeDataGridTests
                 [~ContentProperty] = p.GetObservable(ContentProperty).ToBinding()
             }));
         }
-        
+
         public TestWindow(Size? clientSize = null)
         {
             Width = clientSize?.Width ?? 100;
@@ -23,7 +23,7 @@ namespace Avalonia.Controls.TreeDataGridTests
             // RunJobs is needed to apply template and update client size.
             Dispatcher.UIThread.RunJobs();
         }
-        
+
         public TestWindow(Control child, Size? clientSize = null)
             : this(clientSize)
         {

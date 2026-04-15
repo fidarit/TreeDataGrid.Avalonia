@@ -1,4 +1,4 @@
-#nullable disable
+﻿#nullable disable
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,6 @@ using Nuke.Common;
 using Nuke.Common.CI.AzurePipelines;
 using Nuke.Common.Execution;
 using Nuke.Common.IO;
-using static Nuke.Common.IO.PathConstruction;
 
 public partial class Build
 {
@@ -28,7 +27,7 @@ public partial class Build
     {
         public string Configuration { get; }
         public bool SkipTests { get; }
-        public bool SkipPreviewer {get;}
+        public bool SkipPreviewer { get; }
         public string MainRepo { get; }
         public string MasterBranch { get; }
         public string RepositoryName { get; }

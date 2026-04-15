@@ -183,8 +183,8 @@ namespace Avalonia.Controls.Primitives
             if (Model is null || e.Handled)
                 return;
 
-            if (e.Key == Key.F2 && 
-                !IsEditing && 
+            if (e.Key == Key.F2 &&
+                !IsEditing &&
                 Model.CanEdit &&
                 IsEnabledEditGesture(BeginEditGestures.F2, Model.EditGestures))
             {

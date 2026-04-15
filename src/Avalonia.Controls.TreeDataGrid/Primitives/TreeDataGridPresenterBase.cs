@@ -4,11 +4,9 @@ using System.Collections.Specialized;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
-using Avalonia.Controls.Presenters;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.LogicalTree;
-using Avalonia.Rendering;
 using Avalonia.Utilities;
 using Avalonia.VisualTree;
 using CollectionExtensions = Avalonia.Controls.Models.TreeDataGrid.CollectionExtensions;
@@ -416,11 +414,11 @@ namespace Avalonia.Controls.Primitives
         {
             base.OnAttachedToVisualTree(e);
             _scrollViewer = this.FindAncestorOfType<ScrollViewer>();
-            
+
             // Subscribing to this event adds a reference to 'this' in the layout manager.
             // so this must be unsubscribed to avoid memory leaks.
             EffectiveViewportChanged += OnEffectiveViewportChanged;
-            
+
             SubscribeToItemChanges();
         }
 
@@ -428,7 +426,7 @@ namespace Avalonia.Controls.Primitives
         {
             base.OnDetachedFromVisualTree(e);
             _scrollViewer = null;
-            
+
             EffectiveViewportChanged -= OnEffectiveViewportChanged;
 
             UnsubscribeFromItemChanges();
@@ -450,7 +448,7 @@ namespace Avalonia.Controls.Primitives
             // is being raised when the parent control hasn't yet been arranged. This is a bug in
             // Avalonia, but we can work around it by forcing MeasureOverride to estimate the
             // viewport.
-            Viewport = e.EffectiveViewport.Size == default ? 
+            Viewport = e.EffectiveViewport.Size == default ?
                 s_invalidViewport :
                 Intersect(e.EffectiveViewport, new(Bounds.Size));
 
@@ -710,7 +708,7 @@ namespace Avalonia.Controls.Primitives
                 0,
                 0,
                 Double.IsFinite(availableSize.Width) ? availableSize.Width : 0,
-                Double.IsFinite(availableSize.Height) ? availableSize.Height : 0); 
+                Double.IsFinite(availableSize.Height) ? availableSize.Height : 0);
         }
 
         private void RecycleElement(Control element, int index)
@@ -798,7 +796,7 @@ namespace Avalonia.Controls.Primitives
                     break;
                 case NotifyCollectionChangedAction.Reset:
                     _realizedElements.ItemsReset(_recycleElementOnItemRemoved);
-                    if (_focusedElement is not null )
+                    if (_focusedElement is not null)
                         RecycleElementOnItemRemoved(_focusedElement);
                     break;
             }

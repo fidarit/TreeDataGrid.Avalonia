@@ -48,7 +48,7 @@ namespace Avalonia.Controls
         private IndexPath(int[] basePath, int index)
         {
             basePath = basePath ?? throw new ArgumentNullException(nameof(basePath));
-            
+
             _index = 0;
             _path = new int[basePath.Length + 1];
             Array.Copy(basePath, _path, basePath.Length);

@@ -5,9 +5,6 @@ using System.Linq;
 using Avalonia.Controls.Models.TreeDataGrid;
 using Avalonia.Controls.Primitives;
 using Avalonia.Headless.XUnit;
-using Avalonia.Layout;
-using Avalonia.LogicalTree;
-using Avalonia.Markup.Xaml.MarkupExtensions;
 using Avalonia.Media;
 using Avalonia.Styling;
 using Avalonia.Threading;
@@ -212,7 +209,7 @@ namespace Avalonia.Controls.TreeDataGridTests.Primitives
         {
             target.UpdateLayout();
         }
-        
+
         private class TestColumn : ColumnBase<string>
         {
             public TestColumn(string header, GridLength width)

@@ -22,8 +22,8 @@ namespace Avalonia.Controls.Models.TreeDataGrid
             Func<TModel, TValue> getter,
             object cellTemplateResourceKey,
             object? cellEditingTemplateResourceKey = null,
-            GridLength? width = null, 
-            TemplateColumnOptions<TValue>? options = null) 
+            GridLength? width = null,
+            TemplateColumnOptions<TValue>? options = null)
             : base(header, cellTemplateResourceKey, cellEditingTemplateResourceKey, width, ConvertOptions(options, getter))
         {
             _getter = getter;
@@ -31,7 +31,7 @@ namespace Avalonia.Controls.Models.TreeDataGrid
             if (options?.IsReadOnlyGetter is { } isReadOnlyGetter)
                 _isReadOnlyBinding = TypedBinding<TValue>.OneWay(isReadOnlyGetter);
         }
-        
+
         private static TemplateColumnOptions<TModel>? ConvertOptions(TemplateColumnOptions<TValue>? src, Func<TModel, TValue> valueSelector)
         {
             if (src == null)

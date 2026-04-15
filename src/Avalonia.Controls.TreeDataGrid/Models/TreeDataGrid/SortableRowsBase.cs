@@ -200,7 +200,7 @@ namespace Avalonia.Controls.Models.TreeDataGrid
                         var index = e.OldStartingIndex;
                         var count = e.OldItems!.Count;
                         var oldItems = CollectionChanged is not null ? _unsortedRows.Slice(index, count) : null;
-                        
+
                         for (var i = 0; i < count; ++i)
                         {
                             _unsortedRows[index + i] = CreateRow(index + i, (TModel)e.NewItems![i]!);
@@ -245,7 +245,7 @@ namespace Avalonia.Controls.Models.TreeDataGrid
                 // Add the new rows to the unsorted rows.
                 for (var i = startIndex; i < startIndex + count; ++i)
                     _unsortedRows.Insert(i, CreateRow(i, _items[i]));
-                
+
                 // Update the indexes of subsequent rows.
                 for (var i = startIndex + count; i < _unsortedRows.Count; ++i)
                     _unsortedRows[i].UpdateModelIndex(count);

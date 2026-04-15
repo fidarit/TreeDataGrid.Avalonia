@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using Avalonia.Collections;
 using Avalonia.Controls.Models.TreeDataGrid;
 using Avalonia.Controls.Primitives;
 using Avalonia.Data;
 using Avalonia.Headless.XUnit;
-using Avalonia.Layout;
-using Avalonia.LogicalTree;
 using Avalonia.Styling;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
@@ -83,7 +80,7 @@ namespace Avalonia.Controls.TreeDataGridTests.Primitives
         }
 
         private static (TreeDataGridRowsPresenter, ScrollViewer, AvaloniaList<Model>) CreateTarget(
-            IColumns? columns = null, 
+            IColumns? columns = null,
             List<IStyle>? additionalStyles = null,
             int itemCount = 100,
             Size? rootSize = null)

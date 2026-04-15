@@ -55,7 +55,7 @@ namespace Avalonia.Controls.TreeDataGridTests.Primitives
 
             Assert.True(items.Count == 99);
 
-            Layout(target); 
+            Layout(target);
 
             Assert.True(CountEvenRedRows(target) == 5);
         }
@@ -572,7 +572,7 @@ namespace Avalonia.Controls.TreeDataGridTests.Primitives
         }
 
         private static (TreeDataGridRowsPresenter, ScrollViewer, AvaloniaList<Model>) CreateTarget(
-            IColumns? columns = null, 
+            IColumns? columns = null,
             List<IStyle>? additionalStyles = null,
             int itemCount = 100,
             Size? rootSize = null)

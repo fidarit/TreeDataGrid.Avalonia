@@ -21,7 +21,7 @@ namespace Avalonia.Controls
         ITreeDataGridSource<TModel>,
         IDisposable,
         IExpanderRowController<TModel>
-        where TModel: class
+        where TModel : class
     {
         private IEnumerable<TModel> _items;
         private TreeDataGridItemsSourceView<TModel> _itemsView;
@@ -55,7 +55,7 @@ namespace Avalonia.Controls
         }
 
         /// <inheritdoc/>
-        public IEnumerable<TModel> Items 
+        public IEnumerable<TModel> Items
         {
             get => _items;
             set
@@ -340,7 +340,7 @@ namespace Avalonia.Controls
 
                     if (items == targetItems && i < ti)
                         --ti;
-                    
+
                     items.RemoveAt(i);
                 }
             }

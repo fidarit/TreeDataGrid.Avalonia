@@ -1,5 +1,4 @@
-﻿using System;
-using Avalonia.Controls.Models.TreeDataGrid;
+﻿using Avalonia.Controls.Models.TreeDataGrid;
 using Avalonia.Headless.XUnit;
 using Xunit;
 

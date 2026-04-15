@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Threading;
 
 namespace Avalonia.Experimental.Data.Core
@@ -24,7 +24,7 @@ namespace Avalonia.Experimental.Data.Core
                 // no op
             }
         }
-    
+
         internal sealed class AnonymousDisposable : IDisposable
         {
             private volatile Action? _dispose;

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
-using Avalonia.Collections;
 using Avalonia.Controls.Models.TreeDataGrid;
 using Avalonia.Controls.Selection;
 using Avalonia.Headless.XUnit;
@@ -1061,7 +1060,7 @@ namespace Avalonia.Controls.TreeDataGridTests
                 set => RaiseAndSetIfChanged(ref _caption, value);
             }
 
-            public AvaloniaListDebug<Node>? Children 
+            public AvaloniaListDebug<Node>? Children
             {
                 get => _children;
                 set => RaiseAndSetIfChanged(ref _children, value);

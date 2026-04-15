@@ -200,7 +200,7 @@ namespace Avalonia.Controls.Models.TreeDataGrid
         private static double NotNaN(double v) => double.IsNaN(v) ? 0 : v;
 
         void IColumns.InvalidateLayout() =>
-            LayoutInvalidated?.Invoke(this,EventArgs.Empty);
+            LayoutInvalidated?.Invoke(this, EventArgs.Empty);
 
     }
 }

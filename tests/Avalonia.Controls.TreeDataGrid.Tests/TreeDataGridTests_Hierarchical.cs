@@ -8,8 +8,6 @@ using Avalonia.Controls.Models.TreeDataGrid;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
 using Avalonia.Headless.XUnit;
-using Avalonia.Layout;
-using Avalonia.LogicalTree;
 using Avalonia.Styling;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
@@ -30,7 +28,7 @@ namespace Avalonia.Controls.TreeDataGridTests
                 .GetVisualChildren()
                 .Cast<TreeDataGridRow>()
                 .ToList();
-            
+
             Assert.Equal(2, rows.Count);
 
             foreach (var row in rows)
@@ -110,7 +108,7 @@ namespace Avalonia.Controls.TreeDataGridTests
             source.Expand(0);
             target.Scroll!.Offset = new Vector(0, 20);
             Layout(target);
-            
+
             var rowIndexes = target.RowsPresenter!.RealizedElements
                 .OfType<TreeDataGridRow>()
                 .Select(x => x.RowIndex)
@@ -471,7 +469,7 @@ namespace Avalonia.Controls.TreeDataGridTests
             var cell = Assert.IsType<TreeDataGridExpanderCell>(row.TryGetCell(0));
 
             Assert.Equal(1, cell.RowIndex);
-            
+
             cell.Focus();
 
             source.Collapse(new IndexPath(0));

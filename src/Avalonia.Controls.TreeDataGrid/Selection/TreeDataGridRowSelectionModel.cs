@@ -5,7 +5,6 @@ using Avalonia.Controls.Models.TreeDataGrid;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
-using Avalonia.Input.Platform;
 using Avalonia.VisualTree;
 
 namespace Avalonia.Controls.Selection
@@ -563,7 +562,7 @@ namespace Avalonia.Controls.Selection
             if (TopLevel.GetTopLevel(owner)?.FocusManager is { } focusManager &&
                 focusManager.GetFocusedElement() is Control currentFocus &&
                 owner.TryGetCell(currentFocus, out var currentCell) &&
-                row.TryGetCell(currentCell.ColumnIndex) is { }  newCell &&
+                row.TryGetCell(currentCell.ColumnIndex) is { } newCell &&
                 newCell.Focusable)
             {
                 newCell.Focus();

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Models.TreeDataGrid;
 using Avalonia.Controls.Selection;
@@ -193,7 +192,7 @@ namespace Avalonia.Controls.Primitives
             {
                 PseudoClasses.Set(":selected", IsSelected);
             }
-            
+
             base.OnPropertyChanged(change);
         }
 

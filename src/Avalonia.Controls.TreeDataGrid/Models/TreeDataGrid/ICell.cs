@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Avalonia.Controls.Models.TreeDataGrid
+﻿namespace Avalonia.Controls.Models.TreeDataGrid
 {
     /// <summary>
     /// Represents a cell in an <see cref="ITreeDataGridSource"/>.

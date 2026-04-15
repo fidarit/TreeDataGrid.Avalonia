@@ -45,7 +45,7 @@ namespace TreeDataGridDemo.ViewModels
             for (var i = columns.Count; i < newValue; i++)
             {
                 var cellIndex = i - 1;
-                columns.Add(new TemplateColumn<DataRow, DataCell>(DataRow.NewColumnName(), row => row.Cells[cellIndex], "DynamicCell", "DynamicEditingCell", 
+                columns.Add(new TemplateColumn<DataRow, DataCell>(DataRow.NewColumnName(), row => row.Cells[cellIndex], "DynamicCell", "DynamicEditingCell",
                     new GridLength(1, GridUnitType.Auto), new()
                     {
                         TextSearchValueSelector = value => value.Value,

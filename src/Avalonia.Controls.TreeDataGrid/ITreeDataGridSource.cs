@@ -1,9 +1,9 @@
-﻿using Avalonia.Controls.Models.TreeDataGrid;
-using Avalonia.Controls.Selection;
-using Avalonia.Input;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Avalonia.Controls.Models.TreeDataGrid;
+using Avalonia.Controls.Selection;
+using Avalonia.Input;
 
 namespace Avalonia.Controls
 {

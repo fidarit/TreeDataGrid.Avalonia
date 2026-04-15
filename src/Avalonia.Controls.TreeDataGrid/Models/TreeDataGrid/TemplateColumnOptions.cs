@@ -1,5 +1,4 @@
 ﻿using System;
-using Avalonia.Media;
 
 namespace Avalonia.Controls.Models.TreeDataGrid
 {

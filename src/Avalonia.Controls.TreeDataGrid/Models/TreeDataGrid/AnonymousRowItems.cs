@@ -18,10 +18,10 @@ namespace Avalonia.Controls.Models.TreeDataGrid
             _row = new AnonymousRow<TModel>();
         }
 
-        public object? this[int index] 
+        public object? this[int index]
         {
             get => _row.Update(index, (TModel)_items[index]!);
-            set => throw new NotSupportedException(); 
+            set => throw new NotSupportedException();
         }
 
         bool IList.IsFixedSize => true;

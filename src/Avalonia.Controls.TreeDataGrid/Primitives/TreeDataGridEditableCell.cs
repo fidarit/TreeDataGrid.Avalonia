@@ -50,7 +50,7 @@ namespace Avalonia.Controls.Primitives
             UnsubscribeFromModelChanges();
             base.Unrealize();
         }
-        
+
         protected override void OnModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             base.OnModelPropertyChanged(sender, e);

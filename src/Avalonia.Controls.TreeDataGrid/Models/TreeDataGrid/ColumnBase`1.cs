@@ -34,7 +34,7 @@ namespace Avalonia.Controls.Models.TreeDataGrid
             object? header,
             GridLength? width,
             ColumnOptions<TModel> options)
-        {            
+        {
             _header = header;
             Options = options;
             SetWidth(width ?? GridLength.Auto);
@@ -183,7 +183,7 @@ namespace Avalonia.Controls.Models.TreeDataGrid
             {
                 return false;
             }
-            
+
             return !MathUtilities.AreClose(oldWidth, ActualWidth);
         }
 

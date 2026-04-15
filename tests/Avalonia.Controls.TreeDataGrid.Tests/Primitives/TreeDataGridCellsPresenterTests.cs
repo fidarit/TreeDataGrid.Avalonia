@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using Avalonia.Controls.Models.TreeDataGrid;
 using Avalonia.Controls.Primitives;
 using Avalonia.Headless.XUnit;
-using Avalonia.Layout;
-using Avalonia.LogicalTree;
 using Avalonia.Media;
 using Avalonia.Styling;
 using Avalonia.Threading;
@@ -42,7 +39,7 @@ namespace Avalonia.Controls.TreeDataGridTests.Primitives
         public void Scrolls_Right_One_Cell()
         {
             var (target, scroll) = CreateTarget();
-            
+
             scroll.Offset = new Vector(10, 0);
             Layout(target);
 

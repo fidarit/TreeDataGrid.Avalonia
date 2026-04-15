@@ -5,7 +5,6 @@ using Avalonia.Collections;
 using Avalonia.Controls.Selection;
 using Avalonia.Controls.TreeDataGridTests.Collections;
 using Avalonia.Controls.Utils;
-using Avalonia.Diagnostics;
 using Avalonia.Headless.XUnit;
 using Xunit;
 
@@ -1300,7 +1299,7 @@ namespace Avalonia.Controls.TreeDataGridTests.Selection
                     }
                 };
 
-                target.SelectionChanged += (s, e) =>++selectionChangedRaised;
+                target.SelectionChanged += (s, e) => ++selectionChangedRaised;
                 target.SourceReset += (s, e) =>
                 {
                     Assert.Equal(default, e.ParentIndex);

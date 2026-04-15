@@ -1,6 +1,5 @@
 ﻿using Avalonia.Controls.TreeDataGridTests;
 using Avalonia.Headless;
-using Avalonia.Markup.Xaml;
 
 [assembly: AvaloniaTestApplication(typeof(TestApplication))]
 

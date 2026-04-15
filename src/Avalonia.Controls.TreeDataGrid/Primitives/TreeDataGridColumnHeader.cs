@@ -185,7 +185,7 @@ namespace Avalonia.Controls.Primitives
             if (IsVisible != oldVisibility)
             {
                 _columns?.InvalidateLayout();
-            }            
+            }
         }
     }
 }

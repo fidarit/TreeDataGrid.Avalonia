@@ -278,7 +278,8 @@ namespace Avalonia.Experimental.Data.Core
 
             if (result.HasValue)
             {
-                unchecked { ++_publishCount; }
+                unchecked
+                { ++_publishCount; }
                 PublishNext(result.Value);
             }
         }

@@ -13,7 +13,7 @@ namespace Avalonia.Controls.Primitives
     /// Implements common layout functionality between <see cref="TreeDataGridCellsPresenter"/>
     /// and <see cref="TreeDataGridColumnHeadersPresenter"/>.
     /// </remarks>
-    public abstract class TreeDataGridColumnarPresenterBase<TItem> : TreeDataGridPresenterBase<TItem> 
+    public abstract class TreeDataGridColumnarPresenterBase<TItem> : TreeDataGridPresenterBase<TItem>
     {
         protected IColumns? Columns => Items as IColumns;
 

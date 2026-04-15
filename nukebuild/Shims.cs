@@ -1,9 +1,8 @@
-#nullable disable
+﻿#nullable disable
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using Nuke.Common;
 using Nuke.Common.IO;
 
 public partial class Build
@@ -27,7 +26,7 @@ public partial class Build
         try
         {
             using (var targetStream = File.Create(targetPath))
-            using(var archive = new System.IO.Compression.ZipArchive(targetStream, ZipArchiveMode.Create))
+            using (var archive = new System.IO.Compression.ZipArchive(targetStream, ZipArchiveMode.Create))
             {
                 void AddFile(string path, string relativePath)
                 {
@@ -44,7 +43,7 @@ public partial class Build
                     {
                         var dirInfo = new DirectoryInfo(path);
                         var rootPath = Path.GetDirectoryName(dirInfo.FullName);
-                        foreach(var fsEntry in dirInfo.EnumerateFileSystemInfos("*", SearchOption.AllDirectories))
+                        foreach (var fsEntry in dirInfo.EnumerateFileSystemInfos("*", SearchOption.AllDirectories))
                         {
                             if (fsEntry is FileInfo)
                             {
@@ -53,7 +52,7 @@ public partial class Build
                             }
                         }
                     }
-                    else if(File.Exists(path))
+                    else if (File.Exists(path))
                     {
                         var name = Path.GetFileName(path);
                         AddFile(path, name);

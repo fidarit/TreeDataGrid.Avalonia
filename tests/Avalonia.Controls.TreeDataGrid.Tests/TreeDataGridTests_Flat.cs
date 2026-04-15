@@ -76,7 +76,7 @@ namespace Avalonia.Controls.TreeDataGridTests
             target.RowSelection.Select(5);
 
             AssertInteractionSelection(target, 0, 5);
-            
+
             target.Source!.SortBy(target.Columns![0], ListSortDirection.Descending);
 
             ///There are 100 items in the collection.
@@ -415,7 +415,7 @@ namespace Avalonia.Controls.TreeDataGridTests
 
             AssertColumnIndexes(target, 0, 4);
 
-            var source =(FlatTreeDataGridSource<Model>)target.Source!;
+            var source = (FlatTreeDataGridSource<Model>)target.Source!;
 
             var movedColumn = source.Columns[1];
             source.Columns.Remove(movedColumn);
@@ -751,8 +751,8 @@ namespace Avalonia.Controls.TreeDataGridTests
             var headerScroll = Assert.IsType<ScrollViewer>(
                 target.GetVisualDescendants().Single(x => x.Name == "PART_HeaderScrollViewer"));
 
-            scroll.PropertyChanged += (s, e) => 
-            { 
+            scroll.PropertyChanged += (s, e) =>
+            {
                 if (e.Property == ScrollViewer.ExtentProperty)
                 {
                 }
@@ -998,8 +998,8 @@ namespace Avalonia.Controls.TreeDataGridTests
             private string? _title;
 
             public int Id { get; set; }
-            public string? Title 
-            { 
+            public string? Title
+            {
                 get => _title;
                 set => RaiseAndSetIfChanged(ref _title, value);
             }

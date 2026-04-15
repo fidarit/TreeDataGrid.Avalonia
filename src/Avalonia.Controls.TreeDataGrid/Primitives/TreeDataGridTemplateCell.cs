@@ -43,8 +43,8 @@ namespace Avalonia.Controls.Primitives
             }
         }
 
-        public IDataTemplate? ContentTemplate 
-        { 
+        public IDataTemplate? ContentTemplate
+        {
             get => _contentTemplate;
             set => SetAndRaise(ContentTemplateProperty, ref _contentTemplate, value);
         }
@@ -57,7 +57,7 @@ namespace Avalonia.Controls.Primitives
 
         public override void Realize(
             TreeDataGridElementFactory factory,
-            ITreeDataGridSelectionInteraction? selection, 
+            ITreeDataGridSelectionInteraction? selection,
             ICell model,
             int columnIndex,
             int rowIndex)

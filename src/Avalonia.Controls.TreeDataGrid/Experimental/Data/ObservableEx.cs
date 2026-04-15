@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Avalonia.Experimental.Data.Core;
 using Avalonia.Reactive;
 
@@ -10,7 +10,7 @@ namespace Avalonia.Experimental.Data
         {
             return new SingleValueImpl<T>(value);
         }
- 
+
         private sealed class SingleValueImpl<T> : IObservable<T>
         {
             private readonly T _value;

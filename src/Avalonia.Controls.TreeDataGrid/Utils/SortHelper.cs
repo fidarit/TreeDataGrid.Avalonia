@@ -63,7 +63,8 @@ namespace Avalonia.Controls.Utils
                 var i = lo + ((hi - lo) >> 1);
                 var order = compare(items[i], value);
 
-                if (order == 0) return i;
+                if (order == 0)
+                    return i;
                 if (order < 0)
                 {
                     lo = i + 1;
@@ -174,8 +175,10 @@ namespace Avalonia.Controls.Utils
 
             while (left < right)
             {
-                while (comparer(keys[++left], pivot) < 0) ;
-                while (comparer(pivot, keys[--right]) < 0) ;
+                while (comparer(keys[++left], pivot) < 0)
+                    ;
+                while (comparer(pivot, keys[--right]) < 0)
+                    ;
 
                 if (left >= right)
                     break;
