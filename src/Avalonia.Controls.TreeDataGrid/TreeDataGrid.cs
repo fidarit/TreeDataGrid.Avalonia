@@ -232,11 +232,9 @@ namespace Avalonia.Controls
             {
                 if (_selection != value)
                 {
-                    if (_selection != null)
-                        _selection.SelectionChanged -= OnSelectionInteractionChanged;
+                    _selection?.SelectionChanged -= OnSelectionInteractionChanged;
                     _selection = value;
-                    if (_selection != null)
-                        _selection.SelectionChanged += OnSelectionInteractionChanged;
+                    _selection?.SelectionChanged += OnSelectionInteractionChanged;
                 }
             }
         }

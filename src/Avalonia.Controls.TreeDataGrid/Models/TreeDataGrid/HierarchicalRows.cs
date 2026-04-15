@@ -80,8 +80,7 @@ namespace Avalonia.Controls.Models.TreeDataGrid
 
             try
             {
-                if (row is not null)
-                    row.IsExpanded = predicate(row.Model);
+                row?.IsExpanded = predicate(row.Model);
 
                 var children = row is null ? _roots : row.Children;
 
@@ -342,8 +341,7 @@ namespace Avalonia.Controls.Models.TreeDataGrid
                 for (var i = 0; i < count; ++i)
                 {
                     var row = _flattenedRows[i + index];
-                    if (oldItems is not null)
-                        oldItems[i] = row;
+                    oldItems?[i] = row;
                 }
 
                 _flattenedRows.RemoveRange(index, count);

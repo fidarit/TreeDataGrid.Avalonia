@@ -131,11 +131,9 @@ namespace Avalonia.Controls.Primitives
             }
             else if (change.Property == ParentProperty)
             {
-                if (_owner is not null)
-                    _owner.PropertyChanged -= OnOwnerPropertyChanged;
+                _owner?.PropertyChanged -= OnOwnerPropertyChanged;
                 _owner = change.GetNewValue<StyledElement>()?.TemplatedParent as TreeDataGrid;
-                if (_owner is not null)
-                    _owner.PropertyChanged += OnOwnerPropertyChanged;
+                _owner?.PropertyChanged += OnOwnerPropertyChanged;
                 UpdatePropertiesFromModel();
             }
 

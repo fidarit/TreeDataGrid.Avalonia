@@ -76,8 +76,7 @@ namespace Avalonia.Controls.Primitives
         {
             base.OnApplyTemplate(e);
 
-            if (_editingContentPresenter is not null)
-                _editingContentPresenter.LostFocus -= EditingContentPresenterLostFocus;
+            _editingContentPresenter?.LostFocus -= EditingContentPresenterLostFocus;
 
             _editingContentPresenter = e.NameScope.Find<ContentPresenter>("PART_EditingContentPresenter");
 

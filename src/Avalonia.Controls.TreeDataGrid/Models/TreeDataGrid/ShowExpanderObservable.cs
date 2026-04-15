@@ -57,8 +57,7 @@ namespace Avalonia.Controls.Models.TreeDataGrid
 
         void IObserver<BindingValue<IEnumerable<TModel>?>>.OnNext(BindingValue<IEnumerable<TModel>?> value)
         {
-            if (_incc is not null)
-                _incc.CollectionChanged -= OnCollectionChanged;
+            _incc?.CollectionChanged -= OnCollectionChanged;
 
             if (value.HasValue && value.Value is not null)
             {
