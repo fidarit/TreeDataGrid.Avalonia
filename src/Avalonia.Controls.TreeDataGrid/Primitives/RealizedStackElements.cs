@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Avalonia.Controls.Models.TreeDataGrid;
-using Avalonia.Utilities;
+using Avalonia.Experimental.Data.Core;
 
 namespace Avalonia.Controls.Primitives
 {
@@ -128,7 +128,7 @@ namespace Avalonia.Controls.Primitives
                 return (-1, 0);
 
             // If we're at 0 then display the first item.
-            if (MathUtilities.IsZero(viewportStartU))
+            if (MathWrapper.IsZero(viewportStartU))
                 return (0, 0);
 
             if (_sizes is not null && !_startUUnstable)

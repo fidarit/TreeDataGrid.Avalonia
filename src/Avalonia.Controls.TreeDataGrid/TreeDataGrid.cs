@@ -7,10 +7,10 @@ using Avalonia.Controls.Models.TreeDataGrid;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Selection;
 using Avalonia.Controls.Shapes;
+using Avalonia.Experimental.Data.Core;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
-using Avalonia.Utilities;
 using Avalonia.VisualTree;
 
 namespace Avalonia.Controls
@@ -791,13 +791,13 @@ namespace Avalonia.Controls
 
         private void OnScrollChanged(object? sender, ScrollChangedEventArgs e)
         {
-            if (Scroll is not null && _headerScroll is not null && !MathUtilities.IsZero(e.OffsetDelta.X))
+            if (Scroll is not null && _headerScroll is not null && !MathWrapper.IsZero(e.OffsetDelta.X))
                 _headerScroll.Offset = _headerScroll.Offset.WithX(Scroll.Offset.X);
         }
 
         private void OnHeaderScrollChanged(object? sender, ScrollChangedEventArgs e)
         {
-            if (Scroll is not null && _headerScroll is not null && !MathUtilities.IsZero(e.OffsetDelta.X))
+            if (Scroll is not null && _headerScroll is not null && !MathWrapper.IsZero(e.OffsetDelta.X))
                 Scroll.Offset = Scroll.Offset.WithX(_headerScroll.Offset.X);
         }
 

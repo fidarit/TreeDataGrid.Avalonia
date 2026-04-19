@@ -1,7 +1,7 @@
-using System;
+﻿using System;
 using Avalonia.Threading;
 
-namespace Avalonia.Controls.Experimental.Data.Core;
+namespace Avalonia.Experimental.Data.Core;
 
 internal abstract class SingleSubscriberObservableBase<T> : IObservable<T>, IDisposable
 {

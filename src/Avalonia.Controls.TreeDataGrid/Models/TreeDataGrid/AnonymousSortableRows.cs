@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using Avalonia.Controls.Utils;
-using Avalonia.Utilities;
+using Avalonia.Experimental.Data.Core;
 
 namespace Avalonia.Controls.Models.TreeDataGrid
 {
@@ -83,7 +83,7 @@ namespace Avalonia.Controls.Models.TreeDataGrid
         {
             // Rows in an AnonymousSortableRows collection have Auto height so we only
             // know the start position of the first row.
-            if (MathUtilities.IsZero(y))
+            if (MathWrapper.IsZero(y))
                 return (0, 0);
             return (-1, -1);
         }

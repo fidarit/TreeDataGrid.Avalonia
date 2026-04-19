@@ -4,10 +4,10 @@ using System.Collections.Specialized;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
+using Avalonia.Experimental.Data.Core;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.LogicalTree;
-using Avalonia.Utilities;
 using Avalonia.VisualTree;
 using CollectionExtensions = Avalonia.Controls.Models.TreeDataGrid.CollectionExtensions;
 
@@ -457,8 +457,8 @@ namespace Avalonia.Controls.Primitives
             var newViewportStart = vertical ? Viewport.Top : Viewport.Left;
             var newViewportEnd = vertical ? Viewport.Bottom : Viewport.Right;
 
-            if (!MathUtilities.AreClose(oldViewportStart, newViewportStart) ||
-                !MathUtilities.AreClose(oldViewportEnd, newViewportEnd))
+            if (!MathWrapper.AreClose(oldViewportStart, newViewportStart) ||
+                !MathWrapper.AreClose(oldViewportEnd, newViewportEnd))
             {
                 InvalidateMeasure();
             }
