@@ -16,7 +16,7 @@ public class Benchmarks
     private const int RowCount = 500;
     private const int ColumnCount = 40;
 
-    private TreeDataGrid? _target;
+    private TreeDataGrid _target = default!;
 
     [GlobalSetup]
     public void Setup()

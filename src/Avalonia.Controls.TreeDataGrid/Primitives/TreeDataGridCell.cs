@@ -4,7 +4,6 @@ using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Models.TreeDataGrid;
 using Avalonia.Controls.Selection;
 using Avalonia.Input;
-using Avalonia.Interactivity;
 using Avalonia.LogicalTree;
 using Avalonia.VisualTree;
 
@@ -143,7 +142,7 @@ namespace Avalonia.Controls.Primitives
                 _treeDataGrid.RaiseCellPrepared(this, ColumnIndex, RowIndex);
         }
 
-        protected override void OnLostFocus(RoutedEventArgs e)
+        protected override void OnLostFocus(FocusChangedEventArgs e)
         {
             base.OnLostFocus(e);
 
@@ -163,7 +162,7 @@ namespace Avalonia.Controls.Primitives
             return result;
         }
 
-        protected virtual void OnDoubleTapped(TappedEventArgs e)
+        protected override void OnDoubleTapped(TappedEventArgs e)
         {
             if (Model is not null &&
                 !e.Handled &&
@@ -238,7 +237,7 @@ namespace Avalonia.Controls.Primitives
                 IsEnabledEditGesture(BeginEditGestures.Tap, Model.EditGestures))
             {
                 var point = e.GetCurrentPoint(this);
-                var settings = TopLevel.GetTopLevel(this)?.PlatformSettings;
+                var settings = this.GetPlatformSettings();
                 var tapSize = settings?.GetTapSize(point.Pointer.Type) ?? new Size(4, 4);
                 var tapRect = new Rect(_pressedPoint, new Size())
                        .Inflate(new Thickness(tapSize.Width, tapSize.Height));

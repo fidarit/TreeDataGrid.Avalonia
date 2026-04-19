@@ -14,6 +14,8 @@ namespace TreeDataGridDemo
 
         public override void OnFrameworkInitializationCompleted()
         {
+            this.AttachDeveloperTools();
+
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 desktop.MainWindow = new MainWindow();

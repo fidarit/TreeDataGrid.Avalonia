@@ -7,10 +7,10 @@ using Avalonia.Controls.Models.TreeDataGrid;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Selection;
 using Avalonia.Controls.Shapes;
+using Avalonia.Experimental.Data.Core;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
-using Avalonia.Utilities;
 using Avalonia.VisualTree;
 
 namespace Avalonia.Controls
@@ -519,7 +519,7 @@ namespace Avalonia.Controls
             }
         }
 
-        internal void RaiseRowDragStarted(PointerEventArgs trigger)
+        internal void RaiseRowDragStarted(PointerPressedEventArgs trigger)
         {
             if (_source is null || RowSelection is null)
                 return;
@@ -539,10 +539,12 @@ namespace Avalonia.Controls
 
             if (allowedEffects != DragDropEffects.None)
             {
-                var data = new DataObject();
+                var dataTransfer = new DataTransfer();
                 var info = new DragInfo(_source, RowSelection.SelectedIndexes.ToList());
-                data.Set(DragInfo.DataFormat, info);
-                DragDrop.DoDragDrop(trigger, data, allowedEffects);
+                var item = new DataTransferItem();
+                item.Set(DragInfo.Format, info);
+                dataTransfer.Add(item);
+                _ = DragDrop.DoDragDropAsync(trigger, dataTransfer, allowedEffects);
             }
         }
 
@@ -675,9 +677,7 @@ namespace Avalonia.Controls
             _autoScrollTimer.Start();
         }
 
-#if NET5_0_OR_GREATER
         [MemberNotNullWhen(true, nameof(_source))]
-#endif
         private bool CalculateAutoDragDrop(
             TreeDataGridRow? targetRow,
             DragEventArgs e,
@@ -685,7 +685,7 @@ namespace Avalonia.Controls
             out TreeDataGridRowDropPosition position)
         {
             if (!AutoDragDropRows ||
-                e.Data.Get(DragInfo.DataFormat) is not DragInfo di ||
+                e.DataTransfer.TryGetValues(DragInfo.Format)?.FirstOrDefault() is not DragInfo di ||
                 _source is null ||
                 _source.IsSorted ||
                 targetRow is null ||
@@ -791,13 +791,13 @@ namespace Avalonia.Controls
 
         private void OnScrollChanged(object? sender, ScrollChangedEventArgs e)
         {
-            if (Scroll is not null && _headerScroll is not null && !MathUtilities.IsZero(e.OffsetDelta.X))
+            if (Scroll is not null && _headerScroll is not null && !MathWrapper.IsZero(e.OffsetDelta.X))
                 _headerScroll.Offset = _headerScroll.Offset.WithX(Scroll.Offset.X);
         }
 
         private void OnHeaderScrollChanged(object? sender, ScrollChangedEventArgs e)
         {
-            if (Scroll is not null && _headerScroll is not null && !MathUtilities.IsZero(e.OffsetDelta.X))
+            if (Scroll is not null && _headerScroll is not null && !MathWrapper.IsZero(e.OffsetDelta.X))
                 Scroll.Offset = Scroll.Offset.WithX(_headerScroll.Offset.X);
         }
 

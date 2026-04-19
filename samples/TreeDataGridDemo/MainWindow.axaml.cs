@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -20,7 +19,6 @@ namespace TreeDataGridDemo
         public MainWindow()
         {
             InitializeComponent();
-            this.AttachDevTools();
             DataContext = new MainWindowViewModel();
 
             _tabs = this.FindControl<TabControl>("tabs");

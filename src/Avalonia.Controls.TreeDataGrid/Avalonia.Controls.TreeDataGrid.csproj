@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net8.0;net10.0;net48</TargetFrameworks>
+    <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
     <IsPackable>True</IsPackable>
     <RootNamespace>Avalonia.Controls</RootNamespace>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
@@ -19,23 +19,9 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
-    <PackageReference Include="PolySharp" Version="1.15.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <InternalsVisibleTo Include="Avalonia.Controls.TreeDataGrid.Benchmark" />
     <InternalsVisibleTo Include="Avalonia.Controls.TreeDataGrid.Tests" />
-  </ItemGroup>
-
-  <!-- '!NET6_0_OR_GREATER' equivalent -->
-  <ItemGroup Condition="!('$(TargetFrameworkIdentifier)' == '.NETCoreApp' AND $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '6.0')))">
-    <PackageReference Include="Microsoft.Bcl.HashCode" Version="6.0.0" />
-  </ItemGroup>
-  <!-- 'NET6_0_OR_GREATER' equivalent -->
-  <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETCoreApp' AND $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '6.0'))">
-    <Compile Remove="StandardExtensions\**" />
-    <None Remove="StandardExtensions\**" />
   </ItemGroup>
 </Project>

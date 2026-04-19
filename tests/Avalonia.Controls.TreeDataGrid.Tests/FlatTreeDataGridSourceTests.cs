@@ -199,6 +199,7 @@ namespace Avalonia.Controls.TreeDataGridTests
                 {
                     Assert.Equal(NotifyCollectionChangedAction.Add, e.Action);
                     Assert.Equal(0, e.NewStartingIndex);
+                    Assert.NotNull(e.NewItems);
                     Assert.Single(e.NewItems);
                     Assert.Equal(10, ((IModelIndexableRow)e.NewItems[0]!).ModelIndex);
                     ++raised;
@@ -225,7 +226,8 @@ namespace Avalonia.Controls.TreeDataGridTests
                 {
                     Assert.Equal(NotifyCollectionChangedAction.Remove, e.Action);
                     Assert.Equal(4, e.OldStartingIndex);
-                    Assert.Single(e.OldItems!);
+                    Assert.NotNull(e.OldItems);
+                    Assert.Single(e.OldItems);
                     Assert.Equal(5, ((IModelIndexableRow)e.OldItems[0]!).ModelIndex);
                     ++raised;
                 };

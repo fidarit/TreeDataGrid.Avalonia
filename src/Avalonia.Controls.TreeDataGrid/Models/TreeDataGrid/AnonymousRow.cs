@@ -17,10 +17,6 @@ namespace Avalonia.Controls.Models.TreeDataGrid
         private int _modelIndex;
         [AllowNull] private TModel _model;
 
-#if !NET5_0_OR_GREATER
-        object? IRow.Model => _model;
-#endif
-
         public object? Header => _modelIndex;
         public TModel Model => _model;
         public int ModelIndex => _modelIndex;
