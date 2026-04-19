@@ -50,8 +50,8 @@ namespace TreeDataGridDemo.ViewModels
                     {
                         TextSearchValueSelector = value => value.Value,
                         IsReadOnlyGetter = value => value.ReadOnly,
-                        CompareAscending = (a, b) => Comparer<string>.Default.Compare(a.Value, b.Value),
-                        CompareDescending = (b, a) => Comparer<string>.Default.Compare(a.Value, b.Value),
+                        CompareAscending = (a, b) => Comparer<string>.Default.Compare(a?.Value, b?.Value),
+                        CompareDescending = (b, a) => Comparer<string>.Default.Compare(a?.Value, b?.Value),
                     }));
             }
         }

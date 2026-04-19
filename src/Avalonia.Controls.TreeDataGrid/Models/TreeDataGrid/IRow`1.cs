@@ -11,12 +11,10 @@
         /// </summary>
         new TModel Model { get; }
 
-#if !!NET5_0_OR_GREATER
         /// <summary>
         /// Gets the untyped row model.
         /// </summary>
         object? IRow.Model => Model;
-#endif
 
         /// <summary>
         /// Updates the model index due to a change in the data source.

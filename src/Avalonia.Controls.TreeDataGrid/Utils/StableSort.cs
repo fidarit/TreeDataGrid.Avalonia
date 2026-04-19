@@ -19,12 +19,8 @@ namespace Avalonia.Controls.Utils
                 map.Add(i);
             }
 
-#if !NET5_0_OR_GREATER
-            map.Sort(compare);
-#else
             var span = CollectionsMarshal.AsSpan(map);
             SortHelper<int>.Sort(span, compare);
-#endif
 
             return map;
         }

@@ -226,6 +226,7 @@ namespace Avalonia.Controls.TreeDataGridTests.Primitives
             Assert.Equal(100, items.Count);
             items.RemoveRange(1, 99);
             Layout(target);
+            Assert.NotNull(target.Items);
             Assert.Single(target.Items);
             Assert.Single(target.GetVisualChildren());
 

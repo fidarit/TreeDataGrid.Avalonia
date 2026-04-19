@@ -128,13 +128,8 @@ namespace Avalonia.Controls.Selection
 
             var anchor = shift ? _rangeAnchor : GetAnchor();
 
-#if !NET5_0_OR_GREATER
-            var columnIndex = Math.Min(Math.Max(anchor.x + x, 0), sender.Columns.Count - 1);
-            var rowIndex = Math.Min(Math.Max(anchor.y + y, 0), sender.Rows.Count - 1);
-#else
             var columnIndex = Math.Clamp(anchor.x + x, 0, sender.Columns.Count - 1);
             var rowIndex = Math.Clamp(anchor.y + y, 0, sender.Rows.Count - 1);
-#endif
 
             if (!shift)
                 Select(columnIndex, rowIndex);
