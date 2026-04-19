@@ -14,8 +14,8 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <AvaloniaVersion>11.0.0</AvaloniaVersion>
-    <AvaloniaSamplesVersion>11.3.6</AvaloniaSamplesVersion>
+    <AvaloniaVersion>12.0.1</AvaloniaVersion>
+    <AvaloniaSamplesVersion>12.0.*</AvaloniaSamplesVersion>
   </PropertyGroup>
 
 

@@ -519,7 +519,7 @@ namespace Avalonia.Controls
             }
         }
 
-        internal void RaiseRowDragStarted(PointerEventArgs trigger)
+        internal void RaiseRowDragStarted(PointerPressedEventArgs trigger)
         {
             if (_source is null || RowSelection is null)
                 return;
@@ -539,10 +539,12 @@ namespace Avalonia.Controls
 
             if (allowedEffects != DragDropEffects.None)
             {
-                var data = new DataObject();
+                var dataTransfer = new DataTransfer();
                 var info = new DragInfo(_source, RowSelection.SelectedIndexes.ToList());
-                data.Set(DragInfo.DataFormat, info);
-                DragDrop.DoDragDrop(trigger, data, allowedEffects);
+                var item = new DataTransferItem();
+                item.Set(DragInfo.Format, info);
+                dataTransfer.Add(item);
+                _ = DragDrop.DoDragDropAsync(trigger, dataTransfer, allowedEffects);
             }
         }
 
@@ -683,7 +685,7 @@ namespace Avalonia.Controls
             out TreeDataGridRowDropPosition position)
         {
             if (!AutoDragDropRows ||
-                e.Data.Get(DragInfo.DataFormat) is not DragInfo di ||
+                e.DataTransfer.TryGetValues(DragInfo.Format)?.FirstOrDefault() is not DragInfo di ||
                 _source is null ||
                 _source.IsSorted ||
                 targetRow is null ||

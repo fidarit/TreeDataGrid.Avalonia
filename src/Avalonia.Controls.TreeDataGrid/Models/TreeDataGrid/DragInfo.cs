@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Avalonia.Input;
 
 namespace Avalonia.Controls.Models.TreeDataGrid
 {
@@ -6,32 +7,23 @@ namespace Avalonia.Controls.Models.TreeDataGrid
     /// Holds information about an automatic row drag/drop operation carried out
     /// by <see cref="Avalonia.Controls.TreeDataGrid.AutoDragDropRows"/>.
     /// </summary>
-    public class DragInfo
+    /// <param name="source">The source of the drag operation/</param>
+    /// <param name="indexes">The indexes being dragged.</param>
+    public class DragInfo(ITreeDataGridSource source, IEnumerable<IndexPath> indexes)
     {
         /// <summary>
-        /// Defines the data format in an <see cref="Avalonia.Input.IDataObject"/>.
+        /// Defines the data format for dragging TreeDataGrid rows.
         /// </summary>
-        public const string DataFormat = "TreeDataGridDragInfo";
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DragInfo"/> class.
-        /// </summary>
-        /// <param name="source">The source of the drag operation/</param>
-        /// <param name="indexes">The indexes being dragged.</param>
-        public DragInfo(ITreeDataGridSource source, IEnumerable<IndexPath> indexes)
-        {
-            Source = source;
-            Indexes = indexes;
-        }
+        public static readonly DataFormat<DragInfo> Format = DataFormat.CreateInProcessFormat<DragInfo>("TreeDataGridDragInfo");
 
         /// <summary>
         /// Gets the <see cref="ITreeDataGridSource"/> that rows are being dragged from.
         /// </summary>
-        public ITreeDataGridSource Source { get; }
+        public ITreeDataGridSource Source { get; } = source;
 
         /// <summary>
         /// Gets or sets the model indexes of the rows being dragged.
         /// </summary>
-        public IEnumerable<IndexPath> Indexes { get; }
+        public IEnumerable<IndexPath> Indexes { get; } = indexes;
     }
 }
